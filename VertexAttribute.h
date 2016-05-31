@@ -10,7 +10,7 @@
 * This is a vertex attribute.
 * A vertex can have multiple attributes.
 * A attribute can have multiple components.
-* A component has a data type (most commonly float).
+* A component has a data type (here: just floats!).
 * Attribute values are available in vertex shader.
 */
 class VertexAttribute {

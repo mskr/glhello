@@ -1,20 +1,37 @@
 #include "Model.h"
-#include "stdio.h"
-#include "config.h"
-#include <limits>
 
-Model::Model(int id, ModelType* modeltype) : ModelInstance(id, 0, this) {
+Model::Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribute> instance_attribs) : ModelInstance(id, 0, this) {
 	modeltype_ = modeltype;
 	vertices_ = {};
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
+	attribs_ = {InstanceAttribute()};
+	int i = 1;
+	for(InstanceAttribute attr : instance_attribs) {
+		modeltype_->instance_attr(i)->bytes(attr.bytes());
+		attribs_.push_back(attr);
+		i++;
+	}
+	if(attribs_.size() != modeltype_->num_instance_attribs())
+		throw std::runtime_error("Program exits because number of instance attributes of model does not match its modeltype.");
 	num_new_instances_ = 0;
 }
 
-Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v) : ModelInstance(id, 0, this) {
+Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v,
+  std::initializer_list<InstanceAttribute> instance_attribs) : ModelInstance(id, 0, this) {
+
 	modeltype_ = modeltype;
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
+	attribs_ = {InstanceAttribute()};
+	int i = 1;
+	for(InstanceAttribute attr : instance_attribs) {
+		modeltype_->instance_attr(i)->bytes(attr.bytes());
+		attribs_.push_back(attr);
+		i++;
+	}
+	if(attribs_.size() != modeltype_->num_instance_attribs())
+		throw std::runtime_error("Program exits because number of instance attributes of model does not match its modeltype.");
 	num_new_instances_ = 0;
 	// convert initializer list to vector
 	std::vector<std::vector<std::vector<GLfloat>>> v_vertices = {};
@@ -38,7 +55,8 @@ Model::~Model() {
 void Model::vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices) {
 	vertices_.clear();
 	num_vertices_ = vertices.size();
-	bool is_consistent_with_modeltype = true; // test if number of vertex attributes given here matches the number given to modeltype_
+	// test if number of vertex attributes given here equals the number given to modeltype_
+	bool is_consistent_with_modeltype = true;
 	float min_x = std::numeric_limits<float>::infinity();
 	float max_x = -std::numeric_limits<float>::infinity();
 	float min_y = std::numeric_limits<float>::infinity();
@@ -46,7 +64,7 @@ void Model::vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices) {
 	float min_z = std::numeric_limits<float>::infinity();
 	float max_z = -std::numeric_limits<float>::infinity();
 	for(std::vector<std::vector<GLfloat>> &vertex : vertices) {
-		int i = 0;
+		unsigned int i = 0;
 		int components_counter = 0;
 		for(std::vector<GLfloat> &vertex_attr : vertex) {
 			is_consistent_with_modeltype = (i < modeltype_->num_vertex_attribs());
@@ -76,8 +94,8 @@ void Model::vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices) {
 	modeltype_->set_strides(this->bytes()/num_vertices_);
 }
 
-void Model::draw(GLint offset) {
-	glDrawArraysInstanced(modeltype_->primitive(), offset, num_vertices_, num_instances());
+void Model::draw(GLint offset, GLuint instance_attribs_offset) {
+	glDrawArraysInstancedBaseInstance(modeltype_->primitive(), offset, num_vertices_, num_instances(), instance_attribs_offset);
 }
 
 ModelInstance* Model::use() {
@@ -87,6 +105,7 @@ ModelInstance* Model::use() {
 	inst->units_z_ = this->units_z_;
 	instances_.push_back(inst);
 	matrices_.push_back(glm::mat4(1.0f));
+	inst->attribs_ = this->attribs_; // copy attribs of parent model
 	num_new_instances_++;
 	return inst;
 }

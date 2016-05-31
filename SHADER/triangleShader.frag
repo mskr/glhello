@@ -4,7 +4,11 @@ in vec3 fragPosition;
 in vec4 fragColor;
 in vec3 fragNormal;
 
-uniform float ambient_light;
+flat in vec3 fragMaterialAbsorption;
+flat in vec3 fragMaterialReflection;
+flat in float fragMaterialTransmission;
+flat in float fragMaterialShininess;
+
 uniform int num_lights;
 layout(std430) buffer light {
 	float lights[];
@@ -29,5 +33,5 @@ vec4 phong() {
 }
 
 void main() {
-	gl_FragColor = lambert() * fragColor;
+	gl_FragColor = vec4(fragMaterialReflection, 1.0)+ 0.00001* lambert() * fragColor;
 }

@@ -6,7 +6,10 @@
 #include "ModelInstance.h"
 #include "ModelType.h"
 #include "GPUBuffer.h"
-#include "Light.h"
+#include "Material.h"
+#include "stdio.h"
+#include "config.h"
+#include <limits>
 
 /*
 * This is a 3D model.
@@ -28,19 +31,20 @@ class Model : public ModelInstance {
 	GLint num_vertices_;
 	// Vertices with their attributes in contiguous storage locations (as they will be in gpu memory)
 	std::vector<GLfloat> vertices_;
+
 	// Instances of this model, including this object itself at index 0 (array index equals instance_id)
 	std::vector<ModelInstance*> instances_;
-	// Model matrices in contiguous storage locations (array index equals instance_id)
+
+	// Model matrices (array index equals instance_id)
 	std::vector<glm::mat4> matrices_;
+
 	// Counts how often this model has been use()d since last draw
 	int num_new_instances_;
 
-protected:
-	glm::mat4* matrix_at(int index) { return &matrices_[index]; }
-
 public:
-	Model(int id, ModelType* modeltype);
-	Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v);
+	Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribute> instance_attribs);
+	Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v,
+		std::initializer_list<InstanceAttribute> instance_attribs);
 	~Model();
 
 	// Returns instance of this model, which can be seperately transformed (hardware instancing)
@@ -48,13 +52,28 @@ public:
 	//TODO
 	//ModelInstance* use(glm::vec3 pos); // directly translate instance after use
 
-	void draw(GLint offset);
+	void draw(GLint offset, GLuint instance_attribs_offset);
 
 	GLsizeiptr bytes() { return vertices_.size() * sizeof(GLfloat); }
 	const GLvoid* pointer() { return vertices_.data(); }
 
-	GLsizeiptr bytes_matrices() { return matrices_.size() * sizeof(glm::mat4); }
+	GLsizeiptr bytes_matrices() { return matrices_.size() * sizeof(matrices_[0]); }
 	const GLvoid* pointer_matrices() { return matrices_.data(); }
+
+	GLsizeiptr bytes_instance_attribs() {
+		GLsizeiptr bytes = 0;
+		for(ModelInstance* inst : instances_)
+			for(InstanceAttribute &attrib : inst->attribs_)
+				bytes += attrib.bytes();
+		return bytes;
+	}
+
+	const GLvoid* pointer_instance_attr(unsigned int instance_index, unsigned int attr_index) {
+		if(instance_index >= instances_.size() || attr_index >= instances_[instance_index]->attribs_.size())
+			throw std::runtime_error("Program exits because model instance attribute that was requested is out of range.");
+		else if(attr_index == 0) return matrix_at(instance_index);
+		else return instances_[instance_index]->attr(attr_index)->pointer();
+	}
 
 	// GETTER
 	ModelType* modeltype() { return modeltype_; }
@@ -63,21 +82,11 @@ public:
 	GLsizei num_matrices() { return matrices_.size(); }
 	ModelInstance* instance(int instance_id) { return instances_[instance_id]; }
 	bool num_new_instances() { return num_new_instances_; }
+	glm::mat4* matrix_at(int index) { return &matrices_[index]; }
 
 	// SETTER
 	void vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices);
 	void instances_added();
-
-
-	//TODO Add material information to this model defining the Spectral Response Function (SRF)
-	// Need ambient factor defined by world
-	void material(
-		float absorption_wavelength, float absorption_strength, 
-		float reflection_wavelength, float reflection_strength, 
-		float transmission_wavelength, float transmission_strength);
-	//void material(Texture texture); //Texture objects contain color, specular and diffuse parameters
-
-	void emit(Light l);
 
 	
 	//TODO 

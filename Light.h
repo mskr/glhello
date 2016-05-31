@@ -25,18 +25,14 @@
 */
 class Light : public Module {
 
-	float wavelength_to_hue(float w);
-	glm::vec3 hsv_to_rgb(float h, float s, float v);
-
 	// Light source positions and RGB colors in alternating order
-	// In shader, there is lights[i]=position, lights[i+1]=color
-	std::vector<glm::vec3> sources_and_colors_;
+	std::vector<glm::vec3> buffer_;
 	unsigned int num_new_lights_;
 
 public:
 
 	// Light({{{wavelength, monochromaticity, amplitude}, {x,y,z}}, ...})
-	// wavelength in [380,750], monochromaticity in [0,1], amplitude in [0,1], otherwise clamped
+	// Wavelength in [380,750], monochromaticity in [0,1], amplitude in [0,1], otherwise clamped.
 	Light(std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> in);
 	~Light();
 
@@ -46,6 +42,15 @@ public:
 	void interact(Interaction* i);
 	Interaction* interaction_type();
 	std::vector<Uniform> uniforms();
+
+	// Wavelength w in [380,750], otherwise undefined output.
+	// Output is hue in [0,360].
+	static float wavelength_to_hue(float w);
+
+	// Hue h in [0,360], saturation s in [0,1] and value in [0,1], otherwise undefined output.
+	// In HSV, white is only achieved with saturation=0.0 and value=1.0.
+	// Output is r,g and b in [0,1].
+	static glm::vec3 hsv_to_rgb(float h, float s, float v);
 };
 
 #endif

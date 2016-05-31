@@ -6,9 +6,12 @@
 */
 
 in vec3 fragPosition;
-in vec4 fragColor;
 
-uniform float ambient_light;
+flat in vec3 fragMaterialAbsorption;
+flat in vec3 fragMaterialReflection;
+flat in float fragMaterialTransmission;
+flat in float fragMaterialShininess;
+
 uniform int num_lights;
 layout(std430) buffer light {
 	float lights[];
@@ -25,5 +28,5 @@ vec3 normal() {
 
 void main() {
 	normal();
-	gl_FragColor = fragColor;
+	gl_FragColor = vec4(1.0);
 }

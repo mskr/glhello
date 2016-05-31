@@ -12,22 +12,24 @@ layout(std140) uniform view_projection {
 };
 
 // world loads model matrix to this vertex attributes (update each instance)
-in vec4 model_matrix_column_1;
-in vec4 model_matrix_column_2;
-in vec4 model_matrix_column_3;
-in vec4 model_matrix_column_4;
+in mat4 model;
 
-mat4 model = mat4(
-	model_matrix_column_1, 
-	model_matrix_column_2, 
-	model_matrix_column_3, 
-	model_matrix_column_4);
+
+in vec3 MaterialAbsorption;
+in vec3 MaterialReflection;
+in float MaterialTransmission;
+in float MaterialShininess;
+
+flat varying vec3 fragMaterialAbsorption;
+flat varying vec3 fragMaterialReflection;
+flat varying float fragMaterialTransmission;
+flat varying float fragMaterialShininess;
+
 
 attribute vec3 position;
-attribute vec4 color;
 
 varying vec3 fragPosition; // world space
-varying vec4 fragColor;
+
 
 vec4 clip_space(vec3 pos) {
 	return proj*view*model*vec4(pos, 1);
@@ -38,9 +40,12 @@ vec3 world_space(vec3 pos) {
 }
 
 void main() {
+	fragMaterialAbsorption = MaterialAbsorption;
+	fragMaterialReflection = MaterialReflection;
+	fragMaterialTransmission = MaterialTransmission;
+	fragMaterialShininess = MaterialShininess;
 	float size = (mat3(model)*vec3(500)).x; // the particle size
 	fragPosition = world_space(position);
-	fragColor = color;
 	vec4 clip_space_pos = clip_space(position);
 	gl_PointSize = size/clip_space_pos.w; // perspective divide
 	gl_Position = clip_space_pos;

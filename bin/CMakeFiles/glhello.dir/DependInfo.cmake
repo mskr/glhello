@@ -6,7 +6,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/mk/Desktop/git/glhello/Camera.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Camera.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/GPUBuffer.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/GPUBuffer.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/InstanceAttribute.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Light.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Light.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/Material.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Material.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Model.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Model.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelInstance.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelType.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelType.cpp.obj"

@@ -69,36 +69,60 @@ int main(void) {
 		FragmentShader("triangleShader.frag")
 	});
 
-	ModelType poly(0, GL_TRIANGLES, shader1, {
+	ModelType type0(0, GL_TRIANGLES, shader1, {
 		VertexAttribute("color"),
 		VertexAttribute("normal")
 	});
+	type0.instance_attribs({ Material::instance_attrib });
 
-	Model m0(0, &poly);
-	m0.vertices(factory.cube());
+	Model m0(0, &type0, {Material(
+		750.0f, 0.0f, 1.0f,
+		380.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	)});
+	m0.vertices(factory.checkerboard(64));
+	m0.units(64,0,64);
+	m0.translate(-32,0,-32);
 
-	Model bigcube(3, &poly);
+	ModelType type1(1, GL_TRIANGLES, shader1, {
+		VertexAttribute("normal")
+	});
+	type1.instance_attribs({ Material::instance_attrib });
+
+	Model m1(1, &type1, {Material(
+		750.0f, 0.0f, 1.0f,
+		380.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	)});
+	m1.vertices(factory.cube());
+	m1.use()->translateX(10);
+
+	Model bigcube(4, &type1, {Material(
+		750.0f, 0.0f, 1.0f,
+		380.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	)});
 	bigcube.vertices(factory.infacing_cube());
 	bigcube.unitsY(10);
-
-	Model m1(1, &poly);
-	m1.vertices(factory.checkerboard(64));
-	m1.units(64,0,64);
-	m1.translate(-32,0,-32);
 
 	GLuint shader2 = Shader::link({
 		VertexShader("particleShader.vert"),
 		FragmentShader("particleShader.frag")
 	});
-	ModelType particle(1, GL_POINTS, shader2, {
-		VertexAttribute("color")
-	});
-	Model m2(2, &particle, {{{10,0,0},{1,1,1}}});
-	Model m3(3, &particle, {{{-10,0,10},{1,1,1}}});
+	ModelType type2(2, GL_POINTS, shader2, {});
+	type2.instance_attribs({ Material::instance_attrib });
+	Model m2(2, &type2, {{{10,0,0}}}, {Material(
+		750.0f, 0.0f, 1.0f,
+		380.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	)});
+	Model m3(3, &type2, {{{-10,0,10}}}, {Material(
+		750.0f, 0.0f, 1.0f,
+		380.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	)});
 
-	World world({&m0, &m1, &m2, &m3, &bigcube}, [](Model* m){
-		// if(m->id()==0) m->instance(1)->rotateX(0.0001f);
-	}, {/* no uniforms */});
+	World world({&m0, &m1, &m2, &m3, &bigcube}, [](Model* m){}, {/* no uniforms */});
 
 	// CAMERA PARAMS: world, position, target, up_vector, fov in degrees, screenratio, near, far
 	Camera camera(glm::vec3(0,0,2), glm::vec3(0,0,0), glm::vec3(0,1,0), 
@@ -106,8 +130,8 @@ int main(void) {
 	world.add(&camera);
 
 	Light light({
-		{{350.0f, 0.0f, 1.0f}, {10, 0, 0}}, // amplitude not working?
-		{{350.0f, 0.0f, 1.0f}, {-10, 0, 10}} // amplitude not working?
+		{{350.0f, 0.0f, 1.0f}, {10, 0, 0}},
+		{{350.0f, 0.0f, 1.0f}, {-10, 0, 10}}
 	});
 	world.add(&light);
 

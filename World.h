@@ -25,12 +25,7 @@
 * Throw models into the world using
 * a) the list given to the world constructor or
 * b) the add() method.
-* Adding models to the world makes model matrices available to shaders.
-* Inside shaders, model matrices appear as
-* in vec4 model_matrix_column_1
-* in vec4 model_matrix_column_2
-* in vec4 model_matrix_column_3
-* in vec4 model_matrix_column_4
+* Adding models to the world makes "mat4 model" available in shaders.
 * Use the model matrices to place models at their location in the world.
 * You can also give uniform variables to the world using
 * a) the list given to the world constructor or
@@ -49,8 +44,8 @@ class World {
 	std::vector<GLuint> vertex_array_objects_;
 	// Holds vertex buffer objects, one for each model type
 	std::vector<GPUBuffer> vertex_buffer_objects_;
-	// Holds modelmatrix buffers, one for each model type
-	std::vector<GPUBuffer> modelmatrix_buffers_;
+	// Holds instanced array buffers, one for each model type
+	std::vector<GPUBuffer> instanced_array_buffers_;
 	// Holds all *distinct* gpu programs
 	std::vector<GLuint> gpu_programs_;
 

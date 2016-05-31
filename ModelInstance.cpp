@@ -14,8 +14,19 @@ ModelInstance::ModelInstance(int id, int instance_id, Model* instance_of) {
 }
 
 ModelInstance::~ModelInstance() {
-	printf("DEBUG: MODEL INSTANCE (id=%d, instance_id=%d) DESTROYED\n", id_, instance_id_);
+	printf("DEBUG: MODEL INSTANCE (model id=%d, instance id=%d) DESTROYED\n", id_, instance_id_);
 }
+
+
+
+
+void ModelInstance::attr(int index, InstanceAttribute attrib) {
+	instance_of_->modeltype()->instance_attr(index)->bytes(attrib.bytes());
+	attribs_[index] = attrib;
+}
+
+
+
 
 glm::mat4* ModelInstance::model_matrix() {
 	return instance_of_->matrix_at(instance_id_);

@@ -22,7 +22,8 @@ World::World(std::initializer_list<Model*> models, std::function<void(Model*)> d
 		GPUBuffer vbo;
 		vbo.bind();
 		// for modeltype i: count bytes and reserve vertex memory
-		for(Model* m : models_) if(m->modeltype() == modeltypes_[i]) vbo.grow(m->bytes());
+		for(Model* m : models_) if(m->modeltype() == modeltypes_[i]) 
+			vbo.grow(m->bytes());
 		glBufferData(GL_ARRAY_BUFFER, vbo.bytes(), 0, GL_STATIC_DRAW);
 		// for modeltype i: initialize vertex memory
 		GLintptr model_offset_bytes = 0;
@@ -34,29 +35,57 @@ World::World(std::initializer_list<Model*> models, std::function<void(Model*)> d
 		}
 		vertex_buffer_objects_.push_back(vbo);
 		modeltypes_[i]->enable_attribs();
-		
 
-		// Send matrices to the GPU
-		GPUBuffer modelmatrix_buffer;
-		modelmatrix_buffer.bind();
-		for(Model* m : models_) if(m->modeltype() == modeltypes_[i]) modelmatrix_buffer.grow(m->bytes_matrices());
-		glBufferData(GL_ARRAY_BUFFER, modelmatrix_buffer.bytes(), 0, GL_STATIC_DRAW);
-		GLintptr matrix_offset_bytes = 0;
+		// Send instanced arrays to GPU
+		GPUBuffer instanced_array_buffer;
+		instanced_array_buffer.bind();
+		for(Model* m : models_) if(m->modeltype() == modeltypes_[i]) {
+			instanced_array_buffer.grow(m->bytes_instance_attribs());
+		}
+		glBufferData(GL_ARRAY_BUFFER, instanced_array_buffer.bytes(), 0, GL_STATIC_DRAW);
+		GLintptr o = 0;
 		for(Model* m : models_) {
 			if(m->modeltype() == modeltypes_[i]) {
-				glBufferSubData(GL_ARRAY_BUFFER, matrix_offset_bytes, m->bytes_matrices(), m->pointer_matrices());
-				matrix_offset_bytes += m->bytes_matrices();
+				for(int j = 0; j < m->num_instances(); j++) {
+					for(unsigned int k = 0; k < modeltypes_[i]->num_instance_attribs(); k++) {
+						glBufferSubData(GL_ARRAY_BUFFER, o, modeltypes_[i]->instance_attr(k)->bytes(), m->pointer_instance_attr(j,k));
+						o += modeltypes_[i]->instance_attr(k)->bytes();
+					}
+				}
 			}
 		}
-		modelmatrix_buffers_.push_back(modelmatrix_buffer);
+		instanced_array_buffers_.push_back(instanced_array_buffer);
+		modeltypes_[i]->enable_instance_attribs();
 	}
-
-	add(Uniform("ambient_light", [](Uniform* u, Model* m) {
-		u->update(0.1f);
-	}));
 
 	for(const Uniform &u : uniforms) {
 		add(u);
+	}
+}
+
+//TODO Rewrite for instance attributes
+void World::update_modelmatrices(Model* model, GPUBuffer* buffer, GLintptr offset) {
+	buffer->bind();
+	for(int i = 0; i < model->num_instances(); i++) {
+		ModelInstance* instance = model->instance(i);
+		if(instance->has_changed()) {
+			glBufferSubData(GL_ARRAY_BUFFER, 
+				offset * sizeof(glm::mat4) + i * sizeof(glm::mat4), 
+				sizeof(glm::mat4), 
+				instance->model_matrix());
+			instance->was_updated();
+		}
+	}
+}
+//TODO Rewrite for instance attributes
+//TODO Test!
+void World::update_instance_count(Model* model, GPUBuffer* buffer) {
+	int num_new_inst = model->num_new_instances();
+	if(num_new_inst > 0) {
+		buffer->push(
+			num_new_inst * sizeof(glm::mat4),
+			model->matrix_at(model->num_instances()-num_new_inst));
+		model->instances_added();
 	}
 }
 
@@ -77,28 +106,28 @@ void World::draw() {
 
 		for(Uniform &uniform : uniform_buffers_)
 			if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback();
-		
 		for(unsigned int i = 0; i < modeltypes_.size(); i++) {
 			if(modeltypes_[i]->gpu_program() == gpu_programs_[j]) {
 				glBindVertexArray(vertex_array_objects_[i]);
 
 				GLint vertices_offset = 0;
-				GLint matrices_offset = 0;
+				GLint instance_attribs_offset = 0;
 				for(Model* m : models_) {
 					if(m->modeltype() == modeltypes_[i]) {
 
-						update_modelmatrices(m, &modelmatrix_buffers_[i], matrices_offset);
-						update_instance_count(m, &modelmatrix_buffers_[i]);
-						set_modelmatrix_memory_layout(&modelmatrix_buffers_[i], matrices_offset, gpu_programs_[j]);
+						// update_modelmatrices(m, &modelmatrix_buffers_[i], matrices_offset);
+						// update_instance_count(m, &modelmatrix_buffers_[i]);
+						// set_modelmatrix_memory_layout(&modelmatrix_buffers_[i], matrices_offset, gpu_programs_[j]); //too expensive?
 
 						for(Uniform &uniform : uniforms_) // call the Uniform update callback
 							if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback(m);
 
 						draw_callback_(m);
 
-						m->draw(vertices_offset);
+						m->draw(vertices_offset, instance_attribs_offset); // Shader invocation here
+
 						vertices_offset += m->num_vertices();
-						matrices_offset += m->num_matrices();
+						instance_attribs_offset += m->num_instances();
 					}
 				}
 			}
@@ -186,58 +215,5 @@ void World::find_distinct_gpu_programs(std::vector<GLuint>* v) {
 	for(ModelType* modeltype : modeltypes_) {
 		if(std::find(v->begin(), v->end(), modeltype->gpu_program()) == v->end())
 			v->push_back(modeltype->gpu_program());
-	}
-}
-
-
-void World::set_modelmatrix_memory_layout(GPUBuffer* buffer, int offset, GLuint gpu_program) {
-	// Using an instanced array (vertex attributes that remain for 1 instance)
-	buffer->bind();
-	GLsizei matrix_bytes = 4*4 * sizeof(GLfloat);
-	const GLvoid* column_1_offset = (GLvoid*)(offset * matrix_bytes + 0);
-	const GLvoid* column_2_offset = (GLvoid*)(offset * matrix_bytes + 4 * sizeof(GLfloat));
-	const GLvoid* column_3_offset = (GLvoid*)(offset * matrix_bytes + 8 * sizeof(GLfloat));
-	const GLvoid* column_4_offset = (GLvoid*)(offset * matrix_bytes + 12 * sizeof(GLfloat));
-	GLuint location_1 = glGetAttribLocation(gpu_program, "model_matrix_column_1");
-	glEnableVertexAttribArray(location_1);
-	glVertexAttribPointer(location_1, 4, GL_FLOAT, GL_FALSE, matrix_bytes, column_1_offset);
-	glVertexAttribDivisor(location_1, 1); // get next attribute from buffer after 1 instance
-	GLuint location_2 = glGetAttribLocation(gpu_program, "model_matrix_column_2");
-	glEnableVertexAttribArray(location_2);
-	glVertexAttribPointer(location_2, 4, GL_FLOAT, GL_FALSE, matrix_bytes, column_2_offset);
-	glVertexAttribDivisor(location_2, 1); // get next attribute from buffer after 1 instance
-	GLuint location_3 = glGetAttribLocation(gpu_program, "model_matrix_column_3");
-	glEnableVertexAttribArray(location_3);
-	glVertexAttribPointer(location_3, 4, GL_FLOAT, GL_FALSE, matrix_bytes, column_3_offset);
-	glVertexAttribDivisor(location_3, 1); // get next attribute from buffer after 1 instance
-	GLuint location_4 = glGetAttribLocation(gpu_program, "model_matrix_column_4");
-	glEnableVertexAttribArray(location_4);
-	glVertexAttribPointer(location_4, 4, GL_FLOAT, GL_FALSE, matrix_bytes, column_4_offset);
-	glVertexAttribDivisor(location_4, 1); // get next attribute from buffer after 1 instance
-}
-
-
-void World::update_modelmatrices(Model* model, GPUBuffer* buffer, GLintptr offset) {
-	buffer->bind();
-	for(int i = 0; i < model->num_instances(); i++) {
-		ModelInstance* instance = model->instance(i);
-		if(instance->has_changed()) {
-			glBufferSubData(GL_ARRAY_BUFFER, 
-				offset * sizeof(glm::mat4) + i * sizeof(glm::mat4), 
-				sizeof(glm::mat4), 
-				instance->model_matrix());
-			instance->was_updated();
-		}
-	}
-}
-
-
-void World::update_instance_count(Model* model, GPUBuffer* buffer) {
-	int num_new_inst = model->num_new_instances();
-	if(num_new_inst > 0) {
-		buffer->push(
-			num_new_inst * sizeof(glm::mat4),
-			model->instance(model->num_instances()-num_new_inst));
-		model->instances_added();
 	}
 }

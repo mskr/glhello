@@ -246,6 +246,33 @@ GPUBuffer.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/GPUBuffer.cpp.s
 .PHONY : GPUBuffer.cpp.s
 
+InstanceAttribute.obj: InstanceAttribute.cpp.obj
+
+.PHONY : InstanceAttribute.obj
+
+# target to build an object file
+InstanceAttribute.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj
+.PHONY : InstanceAttribute.cpp.obj
+
+InstanceAttribute.i: InstanceAttribute.cpp.i
+
+.PHONY : InstanceAttribute.i
+
+# target to preprocess a source file
+InstanceAttribute.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/InstanceAttribute.cpp.i
+.PHONY : InstanceAttribute.cpp.i
+
+InstanceAttribute.s: InstanceAttribute.cpp.s
+
+.PHONY : InstanceAttribute.s
+
+# target to generate assembly for a file
+InstanceAttribute.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/InstanceAttribute.cpp.s
+.PHONY : InstanceAttribute.cpp.s
+
 Light.obj: Light.cpp.obj
 
 .PHONY : Light.obj
@@ -272,6 +299,33 @@ Light.s: Light.cpp.s
 Light.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Light.cpp.s
 .PHONY : Light.cpp.s
+
+Material.obj: Material.cpp.obj
+
+.PHONY : Material.obj
+
+# target to build an object file
+Material.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Material.cpp.obj
+.PHONY : Material.cpp.obj
+
+Material.i: Material.cpp.i
+
+.PHONY : Material.i
+
+# target to preprocess a source file
+Material.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Material.cpp.i
+.PHONY : Material.cpp.i
+
+Material.s: Material.cpp.s
+
+.PHONY : Material.s
+
+# target to generate assembly for a file
+Material.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Material.cpp.s
+.PHONY : Material.cpp.s
 
 Model.obj: Model.cpp.obj
 
@@ -564,9 +618,15 @@ help:
 	@echo ... GPUBuffer.obj
 	@echo ... GPUBuffer.i
 	@echo ... GPUBuffer.s
+	@echo ... InstanceAttribute.obj
+	@echo ... InstanceAttribute.i
+	@echo ... InstanceAttribute.s
 	@echo ... Light.obj
 	@echo ... Light.i
 	@echo ... Light.s
+	@echo ... Material.obj
+	@echo ... Material.i
+	@echo ... Material.s
 	@echo ... Model.obj
 	@echo ... Model.i
 	@echo ... Model.s

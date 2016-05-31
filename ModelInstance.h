@@ -5,6 +5,7 @@
 #include <gtx/transform.hpp>
 
 #include "config.h"
+#include "Material.h"
 
 class Model;
 
@@ -20,17 +21,17 @@ class ModelInstance {
 	// Index of this instance (equals gl_InstanceID in shader)
 	int instance_id_;
 
-	// Transformations from outside are controlled by the special functions below to remain consistent with units
-	void transform(glm::mat4 transformation_matrix);
+	// Pointer to the (parent)-model that this is an instance of
+	Model* instance_of_;
 
 	// Position in world space. Assume that the position is (0,0,0) on model creation.
 	glm::vec3 position_;
 
-	// Pointer to the model that this is an instance of
-	Model* instance_of_;
-
 	// True, if model matrix has changed and has to be updated in shaders
 	bool has_changed_;
+
+	// Transformations from outside are controlled by the special functions below to remain consistent with units
+	void transform(glm::mat4 transformation_matrix);
 
 protected:
 	// User-defined ID of the model that this is an instance of
@@ -41,19 +42,26 @@ protected:
 	float units_y_;
 	float units_z_;
 
+	std::vector<InstanceAttribute> attribs_;
+
 	ModelInstance(int id, int instance_id, Model* instance_of);
 
 public:
 	~ModelInstance();
 
+	void attr(int index, InstanceAttribute attrib);
+	InstanceAttribute* attr(int index) { return &attribs_[index]; }
+
+	void emit(Light l);
+
 	// GETTER
 	int id() { return id_; }
 	int instance_id() { return instance_id_; }
 	Model* instance_of() { return instance_of_; }
+	glm::mat4* model_matrix();
 	float unitsX() { return units_x_; }
 	float unitsY() { return units_y_; }
 	float unitsZ() { return units_z_; }
-	glm::mat4* model_matrix();
 	bool has_changed() { return has_changed_; }
 	glm::vec3 position() { // get position in *unit space*
 		return glm::vec3(

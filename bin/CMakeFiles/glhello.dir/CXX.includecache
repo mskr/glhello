@@ -836,6 +836,20 @@ C:/Users/mk/Desktop/git/glhello/GPUBuffer.h
 GL/glew.h
 -
 
+C:/Users/mk/Desktop/git/glhello/InstanceAttribute.cpp
+InstanceAttribute.h
+C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+
+C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+GL/glew.h
+-
+stdexcept
+-
+stdio.h
+C:/Users/mk/Desktop/git/glhello/stdio.h
+functional
+-
+
 C:/Users/mk/Desktop/git/glhello/Interaction.h
 
 C:/Users/mk/Desktop/git/glhello/Light.cpp
@@ -852,15 +866,25 @@ C:/Users/mk/Desktop/git/glhello/Module.h
 glm.hpp
 -
 
+C:/Users/mk/Desktop/git/glhello/Material.cpp
+Material.h
+C:/Users/mk/Desktop/git/glhello/Material.h
+
+C:/Users/mk/Desktop/git/glhello/Material.h
+initializer_list
+-
+stdexcept
+-
+stdio.h
+C:/Users/mk/Desktop/git/glhello/stdio.h
+Light.h
+C:/Users/mk/Desktop/git/glhello/Light.h
+InstanceAttribute.h
+C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+
 C:/Users/mk/Desktop/git/glhello/Model.cpp
 Model.h
 C:/Users/mk/Desktop/git/glhello/Model.h
-stdio.h
-C:/Users/mk/Desktop/git/glhello/stdio.h
-config.h
-C:/Users/mk/Desktop/git/glhello/config.h
-limits
--
 
 C:/Users/mk/Desktop/git/glhello/Model.h
 vector
@@ -871,8 +895,14 @@ ModelType.h
 C:/Users/mk/Desktop/git/glhello/ModelType.h
 GPUBuffer.h
 C:/Users/mk/Desktop/git/glhello/GPUBuffer.h
-Light.h
-C:/Users/mk/Desktop/git/glhello/Light.h
+Material.h
+C:/Users/mk/Desktop/git/glhello/Material.h
+stdio.h
+C:/Users/mk/Desktop/git/glhello/stdio.h
+config.h
+C:/Users/mk/Desktop/git/glhello/config.h
+limits
+-
 
 C:/Users/mk/Desktop/git/glhello/ModelInstance.cpp
 ModelInstance.h
@@ -889,14 +919,12 @@ gtx/transform.hpp
 -
 config.h
 C:/Users/mk/Desktop/git/glhello/config.h
+Material.h
+C:/Users/mk/Desktop/git/glhello/Material.h
 
 C:/Users/mk/Desktop/git/glhello/ModelType.cpp
 ModelType.h
 C:/Users/mk/Desktop/git/glhello/ModelType.h
-stdio.h
-C:/Users/mk/Desktop/git/glhello/stdio.h
-stdlib.h
-C:/Users/mk/Desktop/git/glhello/stdlib.h
 
 C:/Users/mk/Desktop/git/glhello/ModelType.h
 GL/glew.h
@@ -907,8 +935,14 @@ glm.hpp
 -
 vector
 -
+stdio.h
+C:/Users/mk/Desktop/git/glhello/stdio.h
+stdlib.h
+C:/Users/mk/Desktop/git/glhello/stdlib.h
 VertexAttribute.h
 C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
+InstanceAttribute.h
+C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
 
 C:/Users/mk/Desktop/git/glhello/Module.h
 vector
