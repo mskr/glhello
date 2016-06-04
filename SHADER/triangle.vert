@@ -43,7 +43,7 @@ mat3 normal_matrix() {
 	return mat3(transpose(inverse(model))); //TODO better do the inverse operation on the cpu and not for every vertex
 }
 
-void main() {
+void next() {
 	fragMaterialAbsorption = MaterialAbsorption;
 	fragMaterialReflection = MaterialReflection;
 	fragMaterialTransmission = MaterialTransmission;
@@ -51,5 +51,9 @@ void main() {
 	fragPosition = world_space(position);
 	fragColor = color;
 	fragNormal = mat3(model) * normal;
+}
+
+void main() {
+	next();
 	gl_Position = clip_space(position);
 }

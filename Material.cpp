@@ -11,7 +11,7 @@ Material::Material(
 
 	float h_absorption = Light::wavelength_to_hue(glm::clamp(absorption_wavelength, 380.0f, 750.f));
 	float s_absorption = 1.0f - absorption_width;
-	float v_absorption = 1.0f - absorption_strength;
+	float v_absorption = absorption_strength;
 
 	float h_reflection = Light::wavelength_to_hue(glm::clamp(reflection_wavelength, 380.0f, 750.0f));
 	float s_reflection = 1.0f - reflection_width;
@@ -40,10 +40,19 @@ Material::~Material() {
 }
 
 InstanceAttribute Material::instance_attrib([](GLuint gpu_program, GLsizei offset, GLsizei stride) {
-	GLuint loc_absorption = glGetAttribLocation(gpu_program, "MaterialAbsorption");
-	GLuint loc_reflection = glGetAttribLocation(gpu_program, "MaterialReflection");
-	GLuint loc_transmission = glGetAttribLocation(gpu_program, "MaterialTransmission");
-	GLuint loc_shininess = glGetAttribLocation(gpu_program, "MaterialShininess");
+	printf("enable material\n");
+	const GLchar* var_absorption = "MaterialAbsorption";
+	const GLchar* var_reflection = "MaterialReflection";
+	const GLchar* var_transmission = "MaterialTransmission";
+	const GLchar* var_shininess = "MaterialShininess";
+	GLint loc_absorption = glGetAttribLocation(gpu_program, var_absorption);
+	GLint loc_reflection = glGetAttribLocation(gpu_program, var_reflection);
+	GLint loc_transmission = glGetAttribLocation(gpu_program, var_transmission);
+	GLint loc_shininess = glGetAttribLocation(gpu_program, var_shininess);
+	if(loc_absorption == -1) printf("WARNING: Attribute \"%s\" not found in shader.\n", var_absorption);
+	if(loc_reflection == -1) printf("WARNING: Attribute \"%s\" not found in shader.\n", var_reflection);
+	if(loc_transmission == -1) printf("WARNING: Attribute \"%s\" not found in shader.\n", var_transmission);
+	if(loc_shininess == -1) printf("WARNING: Attribute \"%s\" not found in shader.\n", var_shininess);
 	glVertexAttribPointer(loc_absorption, 3, GL_FLOAT, GL_FALSE, stride,
 		(GLvoid*) (offset + 0)
 	);

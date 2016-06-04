@@ -20,9 +20,17 @@ ModelInstance::~ModelInstance() {
 
 
 
-void ModelInstance::attr(int index, InstanceAttribute attrib) {
+void ModelInstance::attr(unsigned int index, InstanceAttribute attrib) {
+	if(index >= attribs_.size())
+		throw std::runtime_error("Program exits because non-existing model instance attribute was tried to set.");
 	instance_of_->modeltype()->instance_attr(index)->bytes(attrib.bytes());
 	attribs_[index] = attrib;
+}
+
+InstanceAttribute* ModelInstance::attr(unsigned int index) {
+	if(index >= attribs_.size())
+		throw std::runtime_error("Program exits because non-existing model instance attribute was requested.");
+	return &attribs_[index];
 }
 
 
@@ -35,7 +43,7 @@ glm::mat4* ModelInstance::model_matrix() {
 void ModelInstance::transform(glm::mat4 transformation_matrix) {
 	glm::mat4* ptr = model_matrix();
 	*ptr = transformation_matrix * (*ptr);
-	has_changed_ = true;
+	attribs_[0].force_change();
 }
 
 

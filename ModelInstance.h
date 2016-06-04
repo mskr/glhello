@@ -49,9 +49,10 @@ protected:
 public:
 	~ModelInstance();
 
-	void attr(int index, InstanceAttribute attrib);
-	InstanceAttribute* attr(int index) { return &attribs_[index]; }
+	void attr(unsigned int index, InstanceAttribute attrib);
+	InstanceAttribute* attr(unsigned int index);
 
+	//TODO
 	void emit(Light l);
 
 	// GETTER
@@ -74,7 +75,6 @@ public:
 	float positionZ() { return position_.z/config::one_unit_z; }
 
 	// SETTER
-	void was_updated() { has_changed_ = false; }
 	ModelInstance* position(glm::vec3 pos_in_units_from_origin);
 	ModelInstance* unitsX(float units); // preserves length ratios
 	ModelInstance* unitsY(float units); // preserves length ratios

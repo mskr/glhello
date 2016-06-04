@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <stdexcept>
 #include "stdio.h"
+#include <math.h>
 #include "Light.h"
 #include "InstanceAttribute.h"
 

@@ -843,6 +843,8 @@ C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
 C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
 GL/glew.h
 -
+glm.hpp
+-
 stdexcept
 -
 stdio.h
@@ -877,6 +879,8 @@ stdexcept
 -
 stdio.h
 C:/Users/mk/Desktop/git/glhello/stdio.h
+math.h
+-
 Light.h
 C:/Users/mk/Desktop/git/glhello/Light.h
 InstanceAttribute.h
@@ -1037,10 +1041,6 @@ C:/Users/mk/Desktop/git/glhello/Shader.h
 C:/Users/mk/Desktop/git/glhello/World.cpp
 World.h
 C:/Users/mk/Desktop/git/glhello/World.h
-stdio.h
-C:/Users/mk/Desktop/git/glhello/stdio.h
-stdlib.h
-C:/Users/mk/Desktop/git/glhello/stdlib.h
 
 C:/Users/mk/Desktop/git/glhello/World.h
 GL/glew.h
@@ -1065,6 +1065,10 @@ functional
 -
 algorithm
 -
+stdio.h
+C:/Users/mk/Desktop/git/glhello/stdio.h
+stdlib.h
+C:/Users/mk/Desktop/git/glhello/stdlib.h
 Module.h
 C:/Users/mk/Desktop/git/glhello/Module.h
 Model.h

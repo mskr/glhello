@@ -52,7 +52,7 @@ public:
 	//TODO
 	//ModelInstance* use(glm::vec3 pos); // directly translate instance after use
 
-	void draw(GLint offset, GLuint instance_attribs_offset);
+	void draw(GLint vertices_offset, GLuint instances_offset);
 
 	GLsizeiptr bytes() { return vertices_.size() * sizeof(GLfloat); }
 	const GLvoid* pointer() { return vertices_.data(); }
@@ -60,27 +60,16 @@ public:
 	GLsizeiptr bytes_matrices() { return matrices_.size() * sizeof(matrices_[0]); }
 	const GLvoid* pointer_matrices() { return matrices_.data(); }
 
-	GLsizeiptr bytes_instance_attribs() {
-		GLsizeiptr bytes = 0;
-		for(ModelInstance* inst : instances_)
-			for(InstanceAttribute &attrib : inst->attribs_)
-				bytes += attrib.bytes();
-		return bytes;
-	}
+	GLsizeiptr bytes_instance_attribs();
 
-	const GLvoid* pointer_instance_attr(unsigned int instance_index, unsigned int attr_index) {
-		if(instance_index >= instances_.size() || attr_index >= instances_[instance_index]->attribs_.size())
-			throw std::runtime_error("Program exits because model instance attribute that was requested is out of range.");
-		else if(attr_index == 0) return matrix_at(instance_index);
-		else return instances_[instance_index]->attr(attr_index)->pointer();
-	}
+	const GLvoid* pointer_instance_attr(unsigned int instance_index, unsigned int attr_index);
 
 	// GETTER
 	ModelType* modeltype() { return modeltype_; }
 	GLint num_vertices() { return num_vertices_; }
 	GLsizei num_instances() { return instances_.size(); }
 	GLsizei num_matrices() { return matrices_.size(); }
-	ModelInstance* instance(int instance_id) { return instances_[instance_id]; }
+	ModelInstance* instance(unsigned int instance_id);
 	bool num_new_instances() { return num_new_instances_; }
 	glm::mat4* matrix_at(int index) { return &matrices_[index]; }
 
