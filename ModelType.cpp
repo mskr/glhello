@@ -11,8 +11,8 @@ ModelType::ModelType(int id, GLenum primitive, GLuint gpu_program, std::initiali
 		attr.gpu_program(gpu_program_);
 		attribs_.push_back(attr);
 	}
-	instance_attribs_ = {InstanceAttribute(0)}; // "attribute mat4 model" available in shader by default
-	bytes_instance_attribs_ = 0;
+	instance_attribs_ = {InstanceAttribute()}; // "attribute mat4 model" available in shader by default
+	bytes_instance_attribs_ = -1;
 }
 
 ModelType::~ModelType() {
@@ -25,14 +25,14 @@ void ModelType::instance_attribs(std::initializer_list<InstanceAttribute> attrib
 	}
 }
 
+void ModelType::set_strides(GLsizei stride) {
+	for(unsigned int i = 0; i < attribs_.size(); i++)  {
+		attribs_[i].stride(stride);
+	}
+}
+
 void ModelType::enable_attribs() {
-	GLsizei bytes = 0;
-	for(VertexAttribute &attr : attribs_)
-		bytes += attr.num_components() * sizeof(GLfloat);
-	for(VertexAttribute &attr : attribs_)
-		attr.stride(bytes);
-	for(VertexAttribute &attr : attribs_) {
-		printf("enable modeltype%d vert attrib: program=%d, offset=%d, stride=%d\n", id_, gpu_program_, attr.offset(), (int)attr.stride());
+	for(VertexAttribute attr : attribs_) {
 		glVertexAttribPointer(
 			attr.location_in_shader(),
 			attr.num_components(),
@@ -45,13 +45,14 @@ void ModelType::enable_attribs() {
 }
 
 void ModelType::enable_instance_attribs() {
-	for(InstanceAttribute &attr : instance_attribs_)
-		bytes_instance_attribs_ += attr.bytes();
-	printf("instance attribs overall bytes=%d\n", bytes_instance_attribs_);
+	GLsizei stride = 0;
+	for(InstanceAttribute &attr : instance_attribs_) {
+		stride += attr.bytes();
+	}
 	GLsizei offset = 0;
 	for(InstanceAttribute &attr : instance_attribs_) {
-		printf("enable modeltype%d inst attrib: program=%d, offset=%d, stride=%d\n", id_, gpu_program_, offset, bytes_instance_attribs_);
-		attr.enable(gpu_program_, offset, bytes_instance_attribs_);
+		attr.enable(gpu_program_, offset, stride);
 		offset += attr.bytes();
 	}
+	bytes_instance_attribs_ = stride;
 }

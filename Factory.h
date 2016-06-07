@@ -11,6 +11,12 @@
 */
 static struct Factory {
 
+	//TODO Should the factory also provide modeltypes?
+
+	// CUBE
+	// Vertex attributes:
+	// a) position
+	// b) normal
 	std::vector<std::vector<std::vector<GLfloat>>> cube() {
 		// GLfloat r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;
 		return {
@@ -64,6 +70,10 @@ static struct Factory {
 		};
 	}
 
+	// INFACING CUBE
+	// Vertex attributes:
+	// a) position
+	// b) normal
 	std::vector<std::vector<std::vector<GLfloat>>> infacing_cube() {
 		// GLfloat r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;
 		return {
@@ -117,6 +127,11 @@ static struct Factory {
 		};
 	}
 
+	// CHECKERBOARD
+	// Vertex attributes:
+	// a) position
+	// b) color
+	// c) normal
 	std::vector<std::vector<std::vector<GLfloat>>> checkerboard(int size) {
 		const GLfloat color1 = 0.2; // gray
 		const GLfloat color2 = 1; // white

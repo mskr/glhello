@@ -2,9 +2,9 @@
 
 uniform int modelID;
 
-in vec3 fragPosition;
+in vec3 fragPosition; // in world space
 in vec4 fragColor;
-in vec3 fragNormal;
+in vec3 fragNormal; // in world space
 
 flat in vec3 fragMaterialAbsorption;
 flat in vec3 fragMaterialReflection;
@@ -25,7 +25,7 @@ vec4 lambert() {
 		lightPosition = vec3(lights[i],lights[i+1],lights[i+2]);
 		lightRGB = vec3(lights[i+3],lights[i+4],lights[i+5]);
 		lightDirection = lightPosition-fragPosition;
-		sum += max(0.0, dot(normalize(fragNormal), normalize(lightDirection))) * lightRGB;
+		sum += max(0.1, dot(normalize(fragNormal), normalize(lightDirection))) * lightRGB;
 	}
 	return sum;
 }
@@ -34,11 +34,11 @@ vec4 phong() {
 	return vec4(0); // not implemented
 }
 
-vec4 spectral_response() {
+vec4 specular_response() {
 	return vec4(fragMaterialReflection - fragMaterialAbsorption, 1.0 - fragMaterialTransmission);
 }
 
 void main() {
 	if(modelID == 0) gl_FragColor = fragColor * lambert();
-	else             gl_FragColor = spectral_response() * lambert();
+	else gl_FragColor = specular_response() * lambert();
 }

@@ -40,7 +40,8 @@ vec3 world_space(vec3 pos) {
 }
 
 mat3 normal_matrix() {
-	return mat3(transpose(inverse(model))); //TODO better do the inverse operation on the cpu and not for every vertex
+	//TODO better do the inverse operation on the cpu and not for every vertex
+	return mat3(transpose(inverse(model)));
 }
 
 void next() {
@@ -54,6 +55,6 @@ void next() {
 }
 
 void main() {
-	next();
 	gl_Position = clip_space(position);
+	next();
 }

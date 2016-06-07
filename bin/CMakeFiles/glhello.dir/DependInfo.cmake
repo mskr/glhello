@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/mk/Desktop/git/glhello/Model.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Model.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelInstance.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelType.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelType.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/PostProcessor.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/PostProcessor.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Shader.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Shader.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Uniform.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Uniform.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/User.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/User.cpp.obj"

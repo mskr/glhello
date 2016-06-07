@@ -25,13 +25,13 @@ class ModelType {
 	GLuint gpu_program_;
 	std::vector<VertexAttribute> attribs_;
 	std::vector<InstanceAttribute> instance_attribs_;
-	GLsizei bytes_instance_attribs_;
+	GLint bytes_instance_attribs_;
 
 public:
 
 	ModelType(int id, GLenum primitive, GLuint gpu_program, std::initializer_list<VertexAttribute> attribs);
 	~ModelType();
-	
+
 	void instance_attribs(std::initializer_list<InstanceAttribute> attribs);
 
 	void enable_attribs();
@@ -44,8 +44,11 @@ public:
 	InstanceAttribute* instance_attr(int pos) { return &(instance_attribs_[pos]); }
 	unsigned int num_vertex_attribs() { return attribs_.size(); }
 	unsigned int num_instance_attribs() { return instance_attribs_.size(); }
-	GLsizei bytes_instance_attribs() { return bytes_instance_attribs_; }
+	GLint bytes_instance_attribs() { return bytes_instance_attribs_; }
 	int id() { return id_; }
+
+	// SETTER
+	void set_strides(GLsizei stride);
 
 };
 

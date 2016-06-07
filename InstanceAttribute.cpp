@@ -1,18 +1,11 @@
 #include "InstanceAttribute.h"
 
 InstanceAttribute::InstanceAttribute() {
-	bytes_ = -1;
-	pointer_ = 0;
-	enable_func_ = 0;
-	has_changed_ = false;
-}
-
-InstanceAttribute::InstanceAttribute(glm::mat4* model_matrix_ptr) {
 	// assume bytes of a 4x4 matrix by default
 	bytes_ = 4*4 * sizeof(GLfloat);
-	pointer_ = model_matrix_ptr;
+	pointer_ = 0;
 	enable_func_ = 0;
-	has_changed_ = false;
+	has_changed_ = false; // not used by model matrices
 }
 
 
@@ -32,12 +25,9 @@ void InstanceAttribute::enable(GLuint gpu_program, GLsizei offset, GLsizei strid
 		enable_func_(gpu_program, offset, stride);
 		return;
 	}
-	printf("enable matrix\n");
 	// Enable the model matrix when this method is not overidden
-	const GLchar* varname = "model";
 	GLsizei column_bytes = 4 * sizeof(GLfloat);
-	GLint loc = glGetAttribLocation(gpu_program, varname);
-	if(loc == -1) printf("WARNING: Attribute \"%s\" not found in shader.\n", varname);
+	GLuint loc = glGetAttribLocation(gpu_program, "model");
 	for(int count = 0; count < 4; count++, loc++) {
 		glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, stride, 
 			(GLvoid*) (offset + count * column_bytes)
@@ -47,18 +37,13 @@ void InstanceAttribute::enable(GLuint gpu_program, GLsizei offset, GLsizei strid
 	}
 }
 
-void InstanceAttribute::update(GLintptr offset) {
-	if(!has_changed_) return;
-	glBufferSubData(GL_ARRAY_BUFFER, offset, bytes_, pointer_);
+void InstanceAttribute::bytes(GLsizei bytes) {
+	bytes_ = bytes;
+}
+
+void InstanceAttribute::was_updated() {
 	has_changed_ = false;
 }
-
-void InstanceAttribute::force_change() {
-	has_changed_ = true;
-}
-
-void InstanceAttribute::bytes(GLsizei bytes) { bytes_ = bytes; }
-void InstanceAttribute::pointer(GLvoid* pointer) { pointer_ = pointer; }
 
 GLsizei InstanceAttribute::bytes() {
 	if(bytes_ == -1)

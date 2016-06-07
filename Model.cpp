@@ -5,7 +5,7 @@ Model::Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribu
 	vertices_ = {};
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
-	attribs_ = {InstanceAttribute(&matrices_[0])};
+	attribs_ = {InstanceAttribute()};
 	int i = 1;
 	for(InstanceAttribute attr : instance_attribs) {
 		modeltype_->instance_attr(i)->bytes(attr.bytes());
@@ -23,7 +23,7 @@ Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initialize
 	modeltype_ = modeltype;
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
-	attribs_ = {InstanceAttribute(&matrices_[0])};
+	attribs_ = {InstanceAttribute()};
 	int i = 1;
 	for(InstanceAttribute attr : instance_attribs) {
 		modeltype_->instance_attr(i)->bytes(attr.bytes());
@@ -91,11 +91,14 @@ void Model::vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices) {
 	units_x_ = (max_x - min_x)/config::one_unit_x;
 	units_y_ = (max_y - min_y)/config::one_unit_y;
 	units_z_ = (max_z - min_z)/config::one_unit_z;
+	modeltype_->set_strides(this->bytes()/num_vertices_);
 }
 
-void Model::draw(GLint vertices_offset, GLuint instances_offset) {
-	glDrawArraysInstancedBaseInstance(modeltype_->primitive(), vertices_offset, num_vertices_, num_instances(), instances_offset);
+void Model::draw(GLint offset, GLuint instance_attribs_offset) {
+	glDrawArraysInstancedBaseInstance(modeltype_->primitive(), offset, num_vertices_, num_instances(), instance_attribs_offset);
 }
+
+
 
 ModelInstance* Model::use() {
 	ModelInstance* inst = new ModelInstance(id_, instances_.size(), this);
@@ -103,9 +106,8 @@ ModelInstance* Model::use() {
 	inst->units_y_ = this->units_y_;
 	inst->units_z_ = this->units_z_;
 	instances_.push_back(inst);
-	matrices_.push_back(glm::mat4(1.0f));
+	matrices_.push_back(matrices_[matrices_.size()-1]);
 	inst->attribs_ = this->attribs_; // copy attribs of parent model
-	inst->attr(0)->pointer(&matrices_[matrices_.size()-1]);
 	num_new_instances_++;
 	return inst;
 }
@@ -122,14 +124,23 @@ GLsizeiptr Model::bytes_instance_attribs() {
 	return bytes;
 }
 
+void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
+	GLint o = offset * modeltype_->bytes_instance_attribs();
+	for(unsigned int i = 0; i < instances_.size(); i++) {
+		// check if model matrix update necessary
+		if(instances_[i]->has_changed()) {
+			b->bind();
+			glBufferSubData(GL_ARRAY_BUFFER, o, sizeof(glm::mat4), &matrices_[i]);
+			instances_[i]->was_updated();
+		}
+		//TODO check for other instance attributes
+		o += modeltype_->bytes_instance_attribs();
+	}
+}
+
 const GLvoid* Model::pointer_instance_attr(unsigned int instance_index, unsigned int attr_index) {
 	if(instance_index >= instances_.size() || attr_index >= instances_[instance_index]->attribs_.size())
 		throw std::runtime_error("Program exits because model instance attribute that was requested is out of range.");
-	return instances_[instance_index]->attr(attr_index)->pointer();
-}
-
-ModelInstance* Model::instance(unsigned int instance_id) {
-	if(instance_id >= instances_.size())
-		throw std::runtime_error("Program exits because non-existing model instance was requested.");
-	return instances_[instance_id];
+	else if(attr_index == 0) return matrix_at(instance_index);
+	else return instances_[instance_index]->attr(attr_index)->pointer();
 }

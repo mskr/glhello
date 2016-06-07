@@ -9,6 +9,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/glhello.dir/Model.cpp.obj"
   "CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
   "CMakeFiles/glhello.dir/ModelType.cpp.obj"
+  "CMakeFiles/glhello.dir/PostProcessor.cpp.obj"
   "CMakeFiles/glhello.dir/Shader.cpp.obj"
   "CMakeFiles/glhello.dir/Uniform.cpp.obj"
   "CMakeFiles/glhello.dir/User.cpp.obj"

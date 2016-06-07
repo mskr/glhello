@@ -17,24 +17,10 @@ ModelInstance::~ModelInstance() {
 	printf("DEBUG: MODEL INSTANCE (model id=%d, instance id=%d) DESTROYED\n", id_, instance_id_);
 }
 
-
-
-
-void ModelInstance::attr(unsigned int index, InstanceAttribute attrib) {
-	if(index >= attribs_.size())
-		throw std::runtime_error("Program exits because non-existing model instance attribute was tried to set.");
+void ModelInstance::attr(int index, InstanceAttribute attrib) {
 	instance_of_->modeltype()->instance_attr(index)->bytes(attrib.bytes());
 	attribs_[index] = attrib;
 }
-
-InstanceAttribute* ModelInstance::attr(unsigned int index) {
-	if(index >= attribs_.size())
-		throw std::runtime_error("Program exits because non-existing model instance attribute was requested.");
-	return &attribs_[index];
-}
-
-
-
 
 glm::mat4* ModelInstance::model_matrix() {
 	return instance_of_->matrix_at(instance_id_);
@@ -43,9 +29,12 @@ glm::mat4* ModelInstance::model_matrix() {
 void ModelInstance::transform(glm::mat4 transformation_matrix) {
 	glm::mat4* ptr = model_matrix();
 	*ptr = transformation_matrix * (*ptr);
-	attribs_[0].force_change();
+	has_changed_ = true;
 }
 
+void ModelInstance::was_updated() {
+	has_changed_ = false;
+}
 
 
 

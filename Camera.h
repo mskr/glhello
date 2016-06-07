@@ -13,6 +13,7 @@
 #include "World.h"
 #include "CameraInteraction.h"
 #include "Module.h"
+#include "PostProcessor.h"
 
 /*
 * This is a camera.
@@ -34,6 +35,8 @@ class Camera : public Module {
 
 	glm::mat4 view_projection_matrices_[2];
 
+	PostProcessor post_processor_;
+
 	// These methods receive events of respective interaction type
 	void simple(CameraInteraction::Simple* interaction);
 	void arcball(CameraInteraction::Arcball* interaction);
@@ -45,6 +48,8 @@ public:
 	~Camera();
 
 	void shoot(World* world);
+
+	void use(PostProcessor p);
 
 	// Overrides
 	void interact(Interaction* interaction);

@@ -52,7 +52,7 @@ public:
 	//TODO
 	//ModelInstance* use(glm::vec3 pos); // directly translate instance after use
 
-	void draw(GLint vertices_offset, GLuint instances_offset);
+	void draw(GLint offset, GLuint instance_attribs_offset);
 
 	GLsizeiptr bytes() { return vertices_.size() * sizeof(GLfloat); }
 	const GLvoid* pointer() { return vertices_.data(); }
@@ -61,7 +61,7 @@ public:
 	const GLvoid* pointer_matrices() { return matrices_.data(); }
 
 	GLsizeiptr bytes_instance_attribs();
-
+	void update_instance_attribs(GPUBuffer* b, GLint offset);
 	const GLvoid* pointer_instance_attr(unsigned int instance_index, unsigned int attr_index);
 
 	// GETTER
@@ -69,7 +69,7 @@ public:
 	GLint num_vertices() { return num_vertices_; }
 	GLsizei num_instances() { return instances_.size(); }
 	GLsizei num_matrices() { return matrices_.size(); }
-	ModelInstance* instance(unsigned int instance_id);
+	ModelInstance* instance(int instance_id) { return instances_[instance_id]; }
 	bool num_new_instances() { return num_new_instances_; }
 	glm::mat4* matrix_at(int index) { return &matrices_[index]; }
 

@@ -4,7 +4,6 @@
 #include <initializer_list>
 #include <stdexcept>
 #include "stdio.h"
-#include <math.h>
 #include "Light.h"
 #include "InstanceAttribute.h"
 
@@ -24,10 +23,6 @@
 */
 class Material : public InstanceAttribute {
 
-	
-
-public:
-
 	struct Array {
 		// Number and order of these members must not be changed!
 		// The reason is that they are loaded "as are" into a GPU buffer.
@@ -38,20 +33,27 @@ public:
 		float shininess_ = 0.0f;
 	} properties;
 
-	Material();
+	glm::vec3 get_RGB(float wavelength, float width, float strength);
 
+public:
 	// Wavelength in [380,750]: Color, that is most absorped/reflected.
 	// Width in [0,1]: Absorped/reflected width of the color spectrum in percent.
 	// Strength in [0,1]: Absorped/reflected intensity in percent.
 	Material(
 		float absorption_wavelength, float absorption_width, float absorption_strength, 
 		float reflection_wavelength, float reflection_width, float reflection_strength, 
-		float transmission_strength, float shininess);
-
+		float transmission_strength, float shininess
+	);
 	~Material();
 
-	static InstanceAttribute instance_attrib;
+	// SETTER
+	void absorb(float absorption_wavelength, float absorption_width, float absorption_strength);
+	void reflect(float reflection_wavelength, float reflection_width, float reflection_strength);
+	void transmit(float transmission_strength);
+	void shine(float shininess);
 
+	// Used for modeltype description. Holds size in bytes, pointer and enable_func.
+	static InstanceAttribute instance_attrib;
 };
 
 #endif

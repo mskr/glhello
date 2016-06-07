@@ -1,13 +1,12 @@
 //TODOs (big ones):
 /*
-/ 0. Rework user input as described in User.cpp
 / 1. Collection of ready to draw 3D-primitives
 / 2. Transparency with Depth Peeling
-/ 3. Divide program in core and modules (e.g. camera is a module). Use world.add(module).
+/ 3. Divide program in core and modules.
 / 4. Physical Simulation with Transform Feedback (OpenGL Superbible Example)
 / 5. Shadow Volumes
 / 6. Unified Particle Physics for Real-Time Applications with compute shader
-/ 7. Inderect Illumination with Voxel Cone Tracing
+/ 7. Indirect Illumination with Voxel Cone Tracing
 / 8. Heightmap generator for microstructure materials (e.g. textiles), render with normal mapping
 */
 
@@ -28,6 +27,7 @@
 #include "VertexShader.h"
 #include "FragmentShader.h"
 #include "Camera.h"
+#include "PostProcessor.h"
 #include "Light.h"
 #include "User.h"
 #include "Factory.h"
@@ -61,51 +61,58 @@ GLFWwindow* setupContext(const char* title) {
 
 
 int main(void) {
+	
 	GLFWwindow* window = setupContext("Hello World");
+
 	GLuint shader1 = Shader::link({
-		VertexShader("triangle.vert"),
-		FragmentShader("triangle.frag")
+		VertexShader("triangleShader.vert"),
+		FragmentShader("triangleShader.frag")
 	});
+
 	ModelType type0(0, GL_TRIANGLES, shader1, {
 		VertexAttribute("color"),
 		VertexAttribute("normal")
 	});
-	type0.instance_attribs({});
+
 	Model m0(0, &type0, {});
 	m0.vertices(factory.checkerboard(64));
 	m0.units(64,0,64);
 	m0.translate(-32,0,-32);
+
 	ModelType type1(1, GL_TRIANGLES, shader1, {
 		VertexAttribute("normal")
 	});
 	type1.instance_attribs({ Material::instance_attrib });
+
 	Model m1(1, &type1, {Material(
-		750.0f, 0.0f, 1.0f,
-		380.0f, 0.0f, 1.0f,
+		380.0f, 0.5f, 0.0f,
+		750.0f, 1.0f, 1.0f,
 		0.0f, 0.0f
 	)});
 	m1.vertices(factory.cube());
-	m1.use()->translateX(2)->translateY(2)->rotateY(45)->rotateX(45);
-	m1.use()->translateX(-2);
-	m1.use()->translateX(4);
-	Model bigcube(4, &type1, {Material(
-		750.0f, 0.0f, 1.0f,
-		380.0f, 0.0f, 1.0f,
+	m1.units(1,1,1);
+	m1.translate(0.5f, 0.0f, 0.5f);
+	m1.use()->translateX(4)->units(1,30,1)->attr(1, Material(
+		750.0f, 0.5f, 0.0f,
+		380.0f, 1.0f, 1.0f,
 		0.0f, 0.0f
-	)});
-	bigcube.vertices(factory.infacing_cube());
-	bigcube.unitsY(10);
+	));
 
-	World world({&m0, &m1, &bigcube}, [](Model* m) {}, {Uniform("modelID", [] (Uniform* u, Model* m) {
+	World world({&m0, &m1}, [](Model* m){}, {Uniform("modelID", [](Uniform* u, Model* m) {
 		u->update(m->id());
 	})});
 
-	Camera camera(glm::vec3(0,20,1), glm::vec3(0,0,0), glm::vec3(0,1,0), 
+	Camera camera(glm::vec3(0,0,10), glm::vec3(0,0,0), glm::vec3(0,1,0), 
 		90, config::viewport_width/config::viewport_height, 0.1f, 100.0f);
+	camera.use(PostProcessor(Shader::link({
+		VertexShader("PostProcess.vert"),
+		FragmentShader("PostProcess.frag")
+	})));
 	world.add(&camera);
 
 	Light light({
-		{{750.0f, 0.0f, 1.0f}, {10, 2, 10}}
+		{{650.0f, 0.0f, 1.0f}, {10, 50, 10}},
+		{{650.0f, 0.0f, 1.0f}, {10, 0, 10}}
 	});
 	world.add(&light);
 
@@ -133,11 +140,9 @@ int main(void) {
 	//+// Depth test
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	//glDepthMask(GL_FALSE); // for disabling depth buffer writing
 
 	// rendering loop
 	while(!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		camera.shoot(&world);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -148,29 +153,3 @@ int main(void) {
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }
-
-	/*
-	// bind new framebuffer used for depth peeling post processing
-	GLuint framebuffer2;
-	glGenFramebuffers(1, &framebuffer2);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer2);
-	// create texture that holds the rendered pixels
-	GLuint colorTex2; 						// COLOR TEX 2
-	glGenTextures(1, &colorTex2);
-	glBindTexture(GL_TEXTURE_2D, colorTex2);
-	// init texture with screen-aligned size
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, config::viewport_width, config::viewport_height, 0, GL_RGBA, GL_FLOAT, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// create texture that holds the rendered pixels
-	GLuint zTex2; 							// Z TEX 2
-	glGenTextures(1, &zTex2);
-	glBindTexture(GL_TEXTURE_2D, zTex2);
-	// init texture with screen-aligned size
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, config::viewport_width, config::viewport_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// attach texture to framebuffer
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorTex2, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, zTex2, 0);
-	*/

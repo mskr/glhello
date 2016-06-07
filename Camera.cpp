@@ -14,8 +14,16 @@ Camera::~Camera() {
 }
 
 void Camera::shoot(World* world) {
-	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_); //TODO only call lookAt on changes
+	//TODO view matrix reset only on changes
+	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_);
+	post_processor_.pass_1();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	world->draw();
+	post_processor_.pass_2();
+}
+
+void Camera::use(PostProcessor p) {
+	post_processor_ = p;
 }
 
 std::vector<Uniform> Camera::uniforms() {

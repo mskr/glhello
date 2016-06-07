@@ -1,8 +1,4 @@
 #include "Shader.h"
-#include "config.h"
-#include <string>
-#include <stdio.h>      /* printf, fgets */
-#include <stdlib.h>     /* atoi */
 
 void Shader::unload() noexcept {
     if (this->shaderID_ != 0) {

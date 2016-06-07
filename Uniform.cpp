@@ -107,8 +107,8 @@ void Uniform::update() {
 void Uniform::update_and_grow(const GLvoid* pointer, int bytes) {
 	// should never be called by simple uniform callbacks because ubo_ would point to uninit memory (segfault)
 	// Beware, pointer just points to the NEW data
-	// Only push new data if bytes is greater zero
-	// Update the old data (starting at dataptr_) in both cases
+	// Only pushing new data if bytes is greater zero
+	// Updating the old data (starting at dataptr_) in both cases
 	if(bindingpoint_ == GL_MAX_UNIFORM_BUFFER_BINDINGS) return;
 	if(ubo_->bytes() > 0) {
 		ubo_->bind_to(GL_SHADER_STORAGE_BUFFER);

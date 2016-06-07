@@ -408,6 +408,33 @@ ModelType.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/ModelType.cpp.s
 .PHONY : ModelType.cpp.s
 
+PostProcessor.obj: PostProcessor.cpp.obj
+
+.PHONY : PostProcessor.obj
+
+# target to build an object file
+PostProcessor.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.obj
+.PHONY : PostProcessor.cpp.obj
+
+PostProcessor.i: PostProcessor.cpp.i
+
+.PHONY : PostProcessor.i
+
+# target to preprocess a source file
+PostProcessor.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.i
+.PHONY : PostProcessor.cpp.i
+
+PostProcessor.s: PostProcessor.cpp.s
+
+.PHONY : PostProcessor.s
+
+# target to generate assembly for a file
+PostProcessor.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.s
+.PHONY : PostProcessor.cpp.s
+
 Shader.obj: Shader.cpp.obj
 
 .PHONY : Shader.obj
@@ -636,6 +663,9 @@ help:
 	@echo ... ModelType.obj
 	@echo ... ModelType.i
 	@echo ... ModelType.s
+	@echo ... PostProcessor.obj
+	@echo ... PostProcessor.i
+	@echo ... PostProcessor.s
 	@echo ... Shader.obj
 	@echo ... Shader.i
 	@echo ... Shader.s

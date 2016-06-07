@@ -14,9 +14,6 @@
 #include <functional>
 #include <algorithm>
 
-#include "stdio.h"
-#include "stdlib.h"
-
 #include "Module.h"
 #include "Model.h"
 #include "Uniform.h"
@@ -43,7 +40,7 @@ class World {
 	std::vector<Model*> models_;
 	// Holds pointers to all *distinct* model types
 	std::vector<ModelType*> modeltypes_;
-	// Holds VAOs, one for each model type
+	// Holds vertex array objects, one for each model type
 	std::vector<GLuint> vertex_array_objects_;
 	// Holds vertex buffer objects, one for each model type
 	std::vector<GPUBuffer> vertex_buffer_objects_;
@@ -59,6 +56,13 @@ class World {
 	// Private utility function that takes the modeltypes list,
 	// finds all distinct gpu programs and stores them in the given list
 	void find_distinct_gpu_programs(std::vector<GLuint>* v);
+
+	// Tell the GPU how model matrices are stored and connected to shader variables
+	void set_modelmatrix_memory_layout(GPUBuffer* buffer, int offset, GLuint gpu_program);
+	// Check if instances have been transformed and if so update the buffer
+	void update_modelmatrices(Model* model, GPUBuffer* buffer, GLintptr offset);
+	// Check if there are new instances and if so resize the buffer
+	void update_instance_count(Model* model, GPUBuffer* buffer);
 
 	// Holds the callback that is called in draw loop for each model
 	std::function<void(Model*)> draw_callback_; //TODO remove?

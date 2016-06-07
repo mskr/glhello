@@ -1,5 +1,8 @@
 #include "World.h"
 
+#include "stdio.h"
+#include "stdlib.h"
+
 World::World(std::initializer_list<Model*> models, std::function<void(Model*)> draw_callback, std::initializer_list<Uniform> uniforms) {
 
 	models_ = std::vector<Model*>(models);
@@ -46,11 +49,9 @@ World::World(std::initializer_list<Model*> models, std::function<void(Model*)> d
 				for(int j = 0; j < m->num_instances(); j++) {
 					for(unsigned int k = 0; k < modeltypes_[i]->num_instance_attribs(); k++) {
 						glBufferSubData(GL_ARRAY_BUFFER, o, modeltypes_[i]->instance_attr(k)->bytes(), m->pointer_instance_attr(j,k));
-						printf("model %d, instance %d, attrib %d written to offset %d\n", m->id(), j, k, o);
 						o += modeltypes_[i]->instance_attr(k)->bytes();
 					}
 				}
-				m->instances_added();
 			}
 		}
 		instanced_array_buffers_.push_back(instanced_array_buffer);
@@ -63,7 +64,7 @@ World::World(std::initializer_list<Model*> models, std::function<void(Model*)> d
 }
 
 World::~World() {
-	for(unsigned int i = 0; i < modeltypes_.size(); i++)
+	for(unsigned int i = 0; i < vertex_array_objects_.size(); i++)
 		if (vertex_array_objects_[i] != 0) glDeleteVertexArrays(1, &vertex_array_objects_[i]);
 	for(unsigned int i = 0; i < uniform_buffers_.size(); i++)
 		delete uniform_buffers_[i].buffer();
@@ -74,63 +75,35 @@ World::~World() {
 //TODO make models and instances not just addable but removable too!
 
 void World::draw() {
-	for(GLuint gpu_program : gpu_programs_) {
-		glUseProgram(gpu_program);
+	for(unsigned int j = 0; j < gpu_programs_.size(); j++) {
+		glUseProgram(gpu_programs_[j]);
 
 		for(Uniform &uniform : uniform_buffers_)
-			if(uniform.gpu_program() == gpu_program) uniform.callback();
-
-		int i = 0;
-		for(ModelType* modeltype : modeltypes_) {
-			if(modeltype->gpu_program() == gpu_program) {
+			if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback();
+		for(unsigned int i = 0; i < modeltypes_.size(); i++) {
+			if(modeltypes_[i]->gpu_program() == gpu_programs_[j]) {
 				glBindVertexArray(vertex_array_objects_[i]);
 
-				int vertices_offset = 0;
-				int instances_offset = 0;
+				GLint vertices_offset = 0;
+				GLint instance_attribs_offset = 0;
 				for(Model* m : models_) {
-					if(m->modeltype() == modeltype) {
-
-						// update instance attributes
-						for(int j = 0; j < m->num_instances(); j++) {
-							int attr_byte_offset = 0;
-							for(unsigned int k = 0; k < modeltype->num_instance_attribs(); k++) {
-								if(m->instance(j)->attr(k)->has_changed()) {
-									instanced_array_buffers_[i].bind();
-									m->instance(j)->attr(k)->update(
-										(instances_offset+j) * modeltype->bytes_instance_attribs() + attr_byte_offset
-									);
-								}
-								attr_byte_offset += m->instance(j)->attr(k)->bytes();
-							}
-						}
-
-						// add new instances
-						if(m->num_new_instances() > 0) {
-							int start = m->num_instances() - m->num_new_instances();
-							for(int j = start; j < m->num_instances(); j++) {
-								for(unsigned int k = 0; k < modeltype->num_instance_attribs(); k++) {
-									instanced_array_buffers_[i].push(
-										m->instance(j)->attr(k)->bytes(),
-										m->instance(j)->attr(k)->pointer()
-									);
-								}
-							}
-							m->instances_added();
-						}
+					if(m->modeltype() == modeltypes_[i]) {
+						
+						m->update_instance_attribs(&instanced_array_buffers_[i], instance_attribs_offset);
+						//TODO check for new instances and add them into buffer
 
 						for(Uniform &uniform : uniforms_) // call the Uniform update callback
-							if(uniform.gpu_program() == gpu_program) uniform.callback(m);
+							if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback(m);
 
 						draw_callback_(m);
 
-						m->draw(vertices_offset, instances_offset); // Shader invocation here
+						m->draw(vertices_offset, instance_attribs_offset); // Shader invocation here
 
 						vertices_offset += m->num_vertices();
-						instances_offset += m->num_instances();
+						instance_attribs_offset += m->num_instances();
 					}
 				}
 			}
-			i++;
 		}
 	}
 }
@@ -170,24 +143,35 @@ void World::add(Model* m) {
 		}
 	}
 	if(is_of_new_type) {
-		// create new vao
-		//TODO
-		// bool has_new_gpuprogram = !(std::find(gpu_programs_.begin(), gpu_programs_.end(), gpu_prog) == gpu_programs_.end());
-		// if(has_new_gpuprogram) {
-		// 	// create copies of uniforms
-		// 	for(Uniform u : uniforms_) {
-		// 		u.gpu_program(gpu_prog);
-		// 		uniforms_.push_back(u);
-		// 	}
-		// 	for(Uniform u : uniform_buffers_) {
-		// 		u.gpu_program(gpu_prog);
-		// 		uniform_buffers_.push_back(u);
-		// 	}
-		// 	gpu_programs_.push_back(gpu_prog);
-		// }
+		// create new vbo
+		GLuint vao = 0;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+		vertex_array_objects_.push_back(vao);
+		GPUBuffer vbo;
+		vbo.bind_data(m->bytes(), m->pointer());
+		vertex_buffer_objects_.push_back(vbo);
+		t->enable_attribs();
+		GPUBuffer modelmatrix_buffer;
+		modelmatrix_buffer.bind_data(m->bytes_matrices(), m->pointer_matrices());
+		GLuint gpu_prog = t->gpu_program();
+		bool has_new_gpuprogram = !(std::find(gpu_programs_.begin(), gpu_programs_.end(), gpu_prog) == gpu_programs_.end());
+		if(has_new_gpuprogram) {
+			// create copies of uniforms
+			for(Uniform u : uniforms_) {
+				u.gpu_program(gpu_prog);
+				uniforms_.push_back(u);
+			}
+			for(Uniform u : uniform_buffers_) {
+				u.gpu_program(gpu_prog);
+				uniform_buffers_.push_back(u);
+			}
+			gpu_programs_.push_back(gpu_prog);
+		}
 	} else {
 		// resize old vbo
-		//TODO
+		glBindVertexArray(vertex_array_objects_[i]);
+		vertex_buffer_objects_[i].push(m->bytes(), m->pointer());
 	}
 	models_.push_back(m);
 }
