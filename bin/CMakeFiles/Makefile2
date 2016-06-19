@@ -340,6 +340,24 @@ glm/test/gtx/preinstall:
 .PHONY : glm/test/gtx/preinstall
 
 #=============================================================================
+# Directory level rules for directory Modules
+
+# Convenience name for "all" pass in the directory.
+Modules/all:
+
+.PHONY : Modules/all
+
+# Convenience name for "clean" pass in the directory.
+Modules/clean:
+
+.PHONY : Modules/clean
+
+# Convenience name for "preinstall" pass in the directory.
+Modules/preinstall:
+
+.PHONY : Modules/preinstall
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

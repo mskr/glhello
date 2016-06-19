@@ -71,8 +71,7 @@ World::~World() {
 }
 
 
-
-//TODO make models and instances not just addable but removable too!
+//TODO Integrate a way for modules to run actions inside draw loop (what actions would that be?)
 
 void World::draw() {
 	for(unsigned int j = 0; j < gpu_programs_.size(); j++) {
@@ -80,6 +79,7 @@ void World::draw() {
 
 		for(Uniform &uniform : uniform_buffers_)
 			if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback();
+
 		for(unsigned int i = 0; i < modeltypes_.size(); i++) {
 			if(modeltypes_[i]->gpu_program() == gpu_programs_[j]) {
 				glBindVertexArray(vertex_array_objects_[i]);
@@ -90,9 +90,9 @@ void World::draw() {
 					if(m->modeltype() == modeltypes_[i]) {
 						
 						m->update_instance_attribs(&instanced_array_buffers_[i], instance_attribs_offset);
-						//TODO check for new instances and add them into buffer
+						//TODO check for new instances and add them into buffer (check for instance attribute changes too?)
 
-						for(Uniform &uniform : uniforms_) // call the Uniform update callback
+						for(Uniform &uniform : uniforms_)
 							if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback(m);
 
 						draw_callback_(m);
@@ -108,7 +108,7 @@ void World::draw() {
 	}
 }
 
-void World::add(Module* mod) {
+void World::extend(Module* mod) {
 	for(Uniform u : mod->uniforms()) add(u);
 }
 
@@ -130,8 +130,7 @@ void World::add(Uniform u) {
 	}
 }
 
-//TODO rewrite for instance attributes
-//TODO Test!
+//TODO rewrite and test adding models at runtime!
 void World::add(Model* m) {
 	ModelType* t = m->modeltype();
 	bool is_of_new_type = true;

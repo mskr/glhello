@@ -1,7 +1,7 @@
 #ifndef CAMERAINTERACTION_H_
 #define CAMERAINTERACTION_H_
 
-#include "Interaction.h"
+#include "../Interaction.h"
 
 /*
 * This is the interaction type for the camera module.

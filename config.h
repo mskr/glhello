@@ -6,6 +6,8 @@
 namespace config {
 	extern int viewport_width;
 	extern int viewport_height;
+	extern float near;
+	extern float far;
 	extern std::string shader_dir;
 	extern float one_unit_x;
 	extern float one_unit_y;

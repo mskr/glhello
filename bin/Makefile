@@ -192,33 +192,6 @@ glfw/fast:
 	$(MAKE) -f glfw\src\CMakeFiles\glfw.dir\build.make glfw/src/CMakeFiles/glfw.dir/build
 .PHONY : glfw/fast
 
-Camera.obj: Camera.cpp.obj
-
-.PHONY : Camera.obj
-
-# target to build an object file
-Camera.cpp.obj:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Camera.cpp.obj
-.PHONY : Camera.cpp.obj
-
-Camera.i: Camera.cpp.i
-
-.PHONY : Camera.i
-
-# target to preprocess a source file
-Camera.cpp.i:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Camera.cpp.i
-.PHONY : Camera.cpp.i
-
-Camera.s: Camera.cpp.s
-
-.PHONY : Camera.s
-
-# target to generate assembly for a file
-Camera.cpp.s:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Camera.cpp.s
-.PHONY : Camera.cpp.s
-
 GPUBuffer.obj: GPUBuffer.cpp.obj
 
 .PHONY : GPUBuffer.obj
@@ -272,33 +245,6 @@ InstanceAttribute.s: InstanceAttribute.cpp.s
 InstanceAttribute.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/InstanceAttribute.cpp.s
 .PHONY : InstanceAttribute.cpp.s
-
-Light.obj: Light.cpp.obj
-
-.PHONY : Light.obj
-
-# target to build an object file
-Light.cpp.obj:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Light.cpp.obj
-.PHONY : Light.cpp.obj
-
-Light.i: Light.cpp.i
-
-.PHONY : Light.i
-
-# target to preprocess a source file
-Light.cpp.i:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Light.cpp.i
-.PHONY : Light.cpp.i
-
-Light.s: Light.cpp.s
-
-.PHONY : Light.s
-
-# target to generate assembly for a file
-Light.cpp.s:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Light.cpp.s
-.PHONY : Light.cpp.s
 
 Material.obj: Material.cpp.obj
 
@@ -408,32 +354,86 @@ ModelType.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/ModelType.cpp.s
 .PHONY : ModelType.cpp.s
 
-PostProcessor.obj: PostProcessor.cpp.obj
+Modules/Camera.obj: Modules/Camera.cpp.obj
 
-.PHONY : PostProcessor.obj
+.PHONY : Modules/Camera.obj
 
 # target to build an object file
-PostProcessor.cpp.obj:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.obj
-.PHONY : PostProcessor.cpp.obj
+Modules/Camera.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Camera.cpp.obj
+.PHONY : Modules/Camera.cpp.obj
 
-PostProcessor.i: PostProcessor.cpp.i
+Modules/Camera.i: Modules/Camera.cpp.i
 
-.PHONY : PostProcessor.i
+.PHONY : Modules/Camera.i
 
 # target to preprocess a source file
-PostProcessor.cpp.i:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.i
-.PHONY : PostProcessor.cpp.i
+Modules/Camera.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Camera.cpp.i
+.PHONY : Modules/Camera.cpp.i
 
-PostProcessor.s: PostProcessor.cpp.s
+Modules/Camera.s: Modules/Camera.cpp.s
 
-.PHONY : PostProcessor.s
+.PHONY : Modules/Camera.s
 
 # target to generate assembly for a file
-PostProcessor.cpp.s:
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.s
-.PHONY : PostProcessor.cpp.s
+Modules/Camera.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Camera.cpp.s
+.PHONY : Modules/Camera.cpp.s
+
+Modules/Light.obj: Modules/Light.cpp.obj
+
+.PHONY : Modules/Light.obj
+
+# target to build an object file
+Modules/Light.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.obj
+.PHONY : Modules/Light.cpp.obj
+
+Modules/Light.i: Modules/Light.cpp.i
+
+.PHONY : Modules/Light.i
+
+# target to preprocess a source file
+Modules/Light.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.i
+.PHONY : Modules/Light.cpp.i
+
+Modules/Light.s: Modules/Light.cpp.s
+
+.PHONY : Modules/Light.s
+
+# target to generate assembly for a file
+Modules/Light.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.s
+.PHONY : Modules/Light.cpp.s
+
+Modules/VolumetricLightScatteringMitchell.obj: Modules/VolumetricLightScatteringMitchell.cpp.obj
+
+.PHONY : Modules/VolumetricLightScatteringMitchell.obj
+
+# target to build an object file
+Modules/VolumetricLightScatteringMitchell.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj
+.PHONY : Modules/VolumetricLightScatteringMitchell.cpp.obj
+
+Modules/VolumetricLightScatteringMitchell.i: Modules/VolumetricLightScatteringMitchell.cpp.i
+
+.PHONY : Modules/VolumetricLightScatteringMitchell.i
+
+# target to preprocess a source file
+Modules/VolumetricLightScatteringMitchell.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.i
+.PHONY : Modules/VolumetricLightScatteringMitchell.cpp.i
+
+Modules/VolumetricLightScatteringMitchell.s: Modules/VolumetricLightScatteringMitchell.cpp.s
+
+.PHONY : Modules/VolumetricLightScatteringMitchell.s
+
+# target to generate assembly for a file
+Modules/VolumetricLightScatteringMitchell.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.s
+.PHONY : Modules/VolumetricLightScatteringMitchell.cpp.s
 
 Shader.obj: Shader.cpp.obj
 
@@ -639,18 +639,12 @@ help:
 	@echo ... list_install_components
 	@echo ... uninstall
 	@echo ... glfw
-	@echo ... Camera.obj
-	@echo ... Camera.i
-	@echo ... Camera.s
 	@echo ... GPUBuffer.obj
 	@echo ... GPUBuffer.i
 	@echo ... GPUBuffer.s
 	@echo ... InstanceAttribute.obj
 	@echo ... InstanceAttribute.i
 	@echo ... InstanceAttribute.s
-	@echo ... Light.obj
-	@echo ... Light.i
-	@echo ... Light.s
 	@echo ... Material.obj
 	@echo ... Material.i
 	@echo ... Material.s
@@ -663,9 +657,15 @@ help:
 	@echo ... ModelType.obj
 	@echo ... ModelType.i
 	@echo ... ModelType.s
-	@echo ... PostProcessor.obj
-	@echo ... PostProcessor.i
-	@echo ... PostProcessor.s
+	@echo ... Modules/Camera.obj
+	@echo ... Modules/Camera.i
+	@echo ... Modules/Camera.s
+	@echo ... Modules/Light.obj
+	@echo ... Modules/Light.i
+	@echo ... Modules/Light.s
+	@echo ... Modules/VolumetricLightScatteringMitchell.obj
+	@echo ... Modules/VolumetricLightScatteringMitchell.i
+	@echo ... Modules/VolumetricLightScatteringMitchell.s
 	@echo ... Shader.obj
 	@echo ... Shader.i
 	@echo ... Shader.s

@@ -86,7 +86,7 @@ public:
 	// Add a submodel to this model in order to build a scene graph
 	// void sub(Model sub);
 
-	friend class ModelInstance; // allows model instances to see protected members
+	friend class ModelInstance; // allows model instances to see private members
 };
 
 

@@ -6,6 +6,8 @@ InstanceAttribute::InstanceAttribute() {
 	pointer_ = 0;
 	enable_func_ = 0;
 	has_changed_ = false; // not used by model matrices
+	index_ = 0;
+	index_func_ = 0;
 }
 
 
@@ -14,6 +16,8 @@ InstanceAttribute::InstanceAttribute(std::function<void(GLuint,GLsizei,GLsizei)>
 	pointer_ = 0;
 	enable_func_ = enable_func;
 	has_changed_ = false;
+	index_ = 0;
+	index_func_ = 0;
 }
 
 InstanceAttribute::~InstanceAttribute() {
@@ -41,6 +45,10 @@ void InstanceAttribute::bytes(GLsizei bytes) {
 	bytes_ = bytes;
 }
 
+void InstanceAttribute::nullpointer() {
+	pointer_ = 0;
+}
+
 void InstanceAttribute::was_updated() {
 	has_changed_ = false;
 }
@@ -52,7 +60,16 @@ GLsizei InstanceAttribute::bytes() {
 }
 
 const GLvoid* InstanceAttribute::pointer() {
-	if(pointer_ == 0)
-		throw std::runtime_error("Program exits because a model instance attribute is incorrect (pointer=0).");
 	return pointer_;
+}
+
+void InstanceAttribute::call_index_func(unsigned int i) {
+	if(index_func_ == 0) {
+		throw std::runtime_error("Program exits because a model instance attribute is incorrect (index_func=0).");
+	}
+	index_func_(i);
+}
+
+void InstanceAttribute::set_index(unsigned int i) {
+	index_ = i;
 }

@@ -4,15 +4,15 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/mk/Desktop/git/glhello/Camera.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Camera.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/GPUBuffer.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/GPUBuffer.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/InstanceAttribute.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj"
-  "C:/Users/mk/Desktop/git/glhello/Light.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Light.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Material.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Material.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Model.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Model.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelInstance.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/ModelType.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelType.cpp.obj"
-  "C:/Users/mk/Desktop/git/glhello/PostProcessor.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/PostProcessor.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/Modules/Camera.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/Camera.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/Modules/Light.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/Light.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Shader.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Shader.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Uniform.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Uniform.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/User.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/User.cpp.obj"
@@ -36,6 +36,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../glm/glm"
   "../glm/glm/gtc"
   "../glm/glm/gtx"
+  "../Modules"
   )
 
 # Targets to which this target links.

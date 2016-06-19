@@ -33,7 +33,8 @@ class ModelInstance {
 	// Transformations from outside are controlled by the special functions below to remain consistent with units
 	void transform(glm::mat4 transformation_matrix);
 
-protected:
+	Light::Emitter* emitter_;
+
 	// User-defined ID of the model that this is an instance of
 	int id_;
 
@@ -49,10 +50,12 @@ protected:
 public:
 	~ModelInstance();
 
+	void push_attr(InstanceAttribute attrib);
 	void attr(int index, InstanceAttribute attrib);
 	InstanceAttribute* attr(int index) { return &attribs_[index]; }
 
-	void emit(Light l);
+	void emit(Light::Emitter l);
+	bool is_emitter() { return (emitter_!=0); }
 
 	// GETTER
 	int id() { return id_; }
@@ -63,7 +66,9 @@ public:
 	float unitsY() { return units_y_; }
 	float unitsZ() { return units_z_; }
 	bool has_changed() { return has_changed_; }
-	glm::vec3 position() { // get position in *unit space*
+
+	// get position in *unit space*
+	glm::vec3 position() {
 		return glm::vec3(
 			position_.x/config::one_unit_x,
 			position_.y/config::one_unit_y,
@@ -72,10 +77,12 @@ public:
 	float positionX() { return position_.x/config::one_unit_x; }
 	float positionY() { return position_.y/config::one_unit_y; }
 	float positionZ() { return position_.z/config::one_unit_z; }
+	glm::vec3 position_world_space() { return position_; }
 
 	// SETTER
 	void was_updated();
 	ModelInstance* position(glm::vec3 pos_in_units_from_origin);
+	ModelInstance* position(float x, float y, float z);
 	ModelInstance* unitsX(float units); // preserves length ratios
 	ModelInstance* unitsY(float units); // preserves length ratios
 	ModelInstance* unitsZ(float units); // preserves length ratios
@@ -86,7 +93,7 @@ public:
 	ModelInstance* rotateX(float angle);
 	ModelInstance* rotateY(float angle);
 	ModelInstance* rotateZ(float angle);
-	//TODO add rotation with a *transform origin*
+	//TODO add rotation with a *transform origin* (carefully update position_ afterwards!)
 	ModelInstance* translate(glm::vec3 distances_in_units);
 	ModelInstance* translate(float x, float y, float z);
 	ModelInstance* translateX(float distance_in_units);
@@ -97,7 +104,7 @@ public:
 	ModelInstance* scaleY(float factor); // does not preserve length ratios
 	ModelInstance* scaleZ(float factor); // does not preserve length ratios
 
-	friend class Model; // allows models to see protected members
+	friend class Model; // allows models to see private members
 };
 
 #endif

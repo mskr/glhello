@@ -17,6 +17,10 @@ Material::Material(
 
 	InstanceAttribute::bytes_ = sizeof(Material::Array);
 	InstanceAttribute::pointer_ = (GLvoid*) &properties;
+	InstanceAttribute::index_func_ = [](unsigned int i) {
+		// i is the index of this instance attrib in the model instance's attribs list
+		Material::instance_attrib.set_index(i);
+	};
 }
 
 //TODO

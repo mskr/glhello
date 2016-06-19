@@ -33,6 +33,7 @@ public:
 	~ModelType();
 
 	void instance_attribs(std::initializer_list<InstanceAttribute> attribs);
+	void add_instance_attr(InstanceAttribute attr);
 
 	void enable_attribs();
 	void enable_instance_attribs();

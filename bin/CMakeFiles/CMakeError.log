@@ -1,23 +1,23 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp
 
-Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_782ed/fast"
-C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_782ed.dir\build.make CMakeFiles/cmTC_782ed.dir/build
+Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_aa13c/fast"
+C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_aa13c.dir\build.make CMakeFiles/cmTC_aa13c.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_782ed.dir/CheckSymbolExists.c.obj
-C:\MinGW\bin\gcc.exe     -o CMakeFiles\cmTC_782ed.dir\CheckSymbolExists.c.obj   -c C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles\CMakeTmp\CheckSymbolExists.c
-Linking C executable cmTC_782ed.exe
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_782ed.dir\link.txt --verbose=1
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_782ed.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_782ed.dir/objects.a @CMakeFiles\cmTC_782ed.dir\objects1.rsp
-C:\MinGW\bin\gcc.exe       -Wl,--whole-archive CMakeFiles\cmTC_782ed.dir/objects.a -Wl,--no-whole-archive  -o cmTC_782ed.exe -Wl,--out-implib,libcmTC_782ed.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_782ed.dir\linklibs.rsp
-CMakeFiles\cmTC_782ed.dir/objects.a(CheckSymbolExists.c.obj):CheckSymbolExists.c:(.text+0x16): undefined reference to `_imp__pthread_create'
+Building C object CMakeFiles/cmTC_aa13c.dir/CheckSymbolExists.c.obj
+C:\MinGW\bin\gcc.exe     -o CMakeFiles\cmTC_aa13c.dir\CheckSymbolExists.c.obj   -c C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles\CMakeTmp\CheckSymbolExists.c
+Linking C executable cmTC_aa13c.exe
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_aa13c.dir\link.txt --verbose=1
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_aa13c.dir/objects.a
+C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_aa13c.dir/objects.a @CMakeFiles\cmTC_aa13c.dir\objects1.rsp
+C:\MinGW\bin\gcc.exe       -Wl,--whole-archive CMakeFiles\cmTC_aa13c.dir/objects.a -Wl,--no-whole-archive  -o cmTC_aa13c.exe -Wl,--out-implib,libcmTC_aa13c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_aa13c.dir\linklibs.rsp
+CMakeFiles\cmTC_aa13c.dir/objects.a(CheckSymbolExists.c.obj):CheckSymbolExists.c:(.text+0x16): undefined reference to `_imp__pthread_create'
 collect2.exe: error: ld returned 1 exit status
-CMakeFiles\cmTC_782ed.dir\build.make:98: recipe for target 'cmTC_782ed.exe' failed
-mingw32-make.exe[1]: *** [cmTC_782ed.exe] Error 1
+CMakeFiles\cmTC_aa13c.dir\build.make:98: recipe for target 'cmTC_aa13c.exe' failed
+mingw32-make.exe[1]: *** [cmTC_aa13c.exe] Error 1
 mingw32-make.exe[1]: Leaving directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Makefile:125: recipe for target 'cmTC_782ed/fast' failed
-mingw32-make.exe: *** [cmTC_782ed/fast] Error 2
+Makefile:125: recipe for target 'cmTC_aa13c/fast' failed
+mingw32-make.exe: *** [cmTC_aa13c/fast] Error 2
 
 File C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
@@ -37,46 +37,46 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp
 
-Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_57774/fast"
-C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_57774.dir\build.make CMakeFiles/cmTC_57774.dir/build
+Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_0e41a/fast"
+C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_0e41a.dir\build.make CMakeFiles/cmTC_0e41a.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_57774.dir/CheckFunctionExists.c.obj
-C:\MinGW\bin\gcc.exe    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles\cmTC_57774.dir\CheckFunctionExists.c.obj   -c "C:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CheckFunctionExists.c"
-Linking C executable cmTC_57774.exe
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_57774.dir\link.txt --verbose=1
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_57774.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_57774.dir/objects.a @CMakeFiles\cmTC_57774.dir\objects1.rsp
-C:\MinGW\bin\gcc.exe   -DCHECK_FUNCTION_EXISTS=pthread_create    -Wl,--whole-archive CMakeFiles\cmTC_57774.dir/objects.a -Wl,--no-whole-archive  -o cmTC_57774.exe -Wl,--out-implib,libcmTC_57774.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_57774.dir\linklibs.rsp
+Building C object CMakeFiles/cmTC_0e41a.dir/CheckFunctionExists.c.obj
+C:\MinGW\bin\gcc.exe    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles\cmTC_0e41a.dir\CheckFunctionExists.c.obj   -c "C:\Program Files (x86)\CMake\share\cmake-3.4\Modules\CheckFunctionExists.c"
+Linking C executable cmTC_0e41a.exe
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_0e41a.dir\link.txt --verbose=1
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_0e41a.dir/objects.a
+C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_0e41a.dir/objects.a @CMakeFiles\cmTC_0e41a.dir\objects1.rsp
+C:\MinGW\bin\gcc.exe   -DCHECK_FUNCTION_EXISTS=pthread_create    -Wl,--whole-archive CMakeFiles\cmTC_0e41a.dir/objects.a -Wl,--no-whole-archive  -o cmTC_0e41a.exe -Wl,--out-implib,libcmTC_0e41a.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_0e41a.dir\linklibs.rsp
 C:\MinGW\bin/ld.exe: cannot find -lpthreads
 collect2.exe: error: ld returned 1 exit status
-CMakeFiles\cmTC_57774.dir\build.make:98: recipe for target 'cmTC_57774.exe' failed
-mingw32-make.exe[1]: *** [cmTC_57774.exe] Error 1
+CMakeFiles\cmTC_0e41a.dir\build.make:98: recipe for target 'cmTC_0e41a.exe' failed
+mingw32-make.exe[1]: *** [cmTC_0e41a.exe] Error 1
 mingw32-make.exe[1]: Leaving directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Makefile:125: recipe for target 'cmTC_57774/fast' failed
-mingw32-make.exe: *** [cmTC_57774/fast] Error 2
+Makefile:125: recipe for target 'cmTC_0e41a/fast' failed
+mingw32-make.exe: *** [cmTC_0e41a/fast] Error 2
 
 
 Performing C SOURCE FILE Test _GLFW_HAS_64ASLR failed with the following output:
 Change Dir: C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp
 
-Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_faf2b/fast"
-C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_faf2b.dir\build.make CMakeFiles/cmTC_faf2b.dir/build
+Run Build Command:"C:/MinGW/bin/mingw32-make.exe" "cmTC_713e0/fast"
+C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_713e0.dir\build.make CMakeFiles/cmTC_713e0.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_faf2b.dir/src.c.obj
-C:\MinGW\bin\gcc.exe    -D_GLFW_HAS_64ASLR -Wl,--high-entropy-va   -o CMakeFiles\cmTC_faf2b.dir\src.c.obj   -c C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles\CMakeTmp\src.c
-Linking C executable cmTC_faf2b.exe
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_faf2b.dir\link.txt --verbose=1
-"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_faf2b.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_faf2b.dir/objects.a @CMakeFiles\cmTC_faf2b.dir\objects1.rsp
-C:\MinGW\bin\gcc.exe   -D_GLFW_HAS_64ASLR -Wl,--high-entropy-va    -Wl,--whole-archive CMakeFiles\cmTC_faf2b.dir/objects.a -Wl,--no-whole-archive  -o cmTC_faf2b.exe -Wl,--out-implib,libcmTC_faf2b.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_faf2b.dir\linklibs.rsp
+Building C object CMakeFiles/cmTC_713e0.dir/src.c.obj
+C:\MinGW\bin\gcc.exe    -D_GLFW_HAS_64ASLR -Wl,--high-entropy-va   -o CMakeFiles\cmTC_713e0.dir\src.c.obj   -c C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles\CMakeTmp\src.c
+Linking C executable cmTC_713e0.exe
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_713e0.dir\link.txt --verbose=1
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\cmTC_713e0.dir/objects.a
+C:\MinGW\bin\ar.exe cr CMakeFiles\cmTC_713e0.dir/objects.a @CMakeFiles\cmTC_713e0.dir\objects1.rsp
+C:\MinGW\bin\gcc.exe   -D_GLFW_HAS_64ASLR -Wl,--high-entropy-va    -Wl,--whole-archive CMakeFiles\cmTC_713e0.dir/objects.a -Wl,--no-whole-archive  -o cmTC_713e0.exe -Wl,--out-implib,libcmTC_713e0.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cmTC_713e0.dir\linklibs.rsp
 C:\MinGW\bin/ld.exe: unrecognized option '--high-entropy-va'
 C:\MinGW\bin/ld.exe: use the --help option for usage information
 collect2.exe: error: ld returned 1 exit status
-CMakeFiles\cmTC_faf2b.dir\build.make:98: recipe for target 'cmTC_faf2b.exe' failed
-mingw32-make.exe[1]: *** [cmTC_faf2b.exe] Error 1
+CMakeFiles\cmTC_713e0.dir\build.make:98: recipe for target 'cmTC_713e0.exe' failed
+mingw32-make.exe[1]: *** [cmTC_713e0.exe] Error 1
 mingw32-make.exe[1]: Leaving directory 'C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/CMakeTmp'
-Makefile:125: recipe for target 'cmTC_faf2b/fast' failed
-mingw32-make.exe: *** [cmTC_faf2b/fast] Error 2
+Makefile:125: recipe for target 'cmTC_713e0/fast' failed
+mingw32-make.exe: *** [cmTC_713e0/fast] Error 2
 
 Source file was:
 int main(void) { return 0; }

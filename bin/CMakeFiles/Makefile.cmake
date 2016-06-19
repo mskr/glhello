@@ -108,6 +108,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files (x86)/CMake/share/cmake-3.4/Modules/Platform/WindowsPaths.cmake"
   "C:/Program Files (x86)/CMake/share/cmake-3.4/Modules/WriteBasicConfigVersionFile.cmake"
   "../CMakeLists.txt"
+  "../Modules/CMakeLists.txt"
   "CMakeFiles/3.4.0-rc1/CMakeCCompiler.cmake"
   "CMakeFiles/3.4.0-rc1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.4.0-rc1/CMakeRCCompiler.cmake"
@@ -155,6 +156,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "glm/test/core/CMakeFiles/CMakeDirectoryInformation.cmake"
   "glm/test/gtc/CMakeFiles/CMakeDirectoryInformation.cmake"
   "glm/test/gtx/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Modules/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:

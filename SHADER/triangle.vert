@@ -1,12 +1,9 @@
 #version 430
 
-/*
-* This shader is for point primitives.
-* It renders single vertices as little balls.
-*/
+uniform uint OcclusionPrePass;
 
 // camera loads its matrices to this block (update each whole frame)
-layout(std140) uniform view_projection {
+layout(std140) uniform Camera {
 	mat4 view;
 	mat4 proj;
 };
@@ -19,16 +16,20 @@ in vec3 MaterialAbsorption;
 in vec3 MaterialReflection;
 in float MaterialTransmission;
 in float MaterialShininess;
-
 flat varying vec3 fragMaterialAbsorption;
 flat varying vec3 fragMaterialReflection;
 flat varying float fragMaterialTransmission;
 flat varying float fragMaterialShininess;
 
 
+in uvec2 Emitter;
+flat varying uvec2 fragEmitter;
+
 attribute vec3 position;
+attribute vec3 normal;
 
 varying vec3 fragPosition; // world space
+varying vec3 fragNormal; // world space
 
 
 vec4 clip_space(vec3 pos) {
@@ -39,14 +40,27 @@ vec3 world_space(vec3 pos) {
 	return vec3(model * vec4(pos, 1));
 }
 
-void main() {
+mat3 normal_matrix() {
+	//TODO better do the inverse operation on the cpu and not for every vertex
+	return mat3(transpose(inverse(model)));
+}
+
+bool testOcclusionPrePass() {
+	return OcclusionPrePass != 0;
+}
+
+void next() {
+	fragEmitter = Emitter;
+	if(testOcclusionPrePass()) return;
 	fragMaterialAbsorption = MaterialAbsorption;
 	fragMaterialReflection = MaterialReflection;
 	fragMaterialTransmission = MaterialTransmission;
 	fragMaterialShininess = MaterialShininess;
-	float size = (mat3(model)*vec3(500)).x; // the particle size
 	fragPosition = world_space(position);
-	vec4 clip_space_pos = clip_space(position);
-	gl_PointSize = size/clip_space_pos.w; // perspective divide
-	gl_Position = clip_space_pos;
+	fragNormal = mat3(model) * normal;
+}
+
+void main() {
+	gl_Position = clip_space(position);
+	next();
 }

@@ -15,13 +15,18 @@ class Model;
 * This is a uniform variable representation.
 * It is the interface between client side and shader side.
 * You can give a callback function to it.
-* Uniforms can be
-* a) simple: Write uniform->update(value) in callback function.
-* b) a buffer: Give pointer and size.
+* Uniforms can be (depending on what you use to construct them):
+* a) simple: Pass a name and a callback, in which do uniform->update(_value_).
+* b) a buffer: Pass a data pointer.
 * Simple uniforms are updated per shader invocation.
 * Buffers are updated
-* a) only once, if you do not give a callback.
-* b) for every whole frame, if you write uniform->update() in callback.
+* a) only once, if you do not give a callback, or
+* b) for every whole frame, if you do uniform->update() in callback.
+* Buffered uniforms can be (depending again on constructor):
+* a) Uniform blocks: Pass a data pointer and a _fixed_ size in bytes.
+* b) Shader storage blocks: Only pass the pointer and do uniform->update_and_grow() in callback.
+* In shaders, shader storage blocks can hold an array of undetermined size.
+* You can fill and grow it only limited by GPU memory (you should store the current size somewhere).
 */
 class Uniform {
 

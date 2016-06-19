@@ -88,8 +88,8 @@ public:
 	void draw();
 
 	void add(Uniform u);
-	void add(Model* m);
-	void add(Module* mod);
+	void add(Model* m); //TODO make models and instances not just addable but removable too!
+	void extend(Module* mod);
 
 	//TODO
 

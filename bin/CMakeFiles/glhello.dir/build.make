@@ -56,35 +56,10 @@ include CMakeFiles/glhello.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/glhello.dir/flags.make
 
-CMakeFiles/glhello.dir/Camera.cpp.obj: CMakeFiles/glhello.dir/flags.make
-CMakeFiles/glhello.dir/Camera.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
-CMakeFiles/glhello.dir/Camera.cpp.obj: ../Camera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/glhello.dir/Camera.cpp.obj"
-	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Camera.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Camera.cpp
-
-CMakeFiles/glhello.dir/Camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/Camera.cpp.i"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\Camera.cpp > CMakeFiles\glhello.dir\Camera.cpp.i
-
-CMakeFiles/glhello.dir/Camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/Camera.cpp.s"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\Camera.cpp -o CMakeFiles\glhello.dir\Camera.cpp.s
-
-CMakeFiles/glhello.dir/Camera.cpp.obj.requires:
-
-.PHONY : CMakeFiles/glhello.dir/Camera.cpp.obj.requires
-
-CMakeFiles/glhello.dir/Camera.cpp.obj.provides: CMakeFiles/glhello.dir/Camera.cpp.obj.requires
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Camera.cpp.obj.provides.build
-.PHONY : CMakeFiles/glhello.dir/Camera.cpp.obj.provides
-
-CMakeFiles/glhello.dir/Camera.cpp.obj.provides.build: CMakeFiles/glhello.dir/Camera.cpp.obj
-
-
 CMakeFiles/glhello.dir/config.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/config.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/config.cpp.obj: ../config.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/glhello.dir/config.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/glhello.dir/config.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\config.cpp.obj -c C:\Users\mk\Desktop\git\glhello\config.cpp
 
 CMakeFiles/glhello.dir/config.cpp.i: cmake_force
@@ -109,7 +84,7 @@ CMakeFiles/glhello.dir/config.cpp.obj.provides.build: CMakeFiles/glhello.dir/con
 CMakeFiles/glhello.dir/GPUBuffer.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/GPUBuffer.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/GPUBuffer.cpp.obj: ../GPUBuffer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/glhello.dir/GPUBuffer.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/glhello.dir/GPUBuffer.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\GPUBuffer.cpp.obj -c C:\Users\mk\Desktop\git\glhello\GPUBuffer.cpp
 
 CMakeFiles/glhello.dir/GPUBuffer.cpp.i: cmake_force
@@ -134,7 +109,7 @@ CMakeFiles/glhello.dir/GPUBuffer.cpp.obj.provides.build: CMakeFiles/glhello.dir/
 CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj: ../InstanceAttribute.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\InstanceAttribute.cpp.obj -c C:\Users\mk\Desktop\git\glhello\InstanceAttribute.cpp
 
 CMakeFiles/glhello.dir/InstanceAttribute.cpp.i: cmake_force
@@ -156,35 +131,10 @@ CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj.provides: CMakeFiles/glhello.di
 CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj.provides.build: CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj
 
 
-CMakeFiles/glhello.dir/Light.cpp.obj: CMakeFiles/glhello.dir/flags.make
-CMakeFiles/glhello.dir/Light.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
-CMakeFiles/glhello.dir/Light.cpp.obj: ../Light.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/glhello.dir/Light.cpp.obj"
-	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Light.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Light.cpp
-
-CMakeFiles/glhello.dir/Light.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/Light.cpp.i"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\Light.cpp > CMakeFiles\glhello.dir\Light.cpp.i
-
-CMakeFiles/glhello.dir/Light.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/Light.cpp.s"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\Light.cpp -o CMakeFiles\glhello.dir\Light.cpp.s
-
-CMakeFiles/glhello.dir/Light.cpp.obj.requires:
-
-.PHONY : CMakeFiles/glhello.dir/Light.cpp.obj.requires
-
-CMakeFiles/glhello.dir/Light.cpp.obj.provides: CMakeFiles/glhello.dir/Light.cpp.obj.requires
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Light.cpp.obj.provides.build
-.PHONY : CMakeFiles/glhello.dir/Light.cpp.obj.provides
-
-CMakeFiles/glhello.dir/Light.cpp.obj.provides.build: CMakeFiles/glhello.dir/Light.cpp.obj
-
-
 CMakeFiles/glhello.dir/main.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/main.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/main.cpp.obj: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/glhello.dir/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/glhello.dir/main.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\main.cpp.obj -c C:\Users\mk\Desktop\git\glhello\main.cpp
 
 CMakeFiles/glhello.dir/main.cpp.i: cmake_force
@@ -209,7 +159,7 @@ CMakeFiles/glhello.dir/main.cpp.obj.provides.build: CMakeFiles/glhello.dir/main.
 CMakeFiles/glhello.dir/Material.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/Material.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/Material.cpp.obj: ../Material.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/glhello.dir/Material.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/glhello.dir/Material.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Material.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Material.cpp
 
 CMakeFiles/glhello.dir/Material.cpp.i: cmake_force
@@ -234,7 +184,7 @@ CMakeFiles/glhello.dir/Material.cpp.obj.provides.build: CMakeFiles/glhello.dir/M
 CMakeFiles/glhello.dir/Model.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/Model.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/Model.cpp.obj: ../Model.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/glhello.dir/Model.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/glhello.dir/Model.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Model.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Model.cpp
 
 CMakeFiles/glhello.dir/Model.cpp.i: cmake_force
@@ -259,7 +209,7 @@ CMakeFiles/glhello.dir/Model.cpp.obj.provides.build: CMakeFiles/glhello.dir/Mode
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../ModelInstance.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/glhello.dir/ModelInstance.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\ModelInstance.cpp.obj -c C:\Users\mk\Desktop\git\glhello\ModelInstance.cpp
 
 CMakeFiles/glhello.dir/ModelInstance.cpp.i: cmake_force
@@ -284,7 +234,7 @@ CMakeFiles/glhello.dir/ModelInstance.cpp.obj.provides.build: CMakeFiles/glhello.
 CMakeFiles/glhello.dir/ModelType.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/ModelType.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../ModelType.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/glhello.dir/ModelType.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/glhello.dir/ModelType.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\ModelType.cpp.obj -c C:\Users\mk\Desktop\git\glhello\ModelType.cpp
 
 CMakeFiles/glhello.dir/ModelType.cpp.i: cmake_force
@@ -306,35 +256,10 @@ CMakeFiles/glhello.dir/ModelType.cpp.obj.provides: CMakeFiles/glhello.dir/ModelT
 CMakeFiles/glhello.dir/ModelType.cpp.obj.provides.build: CMakeFiles/glhello.dir/ModelType.cpp.obj
 
 
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj: CMakeFiles/glhello.dir/flags.make
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj: ../PostProcessor.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/glhello.dir/PostProcessor.cpp.obj"
-	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\PostProcessor.cpp.obj -c C:\Users\mk\Desktop\git\glhello\PostProcessor.cpp
-
-CMakeFiles/glhello.dir/PostProcessor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/PostProcessor.cpp.i"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\PostProcessor.cpp > CMakeFiles\glhello.dir\PostProcessor.cpp.i
-
-CMakeFiles/glhello.dir/PostProcessor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/PostProcessor.cpp.s"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\PostProcessor.cpp -o CMakeFiles\glhello.dir\PostProcessor.cpp.s
-
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj.requires:
-
-.PHONY : CMakeFiles/glhello.dir/PostProcessor.cpp.obj.requires
-
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj.provides: CMakeFiles/glhello.dir/PostProcessor.cpp.obj.requires
-	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/PostProcessor.cpp.obj.provides.build
-.PHONY : CMakeFiles/glhello.dir/PostProcessor.cpp.obj.provides
-
-CMakeFiles/glhello.dir/PostProcessor.cpp.obj.provides.build: CMakeFiles/glhello.dir/PostProcessor.cpp.obj
-
-
 CMakeFiles/glhello.dir/Shader.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/Shader.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/Shader.cpp.obj: ../Shader.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/glhello.dir/Shader.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/glhello.dir/Shader.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Shader.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Shader.cpp
 
 CMakeFiles/glhello.dir/Shader.cpp.i: cmake_force
@@ -359,7 +284,7 @@ CMakeFiles/glhello.dir/Shader.cpp.obj.provides.build: CMakeFiles/glhello.dir/Sha
 CMakeFiles/glhello.dir/Uniform.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/Uniform.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/Uniform.cpp.obj: ../Uniform.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/glhello.dir/Uniform.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/glhello.dir/Uniform.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Uniform.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Uniform.cpp
 
 CMakeFiles/glhello.dir/Uniform.cpp.i: cmake_force
@@ -384,7 +309,7 @@ CMakeFiles/glhello.dir/Uniform.cpp.obj.provides.build: CMakeFiles/glhello.dir/Un
 CMakeFiles/glhello.dir/User.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/User.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/User.cpp.obj: ../User.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/glhello.dir/User.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/glhello.dir/User.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\User.cpp.obj -c C:\Users\mk\Desktop\git\glhello\User.cpp
 
 CMakeFiles/glhello.dir/User.cpp.i: cmake_force
@@ -409,7 +334,7 @@ CMakeFiles/glhello.dir/User.cpp.obj.provides.build: CMakeFiles/glhello.dir/User.
 CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: ../VertexAttribute.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/glhello.dir/VertexAttribute.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/glhello.dir/VertexAttribute.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\VertexAttribute.cpp.obj -c C:\Users\mk\Desktop\git\glhello\VertexAttribute.cpp
 
 CMakeFiles/glhello.dir/VertexAttribute.cpp.i: cmake_force
@@ -434,7 +359,7 @@ CMakeFiles/glhello.dir/VertexAttribute.cpp.obj.provides.build: CMakeFiles/glhell
 CMakeFiles/glhello.dir/World.cpp.obj: CMakeFiles/glhello.dir/flags.make
 CMakeFiles/glhello.dir/World.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
 CMakeFiles/glhello.dir/World.cpp.obj: ../World.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/glhello.dir/World.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/glhello.dir/World.cpp.obj"
 	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\World.cpp.obj -c C:\Users\mk\Desktop\git\glhello\World.cpp
 
 CMakeFiles/glhello.dir/World.cpp.i: cmake_force
@@ -456,44 +381,119 @@ CMakeFiles/glhello.dir/World.cpp.obj.provides: CMakeFiles/glhello.dir/World.cpp.
 CMakeFiles/glhello.dir/World.cpp.obj.provides.build: CMakeFiles/glhello.dir/World.cpp.obj
 
 
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: CMakeFiles/glhello.dir/flags.make
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/Camera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/glhello.dir/Modules/Camera.cpp.obj"
+	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Modules\Camera.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Modules\Camera.cpp
+
+CMakeFiles/glhello.dir/Modules/Camera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/Modules/Camera.cpp.i"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\Modules\Camera.cpp > CMakeFiles\glhello.dir\Modules\Camera.cpp.i
+
+CMakeFiles/glhello.dir/Modules/Camera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/Modules/Camera.cpp.s"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\Modules\Camera.cpp -o CMakeFiles\glhello.dir\Modules\Camera.cpp.s
+
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.requires:
+
+.PHONY : CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.requires
+
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.provides: CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.provides.build
+.PHONY : CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.provides
+
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.provides.build: CMakeFiles/glhello.dir/Modules/Camera.cpp.obj
+
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj: CMakeFiles/glhello.dir/flags.make
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj: ../Modules/Light.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/glhello.dir/Modules/Light.cpp.obj"
+	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Modules\Light.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Modules\Light.cpp
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/Modules/Light.cpp.i"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\Modules\Light.cpp > CMakeFiles\glhello.dir\Modules\Light.cpp.i
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/Modules/Light.cpp.s"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\Modules\Light.cpp -o CMakeFiles\glhello.dir\Modules\Light.cpp.s
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj.requires:
+
+.PHONY : CMakeFiles/glhello.dir/Modules/Light.cpp.obj.requires
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj.provides: CMakeFiles/glhello.dir/Modules/Light.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.obj.provides.build
+.PHONY : CMakeFiles/glhello.dir/Modules/Light.cpp.obj.provides
+
+CMakeFiles/glhello.dir/Modules/Light.cpp.obj.provides.build: CMakeFiles/glhello.dir/Modules/Light.cpp.obj
+
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: CMakeFiles/glhello.dir/flags.make
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: CMakeFiles/glhello.dir/includes_CXX.rsp
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/VolumetricLightScatteringMitchell.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\mk\Desktop\git\glhello\bin\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj"
+	C:\MinGW\bin\g++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\glhello.dir\Modules\VolumetricLightScatteringMitchell.cpp.obj -c C:\Users\mk\Desktop\git\glhello\Modules\VolumetricLightScatteringMitchell.cpp
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.i"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\mk\Desktop\git\glhello\Modules\VolumetricLightScatteringMitchell.cpp > CMakeFiles\glhello.dir\Modules\VolumetricLightScatteringMitchell.cpp.i
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.s"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\mk\Desktop\git\glhello\Modules\VolumetricLightScatteringMitchell.cpp -o CMakeFiles\glhello.dir\Modules\VolumetricLightScatteringMitchell.cpp.s
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.requires:
+
+.PHONY : CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.requires
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.provides: CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.requires
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.provides.build
+.PHONY : CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.provides
+
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.provides.build: CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj
+
+
 # Object files for target glhello
 glhello_OBJECTS = \
-"CMakeFiles/glhello.dir/Camera.cpp.obj" \
 "CMakeFiles/glhello.dir/config.cpp.obj" \
 "CMakeFiles/glhello.dir/GPUBuffer.cpp.obj" \
 "CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj" \
-"CMakeFiles/glhello.dir/Light.cpp.obj" \
 "CMakeFiles/glhello.dir/main.cpp.obj" \
 "CMakeFiles/glhello.dir/Material.cpp.obj" \
 "CMakeFiles/glhello.dir/Model.cpp.obj" \
 "CMakeFiles/glhello.dir/ModelInstance.cpp.obj" \
 "CMakeFiles/glhello.dir/ModelType.cpp.obj" \
-"CMakeFiles/glhello.dir/PostProcessor.cpp.obj" \
 "CMakeFiles/glhello.dir/Shader.cpp.obj" \
 "CMakeFiles/glhello.dir/Uniform.cpp.obj" \
 "CMakeFiles/glhello.dir/User.cpp.obj" \
 "CMakeFiles/glhello.dir/VertexAttribute.cpp.obj" \
-"CMakeFiles/glhello.dir/World.cpp.obj"
+"CMakeFiles/glhello.dir/World.cpp.obj" \
+"CMakeFiles/glhello.dir/Modules/Camera.cpp.obj" \
+"CMakeFiles/glhello.dir/Modules/Light.cpp.obj" \
+"CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj"
 
 # External object files for target glhello
 glhello_EXTERNAL_OBJECTS =
 
-glhello.exe: CMakeFiles/glhello.dir/Camera.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/config.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/GPUBuffer.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj
-glhello.exe: CMakeFiles/glhello.dir/Light.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/main.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/Material.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/Model.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/ModelInstance.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/ModelType.cpp.obj
-glhello.exe: CMakeFiles/glhello.dir/PostProcessor.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/Shader.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/Uniform.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/User.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/VertexAttribute.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/World.cpp.obj
+glhello.exe: CMakeFiles/glhello.dir/Modules/Camera.cpp.obj
+glhello.exe: CMakeFiles/glhello.dir/Modules/Light.cpp.obj
+glhello.exe: CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj
 glhello.exe: CMakeFiles/glhello.dir/build.make
 glhello.exe: ../glew/lib/Release/Win32/glew32s.lib
 glhello.exe: glfw/src/libglfw3.a
@@ -508,22 +508,22 @@ CMakeFiles/glhello.dir/build: glhello.exe
 
 .PHONY : CMakeFiles/glhello.dir/build
 
-CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Camera.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/config.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/GPUBuffer.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/InstanceAttribute.cpp.obj.requires
-CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Light.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/main.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Material.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Model.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/ModelInstance.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/ModelType.cpp.obj.requires
-CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/PostProcessor.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Shader.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Uniform.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/User.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/VertexAttribute.cpp.obj.requires
 CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/World.cpp.obj.requires
+CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Modules/Camera.cpp.obj.requires
+CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Modules/Light.cpp.obj.requires
+CMakeFiles/glhello.dir/requires: CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj.requires
 
 .PHONY : CMakeFiles/glhello.dir/requires
 

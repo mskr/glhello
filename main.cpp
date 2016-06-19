@@ -22,15 +22,21 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <stdexcept>
 
 #include "config.h"
-#include "VertexShader.h"
+#include "Shader.h"
 #include "FragmentShader.h"
-#include "Camera.h"
-#include "PostProcessor.h"
-#include "Light.h"
-#include "User.h"
+#include "VertexShader.h"
+#include "ModelType.h"
+#include "Material.h"
+#include "Model.h"
 #include "Factory.h"
+#include "World.h"
+#include "User.h"
+
+#include "Modules/Camera.h"
+#include "Modules/VolumetricLightScatteringMitchell.h"
 
 static void error_callback(int error, const char* description) {
 	fputs(description, stderr);
@@ -64,57 +70,66 @@ int main(void) {
 	
 	GLFWwindow* window = setupContext("Hello World");
 
+	Light light({
+		 // {{650.0f, 0.0f, 1.0f}, {0,2,20}}
+	});
+
 	GLuint shader1 = Shader::link({
-		VertexShader("triangleShader.vert"),
-		FragmentShader("triangleShader.frag")
+		VertexShader("triangle.vert"),
+		FragmentShader("triangle.frag")
 	});
 
-	ModelType type0(0, GL_TRIANGLES, shader1, {
-		VertexAttribute("color"),
-		VertexAttribute("normal")
+	GLuint shader2 = Shader::link({
+		VertexShader("point.vert"),
+		FragmentShader("point.frag")
 	});
-
-	Model m0(0, &type0, {});
-	m0.vertices(factory.checkerboard(64));
-	m0.units(64,0,64);
-	m0.translate(-32,0,-32);
 
 	ModelType type1(1, GL_TRIANGLES, shader1, {
 		VertexAttribute("normal")
 	});
 	type1.instance_attribs({ Material::instance_attrib });
 
-	Model m1(1, &type1, {Material(
-		380.0f, 0.5f, 0.0f,
-		750.0f, 1.0f, 1.0f,
+	ModelType type2(2, GL_POINTS, shader2, {});
+
+	Model cube(1, &type1, {Material(
+		0.0f, 0.0f, 0.0f,
+		500.0f, 0.2f, 0.8f, // blue
 		0.0f, 0.0f
 	)});
-	m1.vertices(factory.cube());
-	m1.units(1,1,1);
-	m1.translate(0.5f, 0.0f, 0.5f);
-	m1.use()->translateX(4)->units(1,30,1)->attr(1, Material(
-		750.0f, 0.5f, 0.0f,
-		380.0f, 1.0f, 1.0f,
+	cube.vertices(factory.cube());
+	cube.units(1, 10, 1);
+	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-1);
+	ground->attr(Material::instance_attrib.index(), Material(
+		0.0f, 0.0f, 0.0f,
+		570.0f, 0.5f, 0.8f, // gray
 		0.0f, 0.0f
 	));
+	for(int x = 0; x < 80; x+=4) {
+		for(int z = 0; z < 80; z+=4) {
+			if(x==0 && z==0) continue;
+			cube.use()->translateX(x)->translateZ(z);
+		}
+	}
+	ModelInstance* lightcube = cube.use()->units(1,1,1)->scale(20)->translateZ(-70)->translateY(50);
+	lightcube->emit(light.l(780.0f, 0.5f, 0.9f));
 
-	World world({&m0, &m1}, [](Model* m){}, {Uniform("modelID", [](Uniform* u, Model* m) {
+
+	// Model sun(2, &type2, {{{12, 20, -30}}}, {}); // sun as point sprite
+	// sun.emit(light.l(780.0f, 0.0f, 1.0f));
+
+	World world({&cube}, [](Model* m){}, {Uniform("modelID", [lightcube](Uniform* u, Model* m) {
 		u->update(m->id());
 	})});
 
-	Camera camera(glm::vec3(0,0,10), glm::vec3(0,0,0), glm::vec3(0,1,0), 
-		90, config::viewport_width/config::viewport_height, 0.1f, 100.0f);
-	camera.use(PostProcessor(Shader::link({
-		VertexShader("PostProcess.vert"),
-		FragmentShader("PostProcess.frag")
-	})));
-	world.add(&camera);
+	Camera camera(glm::vec3(0,0,20), glm::vec3(0,0,0), glm::vec3(0,1,0), 90);
 
-	Light light({
-		{{650.0f, 0.0f, 1.0f}, {10, 50, 10}},
-		{{650.0f, 0.0f, 1.0f}, {10, 0, 10}}
-	});
-	world.add(&light);
+	VolumetricLightScatteringMitchell lightscattering(&camera, lightcube->position_world_space());
+
+	world.extend(&lightscattering);
+
+	world.extend(&camera);
+
+	world.extend(&light);
 
 	User user(&world);
 	user.use(window);
@@ -125,7 +140,7 @@ int main(void) {
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
 	//+// Default color and depth values
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.2f, 0.2f, 0.5f, 1.0f);
 	glClearDepth(1.0);
 
 	//+// Backface culling

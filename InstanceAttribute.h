@@ -29,6 +29,10 @@ protected:
 	std::function<void(GLuint,GLsizei,GLsizei)> enable_func_;
 	bool has_changed_;
 
+	// Holds the index under which the attr can be accessed through model instances
+	unsigned int index_;
+	std::function<void(unsigned int)> index_func_;
+
 public:
 	InstanceAttribute();
 	InstanceAttribute(std::function<void(GLuint,GLsizei,GLsizei)> enable_func);
@@ -36,11 +40,17 @@ public:
 
 	void enable(GLuint gpu_program, GLsizei offset, GLsizei stride);
 	void bytes(GLsizei bytes);
+	void nullpointer();
 	void was_updated();
 
 	GLsizei bytes();
 	const GLvoid* pointer();
 	bool has_changed() { return has_changed_; }
+
+	// Used by models to store the index under which it can be accessed through a model instance
+	void call_index_func(unsigned int i);
+	void set_index(unsigned int i);
+	unsigned int index() { return index_; }
 };
 
 #endif

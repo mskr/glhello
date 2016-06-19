@@ -25,6 +25,10 @@ void ModelType::instance_attribs(std::initializer_list<InstanceAttribute> attrib
 	}
 }
 
+void ModelType::add_instance_attr(InstanceAttribute attr) {
+	instance_attribs_.push_back(attr);
+}
+
 void ModelType::set_strides(GLsizei stride) {
 	for(unsigned int i = 0; i < attribs_.size(); i++)  {
 		attribs_[i].stride(stride);

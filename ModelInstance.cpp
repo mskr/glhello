@@ -11,10 +11,38 @@ ModelInstance::ModelInstance(int id, int instance_id, Model* instance_of) {
 	units_x_ = -1;
 	units_y_ = -1;
 	units_z_ = -1;
+	emitter_ = 0;
 }
 
 ModelInstance::~ModelInstance() {
 	printf("DEBUG: MODEL INSTANCE (model id=%d, instance id=%d) DESTROYED\n", id_, instance_id_);
+}
+
+//TODO emit must be called before world constructor because it affects VBO size. Can this be made more flexible?
+void ModelInstance::emit(Light::Emitter l) {
+	// Inform instance attrib prototype about the size
+	Light::Emitter::instance_attrib.bytes(l.bytes());
+	// Add instance attrib prototype to modeltype
+	instance_of_->modeltype()->add_instance_attr(Light::Emitter::instance_attrib);
+	// Add a null attrib to all other instances in order to keep the gpu buffer right
+	Light::Emitter dummy = l;
+	dummy.nullpointer();
+	for(int i = 0; i < instance_of_->num_instances(); i++) {
+		if(instance_of_->instance(i)->instance_id() == instance_id_) continue;
+		instance_of_->instance(i)->push_attr(dummy);
+	}
+	// Add the emitter attrib to this instance
+	attribs_.push_back(l);
+	// Tell the instance attrib prototype about the attrib list index
+	l.call_index_func(attribs_.size()-1);
+	// Set light source position to position of this model instance
+	l.update_position(position_);
+	// Store emitter object for later position updates
+	emitter_ = &l;
+}
+
+void ModelInstance::push_attr(InstanceAttribute attrib) {
+	attribs_.push_back(attrib);
 }
 
 void ModelInstance::attr(int index, InstanceAttribute attrib) {
@@ -30,6 +58,7 @@ void ModelInstance::transform(glm::mat4 transformation_matrix) {
 	glm::mat4* ptr = model_matrix();
 	*ptr = transformation_matrix * (*ptr);
 	has_changed_ = true;
+	if(emitter_ != 0) emitter_->update_position(position_);
 }
 
 void ModelInstance::was_updated() {
@@ -188,4 +217,8 @@ ModelInstance* ModelInstance::scaleZ(float factor) {
 ModelInstance* ModelInstance::position(glm::vec3 pos_in_units_from_origin) {
 	translate(pos_in_units_from_origin - position());
 	return this;
+}
+
+ModelInstance* ModelInstance::position(float x, float y, float z) {
+	return position(glm::vec3(x,y,z));
 }

@@ -4,12 +4,12 @@
 #include <GL/glew.h>
 #include "GLFW/glfw3.h"
 #include <glm.hpp>
+
 #include <fstream>
-#include <sstream>
 #include <stdexcept>
-#include <string>
-#include <stdio.h>      /* printf, fgets */
-#include <stdlib.h>     /* atoi */
+#include <sstream>
+#include <stdlib.h>
+
 #include "config.h"
 
 /*

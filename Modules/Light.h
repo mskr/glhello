@@ -1,7 +1,8 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-#include "Module.h"
+#include "../Module.h"
+#include "../InstanceAttribute.h"
 #include <glm.hpp>
 
 /*
@@ -38,10 +39,9 @@ public:
 
 	void add(std::initializer_list<std::initializer_list<GLfloat>> light);
 
-	// Module overrides
-	void interact(Interaction* i);
-	Interaction* interaction_type();
-	std::vector<Uniform> uniforms();
+	void interact(Interaction* i) override;
+	Interaction* interaction_type() override;
+	std::vector<Uniform> uniforms() override;
 
 	// Wavelength w in [380,750], otherwise undefined output.
 	// Output is hue in [0,360].
@@ -51,6 +51,30 @@ public:
 	// In HSV, white is only achieved with saturation=0.0 and value=1.0.
 	// Output is r,g and b in [0,1].
 	static glm::vec3 hsv_to_rgb(float h, float s, float v);
+
+	// Model instances hold an emitter object if they are light emitters
+	struct Emitter : public InstanceAttribute {
+		Light* light_;
+		GLuint data_[2]; // GPU data contains is_emitter and light_index
+		Emitter(Light* light, unsigned int buffer_index) {
+			light_ = light;
+			data_[0] = 1;
+			data_[1] = buffer_index;
+			InstanceAttribute::bytes_ = sizeof(GLuint);
+			InstanceAttribute::pointer_ = (GLvoid*) data_;
+			InstanceAttribute::index_func_ = [](unsigned int i) {
+				// i is the index of this instance attrib in the model instance's attribs list
+				Light::Emitter::instance_attrib.set_index(i);
+			};
+		}
+		void update_position(glm::vec3 pos) {
+			light_->buffer_[2*data_[1]] = pos;
+		}
+		static InstanceAttribute instance_attrib;
+	};
+
+	// Call this function and pass result to ModelInstance::emit() to turn the instance into a light emitter
+	Emitter l(float wavelength, float monochromaticity, float amplitude);
 };
 
 #endif

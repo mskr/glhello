@@ -32,7 +32,6 @@ void Light::add(std::initializer_list<std::initializer_list<GLfloat>> tupel) {
 
 
 
-
 std::vector<Uniform> Light::uniforms() {
 	return std::vector<Uniform> {
 		Uniform("light", buffer_.data(), [this](Uniform* u) {
@@ -81,4 +80,23 @@ glm::vec3 Light::hsv_to_rgb(float h, float s, float v) {
 		case 5: return glm::vec3(chroma+m, m, x+m); break;
 		default: return glm::vec3(m);
 	}
+}
+
+
+
+
+InstanceAttribute Light::Emitter::instance_attrib([](GLuint gpu_program, GLsizei offset, GLsizei stride) {
+	GLint loc = glGetAttribLocation(gpu_program, "Emitter");
+	if(loc == -1) printf("WARNING: Attribute \"Emitter\" not found in shader.\n");
+	else {
+		glVertexAttribIPointer(loc, 2, GL_UNSIGNED_INT, stride, (GLvoid*) (offset + 0));
+		glVertexAttribDivisor(loc, 1);
+		glEnableVertexAttribArray(loc);
+	}
+});
+
+Light::Emitter Light::l(float wavelength, float monochromaticity, float amplitude) {
+	Emitter e(this, (GLuint)(buffer_.size()/2));
+	add({{wavelength, monochromaticity, amplitude}, {0.0f, 0.0f, 0.0f}});
+	return e;
 }

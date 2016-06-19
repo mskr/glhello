@@ -8,8 +8,9 @@ Model::Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribu
 	attribs_ = {InstanceAttribute()};
 	int i = 1;
 	for(InstanceAttribute attr : instance_attribs) {
-		modeltype_->instance_attr(i)->bytes(attr.bytes());
 		attribs_.push_back(attr);
+		attr.call_index_func(attribs_.size()-1);
+		modeltype_->instance_attr(i)->bytes(attr.bytes());
 		i++;
 	}
 	if(attribs_.size() != modeltype_->num_instance_attribs())
@@ -26,8 +27,9 @@ Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initialize
 	attribs_ = {InstanceAttribute()};
 	int i = 1;
 	for(InstanceAttribute attr : instance_attribs) {
-		modeltype_->instance_attr(i)->bytes(attr.bytes());
 		attribs_.push_back(attr);
+		attr.call_index_func(attribs_.size()-1);
+		modeltype_->instance_attr(i)->bytes(attr.bytes());
 		i++;
 	}
 	if(attribs_.size() != modeltype_->num_instance_attribs())
@@ -91,6 +93,7 @@ void Model::vertices(std::vector<std::vector<std::vector<GLfloat>>> vertices) {
 	units_x_ = (max_x - min_x)/config::one_unit_x;
 	units_y_ = (max_y - min_y)/config::one_unit_y;
 	units_z_ = (max_z - min_z)/config::one_unit_z;
+	if(units_x_==0 && units_y_==0 && units_z_==0) position_ = glm::vec3(max_x, max_y, max_z);
 	modeltype_->set_strides(this->bytes()/num_vertices_);
 }
 
@@ -106,8 +109,8 @@ ModelInstance* Model::use() {
 	inst->units_y_ = this->units_y_;
 	inst->units_z_ = this->units_z_;
 	instances_.push_back(inst);
-	matrices_.push_back(matrices_[matrices_.size()-1]);
-	inst->attribs_ = this->attribs_; // copy attribs of parent model
+	matrices_.push_back(matrices_[0]); // copy matrix of parent model
+	inst->attribs_ = this->attribs_; // copy other attribs too
 	num_new_instances_++;
 	return inst;
 }
@@ -133,7 +136,7 @@ void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
 			glBufferSubData(GL_ARRAY_BUFFER, o, sizeof(glm::mat4), &matrices_[i]);
 			instances_[i]->was_updated();
 		}
-		//TODO check for other instance attributes
+		//TODO check for other instance attributes (instance attr index starts at 1 !)
 		o += modeltype_->bytes_instance_attribs();
 	}
 }
