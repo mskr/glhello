@@ -2,12 +2,12 @@
 /*
 / 1. Collection of ready to draw 3D-primitives
 / 2. Transparency with Depth Peeling
-/ 3. Divide program in core and modules.
 / 4. Physical Simulation with Transform Feedback (OpenGL Superbible Example)
 / 5. Shadow Volumes
 / 6. Unified Particle Physics for Real-Time Applications with compute shader
 / 7. Indirect Illumination with Voxel Cone Tracing
 / 8. Heightmap generator for microstructure materials (e.g. textiles), render with normal mapping
+/ 9. Include V8 and manipulate the scene at runtime using JavaScript.
 */
 
 #include <GL/glew.h>
@@ -68,7 +68,7 @@ GLFWwindow* setupContext(const char* title) {
 
 int main(void) {
 	
-	GLFWwindow* window = setupContext("Hello World");
+	GLFWwindow* window = setupContext("Hello World"); //TODO unify window and camera (Don't forget viewport configs etc.)
 
 	Light light({
 		 // {{650.0f, 0.0f, 1.0f}, {0,2,20}}
@@ -139,7 +139,7 @@ int main(void) {
 	glEnable(GL_POINT_SPRITE);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
-	//+// Default color and depth values
+	//+// Background color and depth values
 	glClearColor(0.2f, 0.2f, 0.5f, 1.0f);
 	glClearDepth(1.0);
 

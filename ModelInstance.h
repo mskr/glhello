@@ -54,6 +54,7 @@ public:
 	void attr(int index, InstanceAttribute attrib);
 	InstanceAttribute* attr(int index) { return &attribs_[index]; }
 
+	//TODO Area light instead of point light
 	void emit(Light::Emitter l);
 	bool is_emitter() { return (emitter_!=0); }
 

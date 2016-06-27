@@ -1,11 +1,12 @@
 #include "config.h"
 
+//TODO Better pass a configs.txt as argument on program execution
 std::string 	config::shader_dir 			= "C:/Users/mk/Desktop/git/glhello/SHADER/";
 
-int 			config::viewport_width 		= 800;
-int 			config::viewport_height 	= 600;
-float 			config::near				= 0.1f;
-float			config::far					= 800.0f;
+int 			config::viewport_width 		= 1920; //TODO should be a camera property
+int 			config::viewport_height 	= 1080; //TODO should be a camera property
+float 			config::near				= 0.1f; //TODO should be a camera property
+float			config::far					= 800.0f; //TODO should be a camera property
 float 			config::one_unit_x			= 2.0f;
 float 			config::one_unit_y			= (((float)config::viewport_width/(float)config::viewport_height)*2.0f);
 float 			config::one_unit_z			= 2.0f;
