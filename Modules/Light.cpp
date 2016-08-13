@@ -84,19 +84,33 @@ glm::vec3 Light::hsv_to_rgb(float h, float s, float v) {
 
 
 
+Light::Emitter::Emitter(Light* light, int buffer_index) : InstanceAttribute(sizeof(GLint), (GLvoid*) &gpu_data_) {
+	light_ = light;
+	buffer_index_ = buffer_index;
+	gpu_data_ = buffer_index;
+}
 
-InstanceAttribute Light::Emitter::instance_attrib([](GLuint gpu_program, GLsizei offset, GLsizei stride) {
-	GLint loc = glGetAttribLocation(gpu_program, "Emitter");
-	if(loc == -1) printf("WARNING: Attribute \"Emitter\" not found in shader.\n");
-	else {
-		glVertexAttribIPointer(loc, 2, GL_UNSIGNED_INT, stride, (GLvoid*) (offset + 0));
-		glVertexAttribDivisor(loc, 1);
-		glEnableVertexAttribArray(loc);
-	}
-});
+Light::Emitter::Emitter() : InstanceAttribute(sizeof(GLint), (GLvoid*) &gpu_data_, "Emitter:i.") {
+	light_ = 0;
+	buffer_index_ = -1;
+	gpu_data_ = -1;
+}
+
+void Light::Emitter::update_position(glm::vec3 pos) {
+	if(gpu_data_ >= 0) light_->buffer_[2 * gpu_data_] = pos;
+}
+
+void Light::Emitter::on() {
+	if(buffer_index_ < 0) return;
+	gpu_data_ = buffer_index_;
+}
+
+void Light::Emitter::off() {
+	gpu_data_ = -1;
+}
 
 Light::Emitter Light::l(float wavelength, float monochromaticity, float amplitude) {
-	Emitter e(this, (GLuint)(buffer_.size()/2));
+	Emitter e(this, (buffer_.size()/2));
 	add({{wavelength, monochromaticity, amplitude}, {0.0f, 0.0f, 0.0f}});
 	return e;
 }

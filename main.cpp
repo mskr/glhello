@@ -71,7 +71,7 @@ int main(void) {
 	GLFWwindow* window = setupContext("Hello World"); //TODO unify window and camera (Don't forget viewport configs etc.)
 
 	Light light({
-		 // {{650.0f, 0.0f, 1.0f}, {0,2,20}}
+		 {{650.0f, 0.0f, 1.0f}, {0,2,20}}
 	});
 
 	GLuint shader1 = Shader::link({
@@ -85,55 +85,33 @@ int main(void) {
 	});
 
 	ModelType type1(1, GL_TRIANGLES, shader1, {
-		VertexAttribute("normal")
+		VertexAttribute("normal")}, {
+		Material(),
+		Light::Emitter()
 	});
-	type1.instance_attribs({ Material::instance_attrib });
 
-	ModelType type2(2, GL_POINTS, shader2, {});
+	ModelType type2(2, GL_POINTS, shader2, {}, {});
 
-	Model cube(1, &type1, {Material(
-		0.0f, 0.0f, 0.0f,
-		500.0f, 0.2f, 0.8f, // blue
-		0.0f, 0.0f
-	)});
-	cube.vertices(factory.cube());
-	cube.units(1, 10, 1);
-	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-1);
-	ground->attr(Material::instance_attrib.index(), Material(
-		0.0f, 0.0f, 0.0f,
-		570.0f, 0.5f, 0.8f, // gray
-		0.0f, 0.0f
-	));
-	for(int x = 0; x < 80; x+=4) {
-		for(int z = 0; z < 80; z+=4) {
-			if(x==0 && z==0) continue;
-			cube.use()->translateX(x)->translateZ(z);
-		}
-	}
-	ModelInstance* lightcube = cube.use()->units(1,1,1)->scale(20)->translateZ(-70)->translateY(50);
-	lightcube->emit(light.l(780.0f, 0.5f, 0.9f));
+	Model cube(1, &type1, factory.cube());
+	Model sun(2, &type2, {{{12, 20, -30}}}); // sun as point sprite
+	Model t(2, &type1, factory.cube());
 
-
-	// Model sun(2, &type2, {{{12, 20, -30}}}, {}); // sun as point sprite
-	// sun.emit(light.l(780.0f, 0.0f, 1.0f));
-
-	World world({&cube}, [](Model* m){}, {Uniform("modelID", [lightcube](Uniform* u, Model* m) {
+	World world({&t}, [](Model* m){}, {Uniform("modelID", [lightcube](Uniform* u, Model* m) {
 		u->update(m->id());
 	})});
 
-	Camera camera(glm::vec3(0,0,20), glm::vec3(0,0,0), glm::vec3(0,1,0), 90);
+	Camera camera(glm::vec3(0,0,10), glm::vec3(0,0,0), glm::vec3(0,1,0), 90);
+	world.extend(&camera);
 
 	VolumetricLightScatteringMitchell lightscattering(&camera, lightcube->position_world_space());
-
-	world.extend(&lightscattering);
-
-	world.extend(&camera);
+	// world.extend(&lightscattering);
 
 	world.extend(&light);
 
 	User user(&world);
 	user.use(window);
 	((CameraInteraction*) user.use(&camera))->simple();
+	user.use(&lightscattering);
 
 	//+// Point primitives with shader-specified size
 	glEnable(GL_POINT_SPRITE);
@@ -155,6 +133,41 @@ int main(void) {
 	//+// Depth test
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
+	cube.attr(1, Material( //TODO how to get rid of the index?
+		0.0f, 0.0f, 0.0f,
+		1000.0f, 0.0f, 1.0f,
+		0.0f, 0.0f
+	));
+	cube.units(1, 10, 1);
+	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-1);
+	ground->attr(1, Material(
+		0.0f, 0.0f, 0.0f,
+		570.0f, 0.5f, 0.8f, // gray
+		0.0f, 0.0f
+	));
+	for(int x = 0; x < 80; x+=4) {
+		for(int z = 0; z < 80; z+=4) {
+			if(x==0 && z==0) continue;
+			ModelInstance* skyscraper = cube.use()->translateX(x)->translateZ(z);
+			skyscraper->attr(1, Material(
+				0.0f, 0.0f, 0.0f,
+				500.0f, 0.2f, 0.8f, // blue
+				0.0f, 0.0f
+			));
+		}
+	}
+	ModelInstance* lightcube = cube.use()->units(1,1,1)->scale(20)->translateZ(-70)->translateY(50);
+	lightcube->emit(2, light.l(780.0f, 0.5f, 0.9f)); //TODO light is calculated even if the model is not in the world
+
+	t.attr(1, Material(
+		0.0f, 0.0f, 0.0f,
+		500.0f, 1.0f, 1.0f, // white
+		0.0f, 0.0f
+	));
+	t.position(0,0,0);
+	t.units(1,1,1);
+	// t.position(0,0,0);
 
 	// rendering loop
 	while(!glfwWindowShouldClose(window)) {

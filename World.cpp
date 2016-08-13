@@ -71,8 +71,6 @@ World::~World() {
 }
 
 
-//TODO Integrate a way for modules to run actions inside draw loop (what actions would that be?)
-
 void World::draw() {
 	for(unsigned int j = 0; j < gpu_programs_.size(); j++) {
 		glUseProgram(gpu_programs_[j]);
@@ -80,6 +78,7 @@ void World::draw() {
 		for(Uniform &uniform : uniform_buffers_)
 			if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback();
 
+		//TODO display FPS
 		for(unsigned int i = 0; i < modeltypes_.size(); i++) {
 			if(modeltypes_[i]->gpu_program() == gpu_programs_[j]) {
 				glBindVertexArray(vertex_array_objects_[i]);
@@ -90,7 +89,7 @@ void World::draw() {
 					if(m->modeltype() == modeltypes_[i]) {
 						
 						m->update_instance_attribs(&instanced_array_buffers_[i], instance_attribs_offset);
-						//TODO check for new instances and add them into buffer (check for instance attribute changes too?)
+						//TODO check for new instances and add them into buffer
 
 						for(Uniform &uniform : uniforms_)
 							if(uniform.gpu_program() == gpu_programs_[j]) uniform.callback(m);
@@ -114,7 +113,7 @@ void World::extend(Module* mod) {
 
 void World::add(Uniform u) {
 	// for each gpu program: *copy* uniform to list
-	// => the same uniform exists for each gpu program
+	// => the same uniform object exists for each gpu program
 	for(GLuint gpu_program : gpu_programs_) {
 		if(u.is_ubo() && u.has_bytes()) {
 			u.gpu_program(gpu_program);
@@ -130,7 +129,7 @@ void World::add(Uniform u) {
 	}
 }
 
-//TODO rewrite and test adding models at runtime!
+//TODO adding models at runtime: rewrite and test!
 void World::add(Model* m) {
 	ModelType* t = m->modeltype();
 	bool is_of_new_type = true;

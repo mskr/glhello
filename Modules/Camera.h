@@ -9,15 +9,17 @@
 * This is a camera.
 * You can place a camera in a world.
 * The camera can shoot the world.
-* Then the world gets rendered to your screen.
+* The camera renders the shot to a window.
 * The image of the world depends on
 * a) viewpoint
 * b) projection
 * which is defined by the camera parameters.
-* Camera construction makes "view_projection" available to shaders.
 * A camera can be controlled by a user.
 */
 class Camera : public Module {
+
+	// GLFWwindow* window_;
+	
 
 	glm::vec3 position_;
 	glm::vec3 target_;

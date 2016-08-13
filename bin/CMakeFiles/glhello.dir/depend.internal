@@ -101,11 +101,7 @@ CMakeFiles/glhello.dir/Material.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Material.cpp
  C:/Users/mk/Desktop/git/glhello/Material.h
 CMakeFiles/glhello.dir/Model.cpp.obj
- ../InstanceAttribute.h
- ../Interaction.h
- ../Module.h
  ../Modules/Light.h
- ../Uniform.h
  ../glew/include/GL/glew.h
  ../glfw/include/GLFW/glfw3.h
  ../glm/glm/common.hpp
@@ -195,11 +191,15 @@ CMakeFiles/glhello.dir/Model.cpp.obj
  ../glm/glm/vector_relational.hpp
  C:/Users/mk/Desktop/git/glhello/GPUBuffer.h
  C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+ C:/Users/mk/Desktop/git/glhello/Interaction.h
  C:/Users/mk/Desktop/git/glhello/Material.h
  C:/Users/mk/Desktop/git/glhello/Model.cpp
  C:/Users/mk/Desktop/git/glhello/Model.h
  C:/Users/mk/Desktop/git/glhello/ModelInstance.h
  C:/Users/mk/Desktop/git/glhello/ModelType.h
+ C:/Users/mk/Desktop/git/glhello/Module.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
+ C:/Users/mk/Desktop/git/glhello/Uniform.h
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
  C:/Users/mk/Desktop/git/glhello/config.h
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj
@@ -302,6 +302,7 @@ CMakeFiles/glhello.dir/ModelInstance.cpp.obj
  C:/Users/mk/Desktop/git/glhello/ModelInstance.cpp
  C:/Users/mk/Desktop/git/glhello/ModelInstance.h
  C:/Users/mk/Desktop/git/glhello/ModelType.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
  C:/Users/mk/Desktop/git/glhello/config.h
 CMakeFiles/glhello.dir/ModelType.cpp.obj
@@ -386,12 +387,16 @@ CMakeFiles/glhello.dir/ModelType.cpp.obj
  ../glm/glm/vec3.hpp
  ../glm/glm/vec4.hpp
  ../glm/glm/vector_relational.hpp
+ C:/Users/mk/Desktop/git/glhello/GPUBuffer.h
  C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+ C:/Users/mk/Desktop/git/glhello/Interaction.h
  C:/Users/mk/Desktop/git/glhello/ModelType.cpp
  C:/Users/mk/Desktop/git/glhello/ModelType.h
+ C:/Users/mk/Desktop/git/glhello/Module.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
+ C:/Users/mk/Desktop/git/glhello/Uniform.h
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj
- ../InstanceAttribute.h
  ../Modules/Light.h
  ../glew/include/GL/glew.h
  ../glfw/include/GLFW/glfw3.h
@@ -499,6 +504,7 @@ CMakeFiles/glhello.dir/Modules/Camera.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Modules/Camera.cpp
  C:/Users/mk/Desktop/git/glhello/Modules/Camera.h
  C:/Users/mk/Desktop/git/glhello/Modules/CameraInteraction.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Uniform.h
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
  C:/Users/mk/Desktop/git/glhello/World.h
@@ -593,7 +599,6 @@ CMakeFiles/glhello.dir/Modules/Light.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Uniform.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj
- ../InstanceAttribute.h
  ../Modules/Light.h
  ../glew/include/GL/glew.h
  ../glfw/include/GLFW/glfw3.h
@@ -701,6 +706,7 @@ CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Module.h
  C:/Users/mk/Desktop/git/glhello/Modules/Camera.h
  C:/Users/mk/Desktop/git/glhello/Modules/CameraInteraction.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.cpp
  C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.h
  C:/Users/mk/Desktop/git/glhello/Shader.h
@@ -880,7 +886,6 @@ CMakeFiles/glhello.dir/Uniform.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Uniform.cpp
  C:/Users/mk/Desktop/git/glhello/Uniform.h
 CMakeFiles/glhello.dir/User.cpp.obj
- ../InstanceAttribute.h
  ../Interaction.h
  ../Module.h
  ../Modules/Camera.h
@@ -990,6 +995,7 @@ CMakeFiles/glhello.dir/User.cpp.obj
  C:/Users/mk/Desktop/git/glhello/ModelInstance.h
  C:/Users/mk/Desktop/git/glhello/ModelType.h
  C:/Users/mk/Desktop/git/glhello/Module.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Uniform.h
  C:/Users/mk/Desktop/git/glhello/User.cpp
  C:/Users/mk/Desktop/git/glhello/User.h
@@ -1002,8 +1008,6 @@ CMakeFiles/glhello.dir/VertexAttribute.cpp.obj
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.cpp
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
 CMakeFiles/glhello.dir/World.cpp.obj
- ../InstanceAttribute.h
- ../Module.h
  ../Modules/Light.h
  ../glew/include/GL/glew.h
  ../glfw/include/GLFW/glfw3.h
@@ -1108,6 +1112,7 @@ CMakeFiles/glhello.dir/World.cpp.obj
  C:/Users/mk/Desktop/git/glhello/ModelInstance.h
  C:/Users/mk/Desktop/git/glhello/ModelType.h
  C:/Users/mk/Desktop/git/glhello/Module.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Uniform.h
  C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
  C:/Users/mk/Desktop/git/glhello/World.cpp
@@ -1117,7 +1122,6 @@ CMakeFiles/glhello.dir/config.cpp.obj
  C:/Users/mk/Desktop/git/glhello/config.cpp
  C:/Users/mk/Desktop/git/glhello/config.h
 CMakeFiles/glhello.dir/main.cpp.obj
- ../InstanceAttribute.h
  ../Modules/Camera.h
  ../Modules/Light.h
  ../glew/include/GL/glew.h
@@ -1227,6 +1231,7 @@ CMakeFiles/glhello.dir/main.cpp.obj
  C:/Users/mk/Desktop/git/glhello/Module.h
  C:/Users/mk/Desktop/git/glhello/Modules/Camera.h
  C:/Users/mk/Desktop/git/glhello/Modules/CameraInteraction.h
+ C:/Users/mk/Desktop/git/glhello/Modules/Light.h
  C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.h
  C:/Users/mk/Desktop/git/glhello/Shader.h
  C:/Users/mk/Desktop/git/glhello/Uniform.h

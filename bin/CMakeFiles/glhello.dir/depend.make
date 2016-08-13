@@ -100,11 +100,7 @@ CMakeFiles/glhello.dir/Material.cpp.obj: ../InstanceAttribute.h
 CMakeFiles/glhello.dir/Material.cpp.obj: ../Material.cpp
 CMakeFiles/glhello.dir/Material.cpp.obj: ../Material.h
 
-CMakeFiles/glhello.dir/Model.cpp.obj: ../InstanceAttribute.h
-CMakeFiles/glhello.dir/Model.cpp.obj: ../Interaction.h
-CMakeFiles/glhello.dir/Model.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../Modules/Light.h
-CMakeFiles/glhello.dir/Model.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../glew/include/GL/glew.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../glfw/include/GLFW/glfw3.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../glm/glm/common.hpp
@@ -194,11 +190,15 @@ CMakeFiles/glhello.dir/Model.cpp.obj: ../glm/glm/vec4.hpp
 CMakeFiles/glhello.dir/Model.cpp.obj: ../glm/glm/vector_relational.hpp
 CMakeFiles/glhello.dir/Model.cpp.obj: ../GPUBuffer.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../InstanceAttribute.h
+CMakeFiles/glhello.dir/Model.cpp.obj: ../Interaction.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../Material.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../Model.cpp
 CMakeFiles/glhello.dir/Model.cpp.obj: ../Model.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../ModelInstance.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../ModelType.h
+CMakeFiles/glhello.dir/Model.cpp.obj: ../Module.h
+CMakeFiles/glhello.dir/Model.cpp.obj: ../Modules/Light.h
+CMakeFiles/glhello.dir/Model.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../VertexAttribute.h
 CMakeFiles/glhello.dir/Model.cpp.obj: ../config.h
 
@@ -301,6 +301,7 @@ CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../Model.h
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../ModelInstance.cpp
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../ModelInstance.h
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../ModelType.h
+CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../VertexAttribute.h
 CMakeFiles/glhello.dir/ModelInstance.cpp.obj: ../config.h
 
@@ -385,12 +386,16 @@ CMakeFiles/glhello.dir/ModelType.cpp.obj: ../glm/glm/vec2.hpp
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../glm/glm/vec3.hpp
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../glm/glm/vec4.hpp
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../glm/glm/vector_relational.hpp
+CMakeFiles/glhello.dir/ModelType.cpp.obj: ../GPUBuffer.h
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../InstanceAttribute.h
+CMakeFiles/glhello.dir/ModelType.cpp.obj: ../Interaction.h
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../ModelType.cpp
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../ModelType.h
+CMakeFiles/glhello.dir/ModelType.cpp.obj: ../Module.h
+CMakeFiles/glhello.dir/ModelType.cpp.obj: ../Modules/Light.h
+CMakeFiles/glhello.dir/ModelType.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/ModelType.cpp.obj: ../VertexAttribute.h
 
-CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../InstanceAttribute.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../glew/include/GL/glew.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../glfw/include/GLFW/glfw3.h
@@ -498,6 +503,7 @@ CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/Camera.cpp
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/Camera.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/CameraInteraction.h
+CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../VertexAttribute.h
 CMakeFiles/glhello.dir/Modules/Camera.cpp.obj: ../World.h
@@ -592,7 +598,6 @@ CMakeFiles/glhello.dir/Modules/Light.cpp.obj: ../Modules/Light.cpp
 CMakeFiles/glhello.dir/Modules/Light.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/Modules/Light.cpp.obj: ../Uniform.h
 
-CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../InstanceAttribute.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../glew/include/GL/glew.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../glfw/include/GLFW/glfw3.h
@@ -700,6 +705,7 @@ CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Mod
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/Camera.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/CameraInteraction.h
+CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/VolumetricLightScatteringMitchell.cpp
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Modules/VolumetricLightScatteringMitchell.h
 CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj: ../Shader.h
@@ -879,7 +885,6 @@ CMakeFiles/glhello.dir/Uniform.cpp.obj: ../GPUBuffer.h
 CMakeFiles/glhello.dir/Uniform.cpp.obj: ../Uniform.cpp
 CMakeFiles/glhello.dir/Uniform.cpp.obj: ../Uniform.h
 
-CMakeFiles/glhello.dir/User.cpp.obj: ../InstanceAttribute.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../Interaction.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../Modules/Camera.h
@@ -989,6 +994,7 @@ CMakeFiles/glhello.dir/User.cpp.obj: ../Model.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../ModelInstance.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../ModelType.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../Module.h
+CMakeFiles/glhello.dir/User.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/User.cpp.obj: ../User.cpp
 CMakeFiles/glhello.dir/User.cpp.obj: ../User.h
@@ -1001,8 +1007,6 @@ CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: ../glfw/include/GLFW/glfw3.h
 CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: ../VertexAttribute.cpp
 CMakeFiles/glhello.dir/VertexAttribute.cpp.obj: ../VertexAttribute.h
 
-CMakeFiles/glhello.dir/World.cpp.obj: ../InstanceAttribute.h
-CMakeFiles/glhello.dir/World.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../glew/include/GL/glew.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../glfw/include/GLFW/glfw3.h
@@ -1107,6 +1111,7 @@ CMakeFiles/glhello.dir/World.cpp.obj: ../Model.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../ModelInstance.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../ModelType.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../Module.h
+CMakeFiles/glhello.dir/World.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../Uniform.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../VertexAttribute.h
 CMakeFiles/glhello.dir/World.cpp.obj: ../World.cpp
@@ -1116,7 +1121,6 @@ CMakeFiles/glhello.dir/World.cpp.obj: ../config.h
 CMakeFiles/glhello.dir/config.cpp.obj: ../config.cpp
 CMakeFiles/glhello.dir/config.cpp.obj: ../config.h
 
-CMakeFiles/glhello.dir/main.cpp.obj: ../InstanceAttribute.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/Camera.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../glew/include/GL/glew.h
@@ -1226,6 +1230,7 @@ CMakeFiles/glhello.dir/main.cpp.obj: ../ModelType.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Module.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/Camera.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/CameraInteraction.h
+CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/Light.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Modules/VolumetricLightScatteringMitchell.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Shader.h
 CMakeFiles/glhello.dir/main.cpp.obj: ../Uniform.h

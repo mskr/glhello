@@ -33,8 +33,6 @@ class ModelInstance {
 	// Transformations from outside are controlled by the special functions below to remain consistent with units
 	void transform(glm::mat4 transformation_matrix);
 
-	Light::Emitter* emitter_;
-
 	// User-defined ID of the model that this is an instance of
 	int id_;
 
@@ -45,24 +43,22 @@ class ModelInstance {
 
 	std::vector<InstanceAttribute> attribs_;
 
+	Light::Emitter* emitter_;
+
 	ModelInstance(int id, int instance_id, Model* instance_of);
 
 public:
 	~ModelInstance();
 
-	void push_attr(InstanceAttribute attrib);
-	void attr(int index, InstanceAttribute attrib);
-	InstanceAttribute* attr(int index) { return &attribs_[index]; }
-
-	//TODO Area light instead of point light
-	void emit(Light::Emitter l);
-	bool is_emitter() { return (emitter_!=0); }
+	void attr(unsigned int index, InstanceAttribute attrib);
+	void emit(unsigned int index, Light::Emitter emitter);
 
 	// GETTER
 	int id() { return id_; }
 	int instance_id() { return instance_id_; }
 	Model* instance_of() { return instance_of_; }
 	glm::mat4* model_matrix();
+	InstanceAttribute* attr(unsigned int index) { return &(attribs_[index]); };
 	float unitsX() { return units_x_; }
 	float unitsY() { return units_y_; }
 	float unitsZ() { return units_z_; }

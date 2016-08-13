@@ -44,6 +44,7 @@ public:
 		float reflection_wavelength, float reflection_width, float reflection_strength, 
 		float transmission_strength, float shininess
 	);
+	Material();
 	~Material();
 
 	// SETTER
@@ -51,9 +52,6 @@ public:
 	void reflect(float reflection_wavelength, float reflection_width, float reflection_strength);
 	void transmit(float transmission_strength);
 	void shine(float shininess);
-
-	// Used for modeltype description. Holds size in bytes, pointer and enable_func.
-	static InstanceAttribute instance_attrib;
 };
 
 #endif

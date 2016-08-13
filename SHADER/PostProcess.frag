@@ -6,11 +6,11 @@ layout(binding=1) uniform sampler2D occlusion_pre_pass_image;
 in vec2 pixel;
 uniform vec2 lightsource;
 
-const int NUM_SAMPLES = 100;
-const float EXPOSURE = 0.0034; //TODO behaves weird when getting bigger
-const float DENSITY = 0.84;
-const float WEIGHT = 5.65;
-const float DECAY = 1.0; //TODO behaves weird if != 1
+uniform int NUM_SAMPLES;
+uniform float EXPOSURE;
+uniform float DENSITY;
+uniform float WEIGHT;
+uniform float DECAY; //TODO behaves weird if != 1
 
 void main() {
 	vec2 s = (pixel - lightsource);

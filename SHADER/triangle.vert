@@ -22,8 +22,8 @@ flat varying float fragMaterialTransmission;
 flat varying float fragMaterialShininess;
 
 
-in uvec2 Emitter;
-flat varying uvec2 fragEmitter;
+in int Emitter;
+flat varying int fragEmitter;
 
 attribute vec3 position;
 attribute vec3 normal;

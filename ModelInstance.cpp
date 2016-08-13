@@ -15,40 +15,35 @@ ModelInstance::ModelInstance(int id, int instance_id, Model* instance_of) {
 }
 
 ModelInstance::~ModelInstance() {
-	printf("DEBUG: MODEL INSTANCE (model id=%d, instance id=%d) DESTROYED\n", id_, instance_id_);
+	printf("DEBUG: MODEL INSTANCE DESTROYED (model id=%d, instance id=%d)\n", id_, instance_id_);
 }
 
-//TODO emit must be called before world constructor because it affects VBO size. Can this be made more flexible?
-void ModelInstance::emit(Light::Emitter l) {
-	// Inform instance attrib prototype about the size
-	Light::Emitter::instance_attrib.bytes(l.bytes());
-	// Add instance attrib prototype to modeltype
-	instance_of_->modeltype()->add_instance_attr(Light::Emitter::instance_attrib);
-	// Add a null attrib to all other instances in order to keep the gpu buffer right
-	Light::Emitter dummy = l;
-	dummy.nullpointer();
-	for(int i = 0; i < instance_of_->num_instances(); i++) {
-		if(instance_of_->instance(i)->instance_id() == instance_id_) continue;
-		instance_of_->instance(i)->push_attr(dummy);
+
+
+
+
+void ModelInstance::attr(unsigned int index, InstanceAttribute attrib) {
+	if(index == 0) { // Prevent access to model matrix
+		printf("WARNING: Model %d's instance %d's attribute 0 cannot be accessed.\n", id_, instance_id_);
+		return;
+	} else if(index < 0 || index >= attribs_.size()) { // Prevent out of bounds access
+		printf("WARNING: Model %d's instance %d's attribute %d out of bounds.\n", id_, instance_id_, index);
+		return;
+	} else if(attrib.bytes() != attribs_[index].bytes()) { // Prevent different size (which would corrupt the gpu buffer)
+		printf("WARNING: Model %d's instance %d's attribute %d could not be set because of wrong size.\n", id_, instance_id_, index);
+		return;
 	}
-	// Add the emitter attrib to this instance
-	attribs_.push_back(l);
-	// Tell the instance attrib prototype about the attrib list index
-	l.call_index_func(attribs_.size()-1);
-	// Set light source position to position of this model instance
-	l.update_position(position_);
-	// Store emitter object for later position updates
-	emitter_ = &l;
-}
-
-void ModelInstance::push_attr(InstanceAttribute attrib) {
-	attribs_.push_back(attrib);
-}
-
-void ModelInstance::attr(int index, InstanceAttribute attrib) {
-	instance_of_->modeltype()->instance_attr(index)->bytes(attrib.bytes());
 	attribs_[index] = attrib;
 }
+
+void ModelInstance::emit(unsigned int index, Light::Emitter emitter) {
+	attr(index, emitter);
+	emitter.update_position(position_);
+	emitter_ = &emitter;
+}
+
+
+
 
 glm::mat4* ModelInstance::model_matrix() {
 	return instance_of_->matrix_at(instance_id_);
@@ -131,9 +126,9 @@ ModelInstance* ModelInstance::rotateZ(float angle) {
 
 ModelInstance* ModelInstance::translate(glm::vec3 distances_in_units) {
 	glm::vec3 distances_in_modelspace(
-		distances_in_units.x*config::one_unit_x, 
-		distances_in_units.y*config::one_unit_y,
-		distances_in_units.z*config::one_unit_z);
+		distances_in_units.x * config::one_unit_x, 
+		distances_in_units.y * config::one_unit_y,
+		distances_in_units.z * config::one_unit_z);
 	transform(glm::translate(glm::mat4(1.0f), distances_in_modelspace));
 	position_ += distances_in_modelspace;
 	return this;

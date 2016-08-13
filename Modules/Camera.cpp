@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up_vector, float fov) {
+	// window_ = glfwCreateWindow(config::viewport_width, config::viewport_height, title, NULL, NULL);
 	position_ = position;
 	target_ = target;
 	up_vector_ = up_vector;
@@ -52,18 +53,33 @@ Interaction* Camera::interaction_type() {
 
 void Camera::interact(Interaction* i) {
 	CameraInteraction* interaction = (CameraInteraction*)i;
-	if     (interaction->type == interaction->SIMPLE)       simple(&interaction->simple_interaction);
-	else if(interaction->type == interaction->ARCBALL)      arcball(&interaction->arcball_interaction);
-	else if(interaction->type == interaction->FIRST_PERSON) first_person(&interaction->first_person_interaction);
+	if (interaction->type == interaction->SIMPLE) {
+		simple(&interaction->simple_interaction);
+	} else if(interaction->type == interaction->ARCBALL) {
+		arcball(&interaction->arcball_interaction);
+	} else if(interaction->type == interaction->FIRST_PERSON) {
+		first_person(&interaction->first_person_interaction);
+	}
 }
 
 void Camera::simple(CameraInteraction::Simple* interaction) {
-	if     (interaction->move == interaction->MOVE_RIGHT)    { position_.x++; target_.x++; }
-	else if(interaction->move == interaction->MOVE_LEFT)     { position_.x--; target_.x--; }
-	else if(interaction->move == interaction->MOVE_UP)       { position_.y++; target_.y++; }
-	else if(interaction->move == interaction->MOVE_DOWN)     { position_.y--; target_.y--; }
-	else if(interaction->move == interaction->MOVE_FORWARD)  { position_.z++; }
-	else if(interaction->move == interaction->MOVE_BACKWARD) { position_.z--; }
+	if (interaction->move == interaction->MOVE_RIGHT) {
+		position_.x++;
+		target_.x++;
+	} else if(interaction->move == interaction->MOVE_LEFT) {
+		position_.x--;
+		target_.x--;
+	} else if(interaction->move == interaction->MOVE_UP) {
+		position_.y++;
+		target_.y++;
+	} else if(interaction->move == interaction->MOVE_DOWN) {
+		position_.y--;
+		target_.y--;
+	} else if(interaction->move == interaction->MOVE_FORWARD) {
+		position_.z--;
+	} else if(interaction->move == interaction->MOVE_BACKWARD) {
+		position_.z++;
+	}
 }
 
 void Camera::arcball(CameraInteraction::Arcball* interaction) {
@@ -73,6 +89,22 @@ void Camera::arcball(CameraInteraction::Arcball* interaction) {
 void Camera::first_person(CameraInteraction::FirstPerson* interaction) {
 	//TODO
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

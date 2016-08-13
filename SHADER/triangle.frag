@@ -11,7 +11,7 @@ flat in vec3 fragMaterialReflection;
 flat in float fragMaterialTransmission;
 flat in float fragMaterialShininess;
 
-flat in uvec2 fragEmitter;
+flat in int fragEmitter;
 
 uniform int num_lights;
 layout(std430) buffer light {
@@ -27,11 +27,11 @@ vec3 lightRGB(uint index) {
 }
 
 bool testEmitter() {
-	return fragEmitter.x != 0;
+	return fragEmitter >= 0;
 }
 
 vec4 emitterColor() {
-	return vec4(lightRGB(fragEmitter.y), 1.0);
+	return vec4(lightRGB(fragEmitter), 1.0);
 }
 
 vec4 lambert() {
@@ -61,5 +61,5 @@ bool testOcclusionPrePass() {
 }
 
 void main() {
-	gl_FragColor = testEmitter() ? emitterColor() : (testOcclusionPrePass() ? vec4(0) : specular_response() * lambert());
+	gl_FragColor = (testEmitter() ? emitterColor() : (testOcclusionPrePass() ? vec4(0) : specular_response() * lambert()));
 }

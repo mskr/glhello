@@ -1,40 +1,28 @@
 #include "Model.h"
 
-Model::Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribute> instance_attribs) : ModelInstance(id, 0, this) {
+Model::Model(int id, ModelType* modeltype) : ModelInstance(id, 0, this) {
 	modeltype_ = modeltype;
 	vertices_ = {};
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
-	attribs_ = {InstanceAttribute()};
-	int i = 1;
-	for(InstanceAttribute attr : instance_attribs) {
-		attribs_.push_back(attr);
-		attr.call_index_func(attribs_.size()-1);
-		modeltype_->instance_attr(i)->bytes(attr.bytes());
-		i++;
-	}
-	if(attribs_.size() != modeltype_->num_instance_attribs())
-		throw std::runtime_error("Program exits because number of instance attributes of model does not match its modeltype.");
 	num_new_instances_ = 0;
+	attribs_ = {};
+	// Get instance attributes from the modeltype
+	for(unsigned int i = 0; i < modeltype_->num_instance_attribs(); i++) {
+		attribs_.push_back(*(modeltype_->instance_attr(i))); // make a copy
+	}
 }
 
-Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v,
-  std::initializer_list<InstanceAttribute> instance_attribs) : ModelInstance(id, 0, this) {
-
+Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v) : ModelInstance(id, 0, this) {
 	modeltype_ = modeltype;
 	instances_ = {this};
 	matrices_ = {glm::mat4(1.0f)};
-	attribs_ = {InstanceAttribute()};
-	int i = 1;
-	for(InstanceAttribute attr : instance_attribs) {
-		attribs_.push_back(attr);
-		attr.call_index_func(attribs_.size()-1);
-		modeltype_->instance_attr(i)->bytes(attr.bytes());
-		i++;
-	}
-	if(attribs_.size() != modeltype_->num_instance_attribs())
-		throw std::runtime_error("Program exits because number of instance attributes of model does not match its modeltype.");
 	num_new_instances_ = 0;
+	attribs_ = {};
+	// Get instance attributes from the modeltype
+	for(unsigned int i = 0; i < modeltype_->num_instance_attribs(); i++) {
+		attribs_.push_back(*(modeltype_->instance_attr(i))); // make a copy
+	}
 	// convert initializer list to vector
 	std::vector<std::vector<std::vector<GLfloat>>> v_vertices = {};
 	for(std::initializer_list<std::initializer_list<GLfloat>> vertex : v) {
@@ -46,6 +34,19 @@ Model::Model(int id, ModelType* modeltype, std::initializer_list<std::initialize
 		v_vertices.push_back(v_vertex);
 	}
 	vertices(v_vertices);
+}
+
+Model::Model(int id, ModelType* modeltype, std::vector<std::vector<std::vector<GLfloat>>> v) : ModelInstance(id, 0, this) {
+	modeltype_ = modeltype;
+	instances_ = {this};
+	matrices_ = {glm::mat4(1.0f)};
+	num_new_instances_ = 0;
+	attribs_ = {};
+	// Get instance attributes from the modeltype
+	for(unsigned int i = 0; i < modeltype_->num_instance_attribs(); i++) {
+		attribs_.push_back(*(modeltype_->instance_attr(i))); // make a copy
+	}
+	vertices(v);
 }
 
 Model::~Model() {
@@ -110,12 +111,13 @@ ModelInstance* Model::use() {
 	inst->units_z_ = this->units_z_;
 	instances_.push_back(inst);
 	matrices_.push_back(matrices_[0]); // copy matrix of parent model
-	inst->attribs_ = this->attribs_; // copy other attribs too
+	inst->attribs_ = this->attribs_; // copy instance attribs
 	num_new_instances_++;
 	return inst;
 }
 
 void Model::instances_added() {
+	//TODO Intended to use when adding instances to gpu buffer at runtime
 	num_new_instances_ = 0;
 }
 
@@ -127,7 +129,10 @@ GLsizeiptr Model::bytes_instance_attribs() {
 	return bytes;
 }
 
+//TODO Test!!!
 void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
+	// CALLED IN DRAW LOOP
+	// offset is number of instances already processed for current modeltype
 	GLint o = offset * modeltype_->bytes_instance_attribs();
 	for(unsigned int i = 0; i < instances_.size(); i++) {
 		// check if model matrix update necessary
@@ -136,14 +141,25 @@ void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
 			glBufferSubData(GL_ARRAY_BUFFER, o, sizeof(glm::mat4), &matrices_[i]);
 			instances_[i]->was_updated();
 		}
-		//TODO check for other instance attributes (instance attr index starts at 1 !)
-		o += modeltype_->bytes_instance_attribs();
+		o += instances_[i]->attr(0)->bytes();
+		// check for other instance attributes
+		for(unsigned int j = 1; j < modeltype_->num_instance_attribs(); j++) {
+			if(instances_[i]->attr(j)->has_changed()) {
+				b->bind();
+				glBufferSubData(GL_ARRAY_BUFFER, o, instances_[i]->attr(j)->bytes(), instances_[i]->attr(j)->pointer());
+			}
+			o += instances_[i]->attr(j)->bytes();
+		}
 	}
 }
 
 const GLvoid* Model::pointer_instance_attr(unsigned int instance_index, unsigned int attr_index) {
-	if(instance_index >= instances_.size() || attr_index >= instances_[instance_index]->attribs_.size())
-		throw std::runtime_error("Program exits because model instance attribute that was requested is out of range.");
-	else if(attr_index == 0) return matrix_at(instance_index);
-	else return instances_[instance_index]->attr(attr_index)->pointer();
+	if(instance_index >= instances_.size() || attr_index >= instances_[instance_index]->attribs_.size()) {
+		printf("WARNING: Model %d's instance %d's attribute %d out of bounds.\n", id_, instance_index, attr_index);
+		return 0;
+	} else if(attr_index == 0) {
+		return matrix_at(instance_index);
+	} else {
+		return instances_[instance_index]->attr(attr_index)->pointer();
+	}
 }

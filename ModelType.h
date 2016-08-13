@@ -11,12 +11,18 @@
 
 #include "VertexAttribute.h"
 #include "InstanceAttribute.h"
+#include "Modules/Light.h"
 
 /*
 * This is a model-type.
 * It is used to group similar models.
+* Similar models
+* a) consist of the same primitive (triangle, point, ...).
+* b) are rendered with the same shader.
+* c) have the same vertex attributes
+* d) have the same instance attributes
 * This helps to save OpenGL state changes.
-* You can give this to a model upon construction.
+* Models expect a type on construction.
 */
 class ModelType {
 
@@ -29,24 +35,23 @@ class ModelType {
 
 public:
 
-	ModelType(int id, GLenum primitive, GLuint gpu_program, std::initializer_list<VertexAttribute> attribs);
+	ModelType(int id, GLenum primitive, GLuint gpu_program,
+		std::initializer_list<VertexAttribute> vertex_attribs,
+		std::initializer_list<InstanceAttribute> instance_attribs);
 	~ModelType();
-
-	void instance_attribs(std::initializer_list<InstanceAttribute> attribs);
-	void add_instance_attr(InstanceAttribute attr);
 
 	void enable_attribs();
 	void enable_instance_attribs();
 
 	// GETTER
+	int id() { return id_; }
 	GLenum primitive() { return primitive_; }
 	GLuint gpu_program() { return gpu_program_; }
 	VertexAttribute* vertex_attr(int pos) { return &(attribs_[pos]); }
-	InstanceAttribute* instance_attr(int pos) { return &(instance_attribs_[pos]); }
 	unsigned int num_vertex_attribs() { return attribs_.size(); }
+	InstanceAttribute* instance_attr(int pos) { return &(instance_attribs_[pos]); }
 	unsigned int num_instance_attribs() { return instance_attribs_.size(); }
 	GLint bytes_instance_attribs() { return bytes_instance_attribs_; }
-	int id() { return id_; }
 
 	// SETTER
 	void set_strides(GLsizei stride);

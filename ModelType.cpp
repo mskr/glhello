@@ -1,36 +1,34 @@
 #include "ModelType.h"
 
-ModelType::ModelType(int id, GLenum primitive, GLuint gpu_program, std::initializer_list<VertexAttribute> attribs) {
+ModelType::ModelType(int id, GLenum primitive, GLuint gpu_program,
+  std::initializer_list<VertexAttribute> vertex_attribs,
+  std::initializer_list<InstanceAttribute> instance_attribs) {
 	id_ = id;
 	primitive_ = primitive;
 	gpu_program_ = gpu_program;
-	VertexAttribute position("position"); // "attribute vec3 position" available in shader by default
+	// "attribute vec3 position" is an implicit vertex attribute
+	VertexAttribute position("position");
 	position.gpu_program(gpu_program_);
 	attribs_.push_back(position);
-	for(VertexAttribute attr : attribs) {
+	for(VertexAttribute attr : vertex_attribs) {
 		attr.gpu_program(gpu_program_);
 		attribs_.push_back(attr);
 	}
-	instance_attribs_ = {InstanceAttribute()}; // "attribute mat4 model" available in shader by default
-	bytes_instance_attribs_ = -1;
+	// "attribute mat4 model" is an implicit instance attribute
+	instance_attribs_ = {InstanceAttribute()};
+	instance_attribs_.insert(instance_attribs_.end(), instance_attribs.begin(), instance_attribs.end());
+	bytes_instance_attribs_ = 0;
+	for(InstanceAttribute attr : instance_attribs_) {
+		bytes_instance_attribs_ += attr.bytes();
+	}
 }
 
 ModelType::~ModelType() {
 	printf("DEBUG: MODELTYPE DESTROYED\n");
 }
 
-void ModelType::instance_attribs(std::initializer_list<InstanceAttribute> attribs) {
-	for(InstanceAttribute attr : attribs) {
-		instance_attribs_.push_back(attr);
-	}
-}
-
-void ModelType::add_instance_attr(InstanceAttribute attr) {
-	instance_attribs_.push_back(attr);
-}
-
 void ModelType::set_strides(GLsizei stride) {
-	for(unsigned int i = 0; i < attribs_.size(); i++)  {
+	for(unsigned int i = 0; i < attribs_.size(); i++) {
 		attribs_[i].stride(stride);
 	}
 }
@@ -49,14 +47,9 @@ void ModelType::enable_attribs() {
 }
 
 void ModelType::enable_instance_attribs() {
-	GLsizei stride = 0;
-	for(InstanceAttribute &attr : instance_attribs_) {
-		stride += attr.bytes();
-	}
 	GLsizei offset = 0;
 	for(InstanceAttribute &attr : instance_attribs_) {
-		attr.enable(gpu_program_, offset, stride);
+		attr.enable(gpu_program_, offset, bytes_instance_attribs_);
 		offset += attr.bytes();
 	}
-	bytes_instance_attribs_ = stride;
 }

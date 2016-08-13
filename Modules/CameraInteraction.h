@@ -31,12 +31,12 @@ struct CameraInteraction : public Interaction {
 		void move_backward() { move = MOVE_BACKWARD; }
 		bool keypress(char key) {
 			switch(key) {
-				case 'w': move_up(); return true;
+				case 'q': move_up(); return true;
 				case 'a': move_left(); return true;
-				case 's': move_down(); return true;
+				case 'e': move_down(); return true;
 				case 'd': move_right(); return true;
-				case 'q': move_forward(); return true;
-				case 'e': move_backward(); return true;
+				case 'w': move_forward(); return true;
+				case 's': move_backward(); return true;
 				default: return false;
 			}
 		}

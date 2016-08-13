@@ -985,6 +985,8 @@ VertexAttribute.h
 C:/Users/mk/Desktop/git/glhello/VertexAttribute.h
 InstanceAttribute.h
 C:/Users/mk/Desktop/git/glhello/InstanceAttribute.h
+Modules/Light.h
+C:/Users/mk/Desktop/git/glhello/Modules/Light.h
 
 C:/Users/mk/Desktop/git/glhello/Module.h
 vector
@@ -1033,6 +1035,8 @@ C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.h
 C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.h
 ../Module.h
 C:/Users/mk/Desktop/git/glhello/Module.h
+../Interaction.h
+C:/Users/mk/Desktop/git/glhello/Interaction.h
 ../Shader.h
 C:/Users/mk/Desktop/git/glhello/Shader.h
 ../VertexShader.h

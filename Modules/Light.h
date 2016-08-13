@@ -52,25 +52,21 @@ public:
 	// Output is r,g and b in [0,1].
 	static glm::vec3 hsv_to_rgb(float h, float s, float v);
 
-	// Model instances hold an emitter object if they are light emitters
+	/*
+	* This is a light emitter.
+	* It is received through a call to Light.l(wavelength, monochromaticity, amplitude).
+	* Use it to make a model instance emit light.
+	* TODO Area lights
+	*/
 	struct Emitter : public InstanceAttribute {
 		Light* light_;
-		GLuint data_[2]; // GPU data contains is_emitter and light_index
-		Emitter(Light* light, unsigned int buffer_index) {
-			light_ = light;
-			data_[0] = 1;
-			data_[1] = buffer_index;
-			InstanceAttribute::bytes_ = sizeof(GLuint);
-			InstanceAttribute::pointer_ = (GLvoid*) data_;
-			InstanceAttribute::index_func_ = [](unsigned int i) {
-				// i is the index of this instance attrib in the model instance's attribs list
-				Light::Emitter::instance_attrib.set_index(i);
-			};
-		}
-		void update_position(glm::vec3 pos) {
-			light_->buffer_[2*data_[1]] = pos;
-		}
-		static InstanceAttribute instance_attrib;
+		int buffer_index_;
+		GLint gpu_data_; // < 0, if emitter off, otherwise light index in buffer
+		Emitter(Light* light, int buffer_index);
+		Emitter();
+		void update_position(glm::vec3 pos);
+		void on();
+		void off();
 	};
 
 	// Call this function and pass result to ModelInstance::emit() to turn the instance into a light emitter

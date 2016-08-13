@@ -7,50 +7,49 @@
 #include <functional>
 
 /*
-* This is an model instance attribute.
-* People also call it instanced arrays.
-* They are basically like vertex attributes.
+* This is a model instance attribute.
+* An instance attribute is per-instance shader data.
+* It is used with hardware instancing.
+* (People also talk about instanced arrays.)
+* Instances of a model have the same attributes.
+* These are taken from modeltype.
+* Each instance can can be set to different attribute values.
+* Instance attributes are technically like vertex attributes.
 * Except they are not updated for each vertex but for each instance.
-* This framework always does instanced draw.
-* ModelTypes can have prototype InstanceAttributes.
-* The prototype InstanceAttributes are static members of classes that want to provide per-instance shader data.
-* These classes derive from this class.
-* Models must have the InstanceAttributes dictated by their ModelType in the same order.
-* The standard instance attribute is a model matrix.
-* It is always available in vertex shaders as "in mat4 model".
-* WARNING:
-* Equal instance attributes of models of one type must have equal number of bytes.
+* If not subclassed, this class enables "in mat4 model" in vertex shader.
+* To define a new instance attribute, subclass this.
 */
 class InstanceAttribute {
 
 protected:
 	GLsizei bytes_;
 	const GLvoid* pointer_;
-	std::function<void(GLuint,GLsizei,GLsizei)> enable_func_;
+
+	// Indicates if gpu buffer has to be updated
 	bool has_changed_;
 
-	// Holds the index under which the attr can be accessed through model instances
-	unsigned int index_;
-	std::function<void(unsigned int)> index_func_;
+	// String describing the memory layout of the attribute components.
+	// Has the form "Name1: ffff, Name2: iiii.".
+	// Character 'f' stands for one float, 'i' for one int.
+	// "NameX" is a variable name in shader.
+	std::string memory_layout_;
 
 public:
+	// 1st constructor called only internally by modeltype to create the implicit model matrix instance attribute
 	InstanceAttribute();
-	InstanceAttribute(std::function<void(GLuint,GLsizei,GLsizei)> enable_func);
+	// 2nd constructor called by superclasses' default constructors (use with modeltypes)
+	InstanceAttribute(GLsizei bytes, const GLvoid* pointer, std::string memory_layout);
+	// 3rd constructor called by superclasses' non-default constructors (use with models and instances)
+	InstanceAttribute(GLsizei bytes, const GLvoid* pointer);
 	~InstanceAttribute();
 
 	void enable(GLuint gpu_program, GLsizei offset, GLsizei stride);
-	void bytes(GLsizei bytes);
-	void nullpointer();
-	void was_updated();
+	
+	void was_updated(); // for runtime updates
 
-	GLsizei bytes();
-	const GLvoid* pointer();
+	GLsizei bytes() { return bytes_; };
+	const GLvoid* pointer() { return pointer_; };
 	bool has_changed() { return has_changed_; }
-
-	// Used by models to store the index under which it can be accessed through a model instance
-	void call_index_func(unsigned int i);
-	void set_index(unsigned int i);
-	unsigned int index() { return index_; }
 };
 
 #endif

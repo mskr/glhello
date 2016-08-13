@@ -42,9 +42,9 @@ class Model : public ModelInstance {
 	int num_new_instances_;
 
 public:
-	Model(int id, ModelType* modeltype, std::initializer_list<InstanceAttribute> instance_attribs);
-	Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v,
-		std::initializer_list<InstanceAttribute> instance_attribs);
+	Model(int id, ModelType* modeltype);
+	Model(int id, ModelType* modeltype, std::initializer_list<std::initializer_list<std::initializer_list<GLfloat>>> v);
+	Model(int id, ModelType* modeltype, std::vector<std::vector<std::vector<GLfloat>>> v);
 	~Model();
 
 	// Returns instance of this model, which can be seperately transformed (hardware instancing)
