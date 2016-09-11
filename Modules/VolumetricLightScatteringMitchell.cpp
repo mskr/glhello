@@ -5,8 +5,8 @@ VolumetricLightScatteringMitchell::VolumetricLightScatteringMitchell(Camera::Pos
 		std::make_tuple(&occlusion_texture_, GL_COLOR_ATTACHMENT0, GL_RGB, GL_UNSIGNED_BYTE)
 	})
 {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Do this here because world_image is still bound
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO Better use glTextureParameteri(world_image_,...)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Do this here because occlusion_texture_ is still bound
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO Better use glTextureParameteri(occlusion_texture_,...)
 
 	post_processor_ = p;
 	lightsource_worldspace_ = lightsource_worldspace;
@@ -22,28 +22,9 @@ VolumetricLightScatteringMitchell::VolumetricLightScatteringMitchell(Camera::Pos
 	Module::shader_.add_uniform_block("Camera", {{"mat4", "view"}, {"mat4", "proj"}});
 	Module::shader_.add_matrix("proj * view");
 	Module::shader_.add_storage_buffer("light", {{"float", "lights[]"}});
+	//TODO Better check for occluders?
 	Module::shader_.set_frag_color("(fEmitter < 0) ? vec4(0) : vec4(lights[6*fEmitter+3], lights[6*fEmitter+4], lights[6*fEmitter+5], 1)");
 	Module::shader_.compile_and_link();
-
-
-	// Debug: 
-	// 	GLfloat quad[] {
-	// 		// (x, y)      // (u, v)
-	// 		-1.0f,  1.0f,  0.0f, 1.0f, // top left
-	// 		1.0f, -1.0f,  1.0f, 0.0f, // bottom right
-	// 		-1.0f, -1.0f,  0.0f, 0.0f, // bottom left
-	// 		-1.0f,  1.0f,  0.0f, 1.0f, // top left
-	// 		1.0f,  1.0f,  1.0f, 1.0f, // top right
-	// 		1.0f, -1.0f,  1.0f, 0.0f // bottom right
-	// 	};
-	// 	glGenVertexArrays(1, &debug_vao_);
-	// 	glBindVertexArray(debug_vao_);
-	// 	GPUBuffer vbo(sizeof(quad), quad);
-	// 	debug_shader_ = Shader::link({VertexShader("DepthMapRender.vert"), FragmentShader("DepthMapRender.frag")});
-	// 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
-	// 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-	// 	glEnableVertexAttribArray(0);
-	// glEnableVertexAttribArray(1);
 }
 
 VolumetricLightScatteringMitchell::~VolumetricLightScatteringMitchell() {
@@ -51,7 +32,7 @@ VolumetricLightScatteringMitchell::~VolumetricLightScatteringMitchell() {
 }
 
 std::vector<Uniform> VolumetricLightScatteringMitchell::uniforms() {
-	post_processor_->sampler(occlusion_texture_);
+	post_processor_->sampler(1, occlusion_texture_);
 	post_processor_->uniform("lightsource", [this](GLint location) {
 		glm::vec2 l = post_processor_->camera()->transform_screen_to_texturespace(
 			post_processor_->camera()->transform_world_to_screenspace(glm::vec4(this->lightsource_worldspace_, 1))
@@ -90,15 +71,6 @@ void VolumetricLightScatteringMitchell::on_pass(int pass) {
 }
 
 void VolumetricLightScatteringMitchell::debug_pass(int pass) {
-	// glBindVertexArray(debug_vao_);
-	// 	glUseProgram(debug_shader_);
-	// 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	// 	glClear(GL_COLOR_BUFFER_BIT); // no need for depth clearing as quad has no depth anyway
-	// 	glDisable(GL_DEPTH_TEST); // no need for depth testing
-	// 	glActiveTexture(GL_TEXTURE0);
-	// 	glBindTexture(GL_TEXTURE_2D, occlusion_texture_);
-	// 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	// glBindVertexArray(0);
 }
 
 void VolumetricLightScatteringMitchell::interact(Interaction* i) {

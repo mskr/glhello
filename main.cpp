@@ -83,7 +83,7 @@ int main(void) {
 		0.0f, 1.0f, 1.0f,
 		0.0f, 0.0f
 	));
-	cube.units(1, 1, 1);
+	cube.units(1, 5, 1);
 	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-2);
 	ground->attr(1, Material(
 		0.0f, 0.0f, 0.0f,
@@ -114,7 +114,7 @@ int main(void) {
 	// t.position(0,0,0);
 
 	World world({&cube}, [](Model* m){
-		// m->instance(0)->rotateY(0.001f);
+		m->instance(0)->rotateY(0.001f);
 	}, {});
 
 	world.extend(&camera);
@@ -125,9 +125,9 @@ int main(void) {
 
 	world.extend(&light);
 
-	// ShadowMapping modShadowMapping(&light);
+	ShadowMapping modShadowMapping(&light);
 
-	// world.extend(&modShadowMapping);
+	world.extend(&modShadowMapping);
 
 	User user(&world);
 	((CameraInteraction*) user.use(&camera))->simple();

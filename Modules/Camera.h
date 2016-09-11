@@ -76,18 +76,19 @@ public:
 		GLuint world_image_; //Texture
 		GLuint shader_;
 		GLuint vao_; //Screen-filling quad
-		// Hold samplers in shader_, index == bindingpoint
-		std::vector<GLuint> samplers_;
+		// Hold sampler bindingpoints and textures
+		std::map<GLint, GLuint> samplers_;
 		// Hold uniform locations and update functions
 		std::map<GLint, std::function<void(GLint)>> uniform_update_functions_;
 		PostProcessor();
+		// Switching on post processor creates framebuffer, shader and vao
 		void on(Camera* camera);
 		GLuint rendertarget();
 		void post_pass();
 	public:
 		~PostProcessor();
 		Camera* camera() { return camera_; }
-		void sampler(GLuint texture);
+		void sampler(GLint binding, GLuint texture);
 		void uniform(const char* name, std::function<void(GLint)> callback);
 	};
 

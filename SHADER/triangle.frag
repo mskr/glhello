@@ -36,13 +36,13 @@ vec4 emitterColor() {
 
 bool testShadow() {
 	vec3 ndc = fragPosLightSpace.xyz / fragPosLightSpace.w; // perspective divide
-	// Fragment can be outside light's view frustum
+	// Fragment can be outside light's view frustum...
 	if(ndc.x < -1 || ndc.x > 1 || ndc.y < -1 || ndc.y > 1 || ndc.z > 1 || ndc.z < 0)
-		return false;
+		return false; // ... then it is considered NOT in shadow
 	ndc = ndc * 0.5 + 0.5; // NDCs to texture coordinates [0,1]
 	float closestDepth = texture(ShadowMap, ndc.xy).r;
 	float currentDepth = ndc.z;
-	return closestDepth < (currentDepth-0.01);
+	return closestDepth < (currentDepth-0.001);
 }
 
 vec4 lambert() {
@@ -68,10 +68,6 @@ vec4 specular_response() {
 }
 
 void main() {
-	// Test 1: If fragment belongs to light emitter => render color of emitted light
-	// Test 2: If not light emitter, fragment belongs to occluder. If shader is in occlusion-pre-pass => render black
-	// Test 3: If shader is in a normal pass and fragment is no light emitter => apply ordinary shading
-	// gl_FragColor = (testEmitter() ? emitterColor() : (testOcclusionPrePass() ? vec4(0) : specular_response() * lambert()));
 	if(testEmitter()) {
 		gl_FragColor = emitterColor();
 	} else {

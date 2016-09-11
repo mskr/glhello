@@ -135,7 +135,7 @@ void Camera::PostProcessor::on(Camera* camera) {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
-	sampler(world_image_); //TODO
+	samplers_[0] = world_image_;
 }
 
 Camera::PostProcessor::~PostProcessor() {
@@ -157,18 +157,9 @@ void Camera::PostProcessor::post_pass() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader_);
 	glBindVertexArray(vao_);
-	//TODO use glBindTextures
-	// printf("%x... %u %u %u\n", glGetError(), samplers_.size(), ((GLuint*)samplers_.data())[0], ((GLuint*)samplers_.data())[1]);
-	// printf("%d %d\n", glIsTexture(((GLuint*)samplers_.data())[0]), glIsTexture(((GLuint*)samplers_.data())[1]));
-	// glBindTextures(0, samplers_.size(), samplers_.data());
-	// printf("%x\n", glGetError());
-	// glActiveTexture(GL_TEXTURE0 + 0);
-	// glBindTexture(GL_TEXTURE_2D, samplers_[0]);
-	// glActiveTexture(GL_TEXTURE0 + 1);
-	// glBindTexture(GL_TEXTURE_2D, samplers_[1]);
-	for(GLuint i = 0; i < samplers_.size(); i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, samplers_[i]);
+	for(std::pair<GLint, GLuint> s : samplers_) {
+		glActiveTexture(GL_TEXTURE0 + s.first);
+		glBindTexture(GL_TEXTURE_2D, s.second);
 	}
 	for(std::pair<GLint, std::function<void(GLint)>> u : uniform_update_functions_)
 		u.second(u.first);
@@ -176,8 +167,12 @@ void Camera::PostProcessor::post_pass() {
 	glBindVertexArray(0);
 }
 
-void Camera::PostProcessor::sampler(GLuint texture) {
-	samplers_.push_back(texture);
+void Camera::PostProcessor::sampler(GLint binding, GLuint texture) {
+	if(binding == 0) {
+		printf("WARNING: In PostProcess shader, sampler binding 0 is reserved for world image.\n");
+		return;
+	}
+	samplers_[binding] = texture;
 }
 
 void Camera::PostProcessor::uniform(const char* name, std::function<void(GLint)> callback) {
