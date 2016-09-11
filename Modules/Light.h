@@ -39,6 +39,10 @@ public:
 
 	void add(std::initializer_list<std::initializer_list<GLfloat>> light);
 
+	int num_sources();
+	glm::vec3 position(int source_index);
+	glm::vec3 color(int source_index);
+
 	void interact(Interaction* i) override;
 	Interaction* interaction_type() override;
 	std::vector<Uniform> uniforms() override;
@@ -61,7 +65,7 @@ public:
 	struct Emitter : public InstanceAttribute {
 		Light* light_;
 		int buffer_index_;
-		GLint gpu_data_; // < 0, if emitter off, otherwise light index in buffer
+		GLint gpu_data_; // < 0, if emitter off, otherwise index of lightsource in buffer
 		Emitter(Light* light, int buffer_index);
 		Emitter();
 		void update_position(glm::vec3 pos);

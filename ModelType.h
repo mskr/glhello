@@ -11,7 +11,6 @@
 
 #include "VertexAttribute.h"
 #include "InstanceAttribute.h"
-#include "Modules/Light.h"
 
 /*
 * This is a model-type.
@@ -40,8 +39,15 @@ public:
 		std::initializer_list<InstanceAttribute> instance_attribs);
 	~ModelType();
 
-	void enable_attribs();
-	void enable_instance_attribs();
+	// Attribute location connects gpu program to buffer
+	// World ensures that equally named attributes have equal location, across shaders
+	void bind_vertex_attr_location(int attr_index, GLint location);
+	int bind_instance_attr_locations(int attr_index, GLint location);
+
+	void link_gpu_program();
+
+	void format_vertex_buffer();
+	void format_instance_buffer();
 
 	// GETTER
 	int id() { return id_; }

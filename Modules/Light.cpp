@@ -30,14 +30,25 @@ void Light::add(std::initializer_list<std::initializer_list<GLfloat>> tupel) {
 	num_new_lights_++;
 }
 
+int Light::num_sources() {
+	return buffer_.size() / 2;
+}
+
+glm::vec3 Light::position(int source_index) {
+	return buffer_[2 * source_index];
+}
+
+glm::vec3 Light::color(int source_index) {
+	return buffer_[2 * source_index + 1];
+}
 
 
 std::vector<Uniform> Light::uniforms() {
 	return std::vector<Uniform> {
 		Uniform("light", buffer_.data(), [this](Uniform* u) {
-			auto it = buffer_.end() - 2*num_new_lights_;
-			glm::vec3* ptr = buffer_.data() + (it - buffer_.begin());
-			u->update_and_grow(ptr, 2*num_new_lights_*sizeof(glm::vec3));
+			auto it = buffer_.end() - 2*num_new_lights_; // get iterator at first new lightsource
+			glm::vec3* ptr = buffer_.data() + (it - buffer_.begin()); // convert iterator to pointer
+			u->update_and_grow(ptr, 2*num_new_lights_*sizeof(glm::vec3)); // update shader storage block
 			num_new_lights_ = 0;
 		}),
 		Uniform("num_lights", [this](Uniform* u, Model* m) {

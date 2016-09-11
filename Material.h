@@ -4,8 +4,11 @@
 #include <initializer_list>
 #include <stdexcept>
 #include "stdio.h"
-#include "Light.h"
+
+#include <glm.hpp>
+
 #include "InstanceAttribute.h"
+#include "Modules/Light.h"
 
 /*
 * This is material.

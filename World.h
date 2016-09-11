@@ -48,14 +48,26 @@ class World {
 	std::vector<GPUBuffer> instanced_array_buffers_;
 	// Holds all *distinct* gpu programs
 	std::vector<GLuint> gpu_programs_;
+	// Holds pointers to the distinct vertex attributes of all gpu programs
+	std::vector<VertexAttribute*> vertex_attribs_; // *Index == attrib location*
+	// Holds pointers to the distinct instance attributes of all gpu programs
+	std::vector<InstanceAttribute*> instance_attribs_; // *Index == attrib location*
+	// Holds all modules
+	std::vector<Module*> modules_;
 
-	// Private utility function that takes the models list,
+	// Private utility function that uses the models list,
 	// finds all distinct model types and stores them in the modeltypes list
 	void find_distinct_modeltypes(std::vector<ModelType*>* v);
 
-	// Private utility function that takes the modeltypes list,
+	// Private utility function that uses the modeltypes list,
 	// finds all distinct gpu programs and stores them in the given list
 	void find_distinct_gpu_programs(std::vector<GLuint>* v);
+
+	// Private utility function that uses the modeltypes list,
+	// finds distinct attributes in all gpu programs,
+	// binds them so that equal attributes have equal locations
+	// and so that the list indices are equal to locations.
+	void bind_shader_locations(std::vector<VertexAttribute*>* vattribs, std::vector<InstanceAttribute*>* iattribs);
 
 	// Tell the GPU how model matrices are stored and connected to shader variables
 	void set_modelmatrix_memory_layout(GPUBuffer* buffer, int offset, GLuint gpu_program);
@@ -85,7 +97,9 @@ public:
 		std::initializer_list<Uniform> uniforms);
 	~World();
 
-	void draw();
+	void draw(GLuint rendertarget);
+
+	void draw_modules();
 
 	void add(Uniform u);
 	void add(Model* m); //TODO make models and instances not just addable but removable too!

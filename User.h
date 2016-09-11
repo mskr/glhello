@@ -37,13 +37,12 @@ class User {
 
 	World* world_;
 
-	GLFWwindow* window_;
-
-	void keyaction(int action, char key, int mods);
+	// Private helpers called by public helpers
+	void keyaction(int action, char key, int mods); // called, if input was number or character
+	void keyaction(int action, int key, int mods); // called, if input was special key
 	void keypress(char key);
 	void keyrelease(char key);
 	void keyrepeat(char key);
-
 	void mousepress(int button);
 	void mouserelease(int button);
 
@@ -54,12 +53,13 @@ public:
 	User(World* w);
 	~User();
 
+	// Public helpers called by GLFW callbacks
 	void key(int key, int scancode, int action, int mods);
 	void scroll(double xoffset, double yoffset);
 	void mousemove(double xpos, double ypos);
 	void click(int button, int action, int mods);
 
-	void use(GLFWwindow* window);
+	static void listen_to(GLFWwindow* window); // called by camera
 
 	Interaction* use(Module* m);
 

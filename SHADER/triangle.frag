@@ -1,8 +1,8 @@
 #version 430
 
-uniform int modelID;
-uniform uint OcclusionPrePass;
+uniform sampler2D ShadowMap;
 
+in vec4 fragPosLightSpace; //TODO Either pass array from vertex shader or do matrix multiplication on fragment shader
 in vec3 fragPosition; // in world space
 in vec3 fragNormal; // in world space
 
@@ -34,6 +34,17 @@ vec4 emitterColor() {
 	return vec4(lightRGB(fragEmitter), 1.0);
 }
 
+bool testShadow() {
+	vec3 ndc = fragPosLightSpace.xyz / fragPosLightSpace.w; // perspective divide
+	// Fragment can be outside light's view frustum
+	if(ndc.x < -1 || ndc.x > 1 || ndc.y < -1 || ndc.y > 1 || ndc.z > 1 || ndc.z < 0)
+		return false;
+	ndc = ndc * 0.5 + 0.5; // NDCs to texture coordinates [0,1]
+	float closestDepth = texture(ShadowMap, ndc.xy).r;
+	float currentDepth = ndc.z;
+	return closestDepth < (currentDepth-0.01);
+}
+
 vec4 lambert() {
 	vec4 sum = vec4(0.0);
 	vec3 lightPosition;
@@ -43,7 +54,7 @@ vec4 lambert() {
 		lightPosition = vec3(lights[i],lights[i+1],lights[i+2]);
 		lightRGB = vec3(lights[i+3],lights[i+4],lights[i+5]);
 		lightDirection = lightPosition-fragPosition;
-		sum += max(0.1, dot(normalize(fragNormal), normalize(lightDirection))) * lightRGB;
+		sum += max(0.0, dot(normalize(fragNormal), normalize(lightDirection))) * lightRGB;
 	}
 	return sum;
 }
@@ -56,10 +67,18 @@ vec4 specular_response() {
 	return vec4(fragMaterialReflection - fragMaterialAbsorption, 1.0 - fragMaterialTransmission);
 }
 
-bool testOcclusionPrePass() {
-	return OcclusionPrePass != 0;
-}
-
 void main() {
-	gl_FragColor = (testEmitter() ? emitterColor() : (testOcclusionPrePass() ? vec4(0) : specular_response() * lambert()));
+	// Test 1: If fragment belongs to light emitter => render color of emitted light
+	// Test 2: If not light emitter, fragment belongs to occluder. If shader is in occlusion-pre-pass => render black
+	// Test 3: If shader is in a normal pass and fragment is no light emitter => apply ordinary shading
+	// gl_FragColor = (testEmitter() ? emitterColor() : (testOcclusionPrePass() ? vec4(0) : specular_response() * lambert()));
+	if(testEmitter()) {
+		gl_FragColor = emitterColor();
+	} else {
+		if(testShadow()) {
+			gl_FragColor = vec4(0);
+		} else {
+			gl_FragColor = specular_response() * lambert();
+		}
+	}
 }

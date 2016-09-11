@@ -1,33 +1,27 @@
 #include "Camera.h"
 
-Camera::Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up_vector, float fov) {
-	// window_ = glfwCreateWindow(config::viewport_width, config::viewport_height, title, NULL, NULL);
+Camera::Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up_vector, float fov, glm::vec2 viewport, float near, float far) {
+	is_on_ = true;
+	viewport_ = viewport;
+	window_ = glfwCreateWindow(viewport_.x, viewport_.y, config::program_title.c_str(), NULL, NULL);
+	glfwMakeContextCurrent(window_);
+	User::listen_to(window_);
 	position_ = position;
 	target_ = target;
 	up_vector_ = up_vector;
 	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_);
-	view_projection_matrices_[1] = glm::perspective(
-		glm::radians(fov),
-		(float)(config::viewport_width/config::viewport_height),
-		config::near, config::far
-	);
+	view_projection_matrices_[1] = glm::perspective(glm::radians(fov), viewport_.x/viewport_.y, near, far);
 }
 
 Camera::~Camera() {
-
+	glfwDestroyWindow(window_);
 }
 
 void Camera::shoot(World* world) {
-	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_); //TODO view matrix calc only on changes
-	if(post_processor.pre_pass()) {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		world->draw();
-		post_processor.post_pre_pass();
-	}
-	post_processor.ordinary_pass();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	world->draw();
-	post_processor.post_pass();
+	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_); //TODO only on changes
+	world->draw(post_processor_.rendertarget());
+	post_processor_.post_pass();
+	glfwSwapBuffers(window_);
 }
 
 glm::vec2 Camera::transform_world_to_screenspace(glm::vec4 worldspace_coordinates) const {
@@ -36,7 +30,12 @@ glm::vec2 Camera::transform_world_to_screenspace(glm::vec4 worldspace_coordinate
 	// Step 2: Get normalized device coordinates (NDCs) in [-1,1]^3 cube by doing perspective divide.
 	glm::vec3 cube = glm::vec3(homogeneous.x, homogeneous.y, homogeneous.z) / homogeneous.w;
 	// Step 3: Get screen coordinates by scaling and translating NDCs into viewport (ignoring Z).
-	return glm::vec2((1.0f + cube.x) * config::viewport_width / 2.0f, (1.0f + cube.y) * config::viewport_height / 2.0f);
+	return glm::vec2((1.0f + cube.x) * viewport_.x / 2.0f, (1.0f + cube.y) * viewport_.y / 2.0f);
+}
+
+glm::vec2 Camera::transform_screen_to_texturespace(glm::vec2 screenspace_coordinates) const {
+	// Screen-space is the viewport area, texture-space is [0,1]^2
+	return glm::vec2(screenspace_coordinates.x/viewport_.x, screenspace_coordinates.y/viewport_.y);
 }
 
 std::vector<Uniform> Camera::uniforms() {
@@ -53,7 +52,9 @@ Interaction* Camera::interaction_type() {
 
 void Camera::interact(Interaction* i) {
 	CameraInteraction* interaction = (CameraInteraction*)i;
-	if (interaction->type == interaction->SIMPLE) {
+	if(interaction->close_window) {
+		is_on_ = false;
+	} else if(interaction->type == interaction->SIMPLE) {
 		simple(&interaction->simple_interaction);
 	} else if(interaction->type == interaction->ARCBALL) {
 		arcball(&interaction->arcball_interaction);
@@ -90,169 +91,98 @@ void Camera::first_person(CameraInteraction::FirstPerson* interaction) {
 	//TODO
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Camera::PostProcessor* Camera::post_process(
-  GLuint post_pass_shader, 
-  std::initializer_list<std::string> uniforms, 
-  std::function<void(std::vector<GLint>*)> uniform_callback) 
-{
-	post_processor = PostProcessor(post_pass_shader, uniforms, uniform_callback);
-	return &post_processor;
+Camera::PostProcessor* Camera::post_processor() {
+	if(!post_processor_.is_on_) {
+		post_processor_.on(this);
+	}
+	return &post_processor_;
 }
-
-GLfloat Camera::PostProcessor::fullscreen_quad_[] = {
-	// (x, y)      // (u, v)
-	-1.0f,  1.0f,  0.0f, 1.0f, // top left
-	1.0f, -1.0f,  1.0f, 0.0f, // bottom right
-	-1.0f, -1.0f,  0.0f, 0.0f, // bottom left
-	-1.0f,  1.0f,  0.0f, 1.0f, // top left
-	1.0f,  1.0f,  1.0f, 1.0f, // top right
-	1.0f, -1.0f,  1.0f, 0.0f // bottom right
-};
 
 Camera::PostProcessor::PostProcessor() {
-	off_ = true;
+	is_on_ = false;
+	camera_ = 0;
 	framebuffer_ = 0;
-	post_pass_shader_ = 0;
-	texture_ = 0;
+	shader_ = 0;
+	world_image_ = 0;
 	vao_ = 0;
-	pre_pass_ = 0;
+	samplers_ = {};
+	uniform_update_functions_ = {};
 }
 
-Camera::PostProcessor::PostProcessor(
-  GLuint post_pass_shader, 
-  std::initializer_list<std::string> uniforms, 
-  std::function<void(std::vector<GLint>*)> uniform_callback)
-{
-	off_ = false;
-	post_pass_shader_ = post_pass_shader;
-	for(std::string s : uniforms) locate_post_pass_uniform(s.c_str());
-	uniform_callback_ = uniform_callback;
-	allocate_offscreen_rendertarget(&framebuffer_, &texture_);
-	upload_quad_vertices();
-	enable_quad_coords_in_shader(post_pass_shader_);
-	pre_pass_ = 0;
+void Camera::PostProcessor::on(Camera* camera) {
+	is_on_ = true;
+	camera_ = camera;
+	framebuffer_ = new GPUBuffer(camera_->viewport_.x, camera_->viewport_.y, {
+		std::make_tuple(&world_image_, GL_COLOR_ATTACHMENT0, GL_RGB, GL_UNSIGNED_BYTE)
+	});
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Do this here because world_image is still bound
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO Better use glTextureParameteri(world_image_,...)
+	shader_ = Shader::link({VertexShader("PostProcess.vert"), FragmentShader("PostProcess.frag")});
+	glGenVertexArrays(1, &vao_);
+	glBindVertexArray(vao_);
+	GLfloat quad[] = {
+		// (x, y)      // (u, v)
+		-1.0f,  1.0f,  0.0f, 1.0f, // top left
+		1.0f, -1.0f,  1.0f, 0.0f, // bottom right
+		-1.0f, -1.0f,  0.0f, 0.0f, // bottom left
+		-1.0f,  1.0f,  0.0f, 1.0f, // top left
+		1.0f,  1.0f,  1.0f, 1.0f, // top right
+		1.0f, -1.0f,  1.0f, 0.0f // bottom right
+	};
+	GPUBuffer vbo(sizeof(quad), quad);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+	sampler(world_image_); //TODO
 }
 
 Camera::PostProcessor::~PostProcessor() {
-	// in destructor, delete quad vao?
+	// Destructor
+	framebuffer_->null();
+	delete framebuffer_;
 }
 
-void Camera::PostProcessor::ordinary_pass() {
-	if(off_) return;
-	// render world to texture
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+GLuint Camera::PostProcessor::rendertarget() {
+	if(!is_on_) return 0;
 	glEnable(GL_DEPTH_TEST);
+	return framebuffer_->opengl_id();
 }
 
 void Camera::PostProcessor::post_pass() {
-	if(off_) return;
-	// render textured quad to default framebuffer (and edit texture in shader)
+	if(!is_on_) return;
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT); // no need for depth clearing as quad has no depth anyway
-	glUseProgram(post_pass_shader_);
+	glDisable(GL_DEPTH_TEST);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glUseProgram(shader_);
 	glBindVertexArray(vao_);
-	glDisable(GL_DEPTH_TEST); // no need for depth testing
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture_);
-	uniform_callback_(&uniform_locations_);
+	//TODO use glBindTextures
+	// printf("%x... %u %u %u\n", glGetError(), samplers_.size(), ((GLuint*)samplers_.data())[0], ((GLuint*)samplers_.data())[1]);
+	// printf("%d %d\n", glIsTexture(((GLuint*)samplers_.data())[0]), glIsTexture(((GLuint*)samplers_.data())[1]));
+	// glBindTextures(0, samplers_.size(), samplers_.data());
+	// printf("%x\n", glGetError());
+	// glActiveTexture(GL_TEXTURE0 + 0);
+	// glBindTexture(GL_TEXTURE_2D, samplers_[0]);
+	// glActiveTexture(GL_TEXTURE0 + 1);
+	// glBindTexture(GL_TEXTURE_2D, samplers_[1]);
+	for(GLuint i = 0; i < samplers_.size(); i++) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, samplers_[i]);
+	}
+	for(std::pair<GLint, std::function<void(GLint)>> u : uniform_update_functions_)
+		u.second(u.first);
 	glDrawArrays(GL_TRIANGLES, 0, 6); // invoke post process shader here!
 	glBindVertexArray(0);
 }
 
-bool Camera::PostProcessor::pre_pass() {
-	if(pre_pass_ == 0) return false;
-	pre_pass_();
-	return true;
+void Camera::PostProcessor::sampler(GLuint texture) {
+	samplers_.push_back(texture);
 }
 
-void Camera::PostProcessor::post_pre_pass() {
-	if(post_pre_pass_ == 0) return;
-	post_pre_pass_();
-}
-
-
-void Camera::PostProcessor::add_pre_pass(
-  std::function<void()> pre_pass,
-  std::function<void()> post_pre_pass)
-{
-	pre_pass_ = pre_pass;
-	post_pre_pass_ = post_pre_pass;
-}
-
-void Camera::PostProcessor::upload_quad_vertices() {
-	// Upload vertices of fullscreen quad
-	glGenVertexArrays(1, &vao_);
-	glBindVertexArray(vao_);
-	GPUBuffer vbo;
-	vbo.bind_data(sizeof(fullscreen_quad_), fullscreen_quad_);
-}
-
-void Camera::PostProcessor::enable_quad_coords_in_shader(GLuint shader) {
-	GLint loc1 = glGetAttribLocation(shader, "position");
-	GLint loc2 = glGetAttribLocation(shader, "texCoords");
-	glVertexAttribPointer(loc1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
-	glVertexAttribPointer(loc2, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(loc1);
-	glEnableVertexAttribArray(loc2);
-	glBindVertexArray(0);
-}
-
-void Camera::PostProcessor::allocate_offscreen_rendertarget(GLuint* framebuffer, GLuint* texture) {
-	// Allocate GPU memory for color, depth and stencil values
-	glGenFramebuffers(1, framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, *framebuffer);
-	// Target for color values (Texture has read-/write-access in shaders)
-	glGenTextures(1, texture);
-	glBindTexture(GL_TEXTURE_2D, *texture);
-	glTexImage2D(GL_TEXTURE_2D,
-		0,
-		GL_RGB,
-		config::viewport_width, config::viewport_height,
-		0,
-		GL_RGB,
-		GL_UNSIGNED_BYTE,
-		(GLvoid*)0 // texture not initialized with data
-	);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *texture, 0);
-	// Target for depth and stencil values (Renderbuffer is write-only but faster than textures)
-	GLuint renderbuffer = 0;
-	glGenRenderbuffers(1, &renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,
-		config::viewport_width, config::viewport_height
-	);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
-	// Is the framebuffer complete?
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		throw std::runtime_error("Program exits because PostProcessor failed to complete framebuffer.");
-	// Make the default framebuffer active again
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void Camera::PostProcessor::locate_post_pass_uniform(const GLchar* uniform_name) {
-	GLint loc = glGetUniformLocation(post_pass_shader_, uniform_name);
-	if(loc == -1) printf("WARNING: Uniform \"%s\" not found in post process shader.\n", uniform_name);
-	uniform_locations_.push_back(loc);
+void Camera::PostProcessor::uniform(const char* name, std::function<void(GLint)> callback) {
+	GLint loc = glGetUniformLocation(shader_, name);
+	if(loc == -1)
+		printf("WARNING: Uniform \"%s\" not used in PostProcess shader.\n", name);
+	uniform_update_functions_[loc] = callback;
 }

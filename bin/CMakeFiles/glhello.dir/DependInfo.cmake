@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/mk/Desktop/git/glhello/ModelType.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/ModelType.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Modules/Camera.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/Camera.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Modules/Light.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/Light.cpp.obj"
+  "C:/Users/mk/Desktop/git/glhello/Modules/ShadowMapping.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Modules/VolumetricLightScatteringMitchell.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Shader.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Shader.cpp.obj"
   "C:/Users/mk/Desktop/git/glhello/Uniform.cpp" "C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir/Uniform.cpp.obj"

@@ -129,8 +129,8 @@ ModelInstance* ModelInstance::translate(glm::vec3 distances_in_units) {
 		distances_in_units.x * config::one_unit_x, 
 		distances_in_units.y * config::one_unit_y,
 		distances_in_units.z * config::one_unit_z);
-	transform(glm::translate(glm::mat4(1.0f), distances_in_modelspace));
 	position_ += distances_in_modelspace;
+	transform(glm::translate(glm::mat4(1.0f), distances_in_modelspace));
 	return this;
 }
 
@@ -141,22 +141,22 @@ ModelInstance* ModelInstance::translate(float x, float y, float z) {
 
 ModelInstance* ModelInstance::translateX(float distance_in_units) {
 	glm::vec3 distance_in_modelspace(distance_in_units*config::one_unit_x, 0.0f, 0.0f);
-	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	position_.x += distance_in_modelspace.x;
+	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	return this;
 }
 
 ModelInstance* ModelInstance::translateY(float distance_in_units) {
 	glm::vec3 distance_in_modelspace(0.0f, distance_in_units*config::one_unit_y, 0.0f);
-	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	position_.y += distance_in_modelspace.y;
+	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	return this;
 }
 
 ModelInstance* ModelInstance::translateZ(float distance_in_units) {
 	glm::vec3 distance_in_modelspace(0.0f, 0.0f, distance_in_units*config::one_unit_z);
-	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	position_.z += distance_in_modelspace.z;
+	transform(glm::translate(glm::mat4(1.0f), distance_in_modelspace));
 	return this;
 }
 

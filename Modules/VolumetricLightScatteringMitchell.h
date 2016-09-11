@@ -10,10 +10,11 @@
 
 class VolumetricLightScatteringMitchell : public Module {
 
-	unsigned int pre_pass_on_;
-	GLuint occlusion_framebuffer_;
+	GPUBuffer occlusion_framebuffer_;
 	GLuint occlusion_texture_;
-	Camera* camera_;
+
+	Camera::PostProcessor* post_processor_;
+	
 	glm::vec3 lightsource_worldspace_;
 
 	int NUM_SAMPLES_;
@@ -22,15 +23,20 @@ class VolumetricLightScatteringMitchell : public Module {
 	float WEIGHT_;
 	float DECAY_;
 
-	glm::vec2 transform_screen_to_texturespace(glm::vec2 screen_coordinates);
+	GLuint debug_vao_;
+	GLuint debug_shader_;
 
 public:
-	VolumetricLightScatteringMitchell(Camera* camera, glm::vec3 lightsource_worldspace);
+	VolumetricLightScatteringMitchell(Camera::PostProcessor* p, glm::vec3 lightsource_worldspace);
 	~VolumetricLightScatteringMitchell();
 
 	std::vector<Uniform> uniforms() override;
 	void interact(Interaction* interaction) override;
 	Interaction* interaction_type() override;
+	int num_passes() override;
+	GLuint rendertarget(int pass) override;
+	void on_pass(int pass) override;
+	void debug_pass(int pass) override;
 };
 
 struct VolumetricLightScatteringMitchellInteraction : public Interaction {

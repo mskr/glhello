@@ -129,7 +129,6 @@ GLsizeiptr Model::bytes_instance_attribs() {
 	return bytes;
 }
 
-//TODO Test!!!
 void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
 	// CALLED IN DRAW LOOP
 	// offset is number of instances already processed for current modeltype
@@ -145,6 +144,10 @@ void Model::update_instance_attribs(GPUBuffer* b, GLint offset) {
 		// check for other instance attributes
 		for(unsigned int j = 1; j < modeltype_->num_instance_attribs(); j++) {
 			if(instances_[i]->attr(j)->has_changed()) {
+				//TODO when attribute j is a material object, pointer() points to some other objects' properties
+				// void* pp = (float*)(instances_[i]->attr(j)); // correct object
+				// float* p = (float*)(instances_[i]->attr(j)->pointer()); // wrong pointer
+				// printf("%p, %p: %f %f %f, %f %f %f\n", pp,p, *p, *(p+1), *(p+2), *(p+3), *(p+4), *(p+5));
 				b->bind();
 				glBufferSubData(GL_ARRAY_BUFFER, o, instances_[i]->attr(j)->bytes(), instances_[i]->attr(j)->pointer());
 			}

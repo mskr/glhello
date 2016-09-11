@@ -3,6 +3,7 @@
 
 #include "../Module.h"
 #include "../World.h"
+#include "../User.h"
 #include "CameraInteraction.h"
 
 /*
@@ -15,11 +16,12 @@
 * b) projection
 * which is defined by the camera parameters.
 * A camera can be controlled by a user.
+* Multiple cameras currently not possible because
+* a) GLFW window creates OpenGL context.
+* b) One VAO cannot be used for multiple contexts.
+* c) GLEW context is seperat.
 */
 class Camera : public Module {
-
-	// GLFWwindow* window_;
-	
 
 	glm::vec3 position_;
 	glm::vec3 target_;
@@ -27,18 +29,27 @@ class Camera : public Module {
 
 	glm::mat4 view_projection_matrices_[2];
 
+	glm::vec2 viewport_;
+	GLFWwindow* window_;
+
+	bool is_on_;
+
 	// These methods receive events of respective interaction type
 	void simple(CameraInteraction::Simple* interaction);
 	void arcball(CameraInteraction::Arcball* interaction);
 	void first_person(CameraInteraction::FirstPerson* interaction);
 
 public:
-	Camera(const glm::vec3& position, const glm::vec3& target, const glm::vec3& up_vector, float field_of_view);
+	Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up_vector, float field_of_view, glm::vec2 viewport, float near, float far);
 	~Camera();
+
+	bool is_on() { return is_on_; }
+	glm::vec2 viewport() { return viewport_; }
 
 	void shoot(World* world);
 
 	glm::vec2 transform_world_to_screenspace(glm::vec4 worldspace_coordinates) const;
+	glm::vec2 transform_screen_to_texturespace(glm::vec2 screenspace_coordinates) const;
 
 	void interact(Interaction* interaction) override;
 	Interaction* interaction_type() override;
@@ -54,59 +65,38 @@ public:
 	* Post processing has 2 shader passes:
 	* 1) Render world normally to texture.
 	* 2) Edit texture and render it on fullscreen quad.
+	* TODO Implement as module with camera as dependency.
 	*/
 	struct PostProcessor {
 		friend class Camera;
 	private:
-		// Off=true is the default state of the post processor
-		bool off_;
-		// Render target for the ordinary pass
-		GLuint framebuffer_;
-		GLuint texture_;
-		// GPU program for the post pass
-		GLuint post_pass_shader_;
-		// Uniforms for the post pass
-		std::vector<GLint> uniform_locations_;
-		std::function<void(std::vector<GLint>*)> uniform_callback_;
-		// Vertices of the fullscreen quad
-		GLuint vao_;
-		static GLfloat fullscreen_quad_[];
-		// Functions for a custom pre pass
-		std::function<void()> pre_pass_;
-		std::function<void()> post_pre_pass_;
+		bool is_on_;
+		Camera* camera_;
+		GPUBuffer* framebuffer_;
+		GLuint world_image_; //Texture
+		GLuint shader_;
+		GLuint vao_; //Screen-filling quad
+		// Hold samplers in shader_, index == bindingpoint
+		std::vector<GLuint> samplers_;
+		// Hold uniform locations and update functions
+		std::map<GLint, std::function<void(GLint)>> uniform_update_functions_;
 		PostProcessor();
-		// Constructor for normal post processing
-		PostProcessor(
-			GLuint post_pass_shader,
-			std::initializer_list<std::string> uniforms,
-			std::function<void(std::vector<GLint>*)> uniform_callback
-		);
-		~PostProcessor();
-		// Renders world normally to the texture_
-		void ordinary_pass();
-		// Runs a shader in order to edit texture_ and renders to screen
+		void on(Camera* camera);
+		GLuint rendertarget();
 		void post_pass();
-		// If pre pass defined, executes pre_pass_ and returns true
-		bool pre_pass();
-		// Called whenever pre pass was called
-		void post_pre_pass();
 	public:
-		void add_pre_pass(
-			std::function<void()> pre_pass,
-			std::function<void()> post_pre_pass
-		);
-		// Helper
-		void upload_quad_vertices();
-		void enable_quad_coords_in_shader(GLuint shader);
-		void allocate_offscreen_rendertarget(GLuint* framebuffer, GLuint* texture);
-		void locate_post_pass_uniform(const GLchar* uniform_name);
-	} post_processor;
+		~PostProcessor();
+		Camera* camera() { return camera_; }
+		void sampler(GLuint texture);
+		void uniform(const char* name, std::function<void(GLint)> callback);
+	};
 
-	Camera::PostProcessor* post_process(
-		GLuint gpu_program, 
-		std::initializer_list<std::string> uniforms, 
-		std::function<void(std::vector<GLint>*)> uniform_callback
-	);
+	// Getter
+	Camera::PostProcessor* post_processor();
+
+private:
+	// One camera has one post-processor
+	Camera::PostProcessor post_processor_;
 
 };
 

@@ -14,6 +14,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/glhello.dir/World.cpp.obj"
   "CMakeFiles/glhello.dir/Modules/Camera.cpp.obj"
   "CMakeFiles/glhello.dir/Modules/Light.cpp.obj"
+  "CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.obj"
   "CMakeFiles/glhello.dir/Modules/VolumetricLightScatteringMitchell.cpp.obj"
   "glhello.pdb"
   "glhello.exe"

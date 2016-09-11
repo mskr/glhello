@@ -19,7 +19,7 @@ Material::Material(
 
 Material::Material() : InstanceAttribute(sizeof(Material::Array), (GLvoid*) &properties,
   "MaterialAbsorption:fff,MaterialReflection:fff,MaterialTransmission:f,MaterialShininess:f.") {
-	// Do not touch properties array (leaving everything default)
+	// Not touching properties (leaving everything default)
 }
 
 //TODO

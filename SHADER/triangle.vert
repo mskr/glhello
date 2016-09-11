@@ -1,17 +1,17 @@
 #version 430
 
-uniform uint OcclusionPrePass;
+uniform mat4 ShadowMappingMatrix; //TODO Matrix for each light
 
-// camera loads its matrices to this block (update each whole frame)
+// View-procjection matrices
 layout(std140) uniform Camera {
 	mat4 view;
 	mat4 proj;
 };
 
-// world loads model matrix to this vertex attributes (update each instance)
+// Model matrix
 in mat4 model;
 
-
+// Material
 in vec3 MaterialAbsorption;
 in vec3 MaterialReflection;
 in float MaterialTransmission;
@@ -21,16 +21,21 @@ flat varying vec3 fragMaterialReflection;
 flat varying float fragMaterialTransmission;
 flat varying float fragMaterialShininess;
 
-
+// Index of light if vertex is part of a light emitter
 in int Emitter;
 flat varying int fragEmitter;
 
+// Vertex position
 attribute vec3 position;
-attribute vec3 normal;
-
 varying vec3 fragPosition; // world space
+varying vec4 fragPosLightSpace; //TODO Each light has its own light space
+
+// Vertex normal
+attribute vec3 normal;
 varying vec3 fragNormal; // world space
 
+
+// Helper functions
 
 vec4 clip_space(vec3 pos) {
 	return proj*view*model*vec4(pos, 1);
@@ -45,21 +50,18 @@ mat3 normal_matrix() {
 	return mat3(transpose(inverse(model)));
 }
 
-bool testOcclusionPrePass() {
-	return OcclusionPrePass != 0;
-}
-
 void next() {
 	fragEmitter = Emitter;
-	if(testOcclusionPrePass()) return;
 	fragMaterialAbsorption = MaterialAbsorption;
 	fragMaterialReflection = MaterialReflection;
 	fragMaterialTransmission = MaterialTransmission;
 	fragMaterialShininess = MaterialShininess;
 	fragPosition = world_space(position);
 	fragNormal = mat3(model) * normal;
+	fragPosLightSpace = ShadowMappingMatrix * vec4(fragPosition, 1);
 }
 
+// Main function
 void main() {
 	gl_Position = clip_space(position);
 	next();

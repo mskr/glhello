@@ -5,6 +5,7 @@
 #include "GLFW/glfw3.h"
 
 #include <stdexcept>
+#include "stdio.h"
 
 /*
 * This is a vertex attribute.
@@ -21,28 +22,35 @@ class VertexAttribute {
 	GLboolean is_normalized_;
 	GLsizei stride_;
 	const GLvoid* offset_;
-	GLuint gpu_program_;
+	GLint location_;
 
 public:
+	VertexAttribute(); // creates a position attribute
 	VertexAttribute(const GLchar* name);
-	VertexAttribute(const GLchar* name, GLint num_components);
-	VertexAttribute(const GLchar* name, GLint num_components, GLenum datatype);
 	~VertexAttribute();
 
+	bool equals(VertexAttribute* other);
+
+	bool test_used_by(GLuint gpu_program);
+
+	void bind_location(GLuint gpu_program, GLint location);
+
+	void format();
+
 	// GETTER
-	GLuint location_in_shader();
 	GLint num_components() { return num_components_; }
 	GLenum datatype() { return datatype_; }
 	GLboolean is_normalized() { return is_normalized_; }
 	GLsizei stride() { return stride_; }
 	const GLvoid* offset() { return offset_; }
 	const GLchar* name() { return name_; }
+	GLint location() { return location_; }
 
 	// SETTER
-	void num_components(GLint num_components);
-	void gpu_program(GLuint program_id);
-	void stride(GLsizei s);
-	void offset(const GLvoid* o);
+	// Must be called *before* format()
+	void num_components(GLint num_components); // set by Model::vertices()
+	void stride(GLsizei s); // set by Model::vertices()
+	void offset(const GLvoid* o); // set by Model::vertices()
 
 };
 

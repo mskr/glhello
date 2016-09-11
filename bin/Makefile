@@ -408,6 +408,33 @@ Modules/Light.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.s
 .PHONY : Modules/Light.cpp.s
 
+Modules/ShadowMapping.obj: Modules/ShadowMapping.cpp.obj
+
+.PHONY : Modules/ShadowMapping.obj
+
+# target to build an object file
+Modules/ShadowMapping.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.obj
+.PHONY : Modules/ShadowMapping.cpp.obj
+
+Modules/ShadowMapping.i: Modules/ShadowMapping.cpp.i
+
+.PHONY : Modules/ShadowMapping.i
+
+# target to preprocess a source file
+Modules/ShadowMapping.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.i
+.PHONY : Modules/ShadowMapping.cpp.i
+
+Modules/ShadowMapping.s: Modules/ShadowMapping.cpp.s
+
+.PHONY : Modules/ShadowMapping.s
+
+# target to generate assembly for a file
+Modules/ShadowMapping.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.s
+.PHONY : Modules/ShadowMapping.cpp.s
+
 Modules/VolumetricLightScatteringMitchell.obj: Modules/VolumetricLightScatteringMitchell.cpp.obj
 
 .PHONY : Modules/VolumetricLightScatteringMitchell.obj
@@ -663,6 +690,9 @@ help:
 	@echo ... Modules/Light.obj
 	@echo ... Modules/Light.i
 	@echo ... Modules/Light.s
+	@echo ... Modules/ShadowMapping.obj
+	@echo ... Modules/ShadowMapping.i
+	@echo ... Modules/ShadowMapping.s
 	@echo ... Modules/VolumetricLightScatteringMitchell.obj
 	@echo ... Modules/VolumetricLightScatteringMitchell.i
 	@echo ... Modules/VolumetricLightScatteringMitchell.s

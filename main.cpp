@@ -3,7 +3,7 @@
 / 1. Collection of ready to draw 3D-primitives
 / 2. Transparency with Depth Peeling
 / 4. Physical Simulation with Transform Feedback (OpenGL Superbible Example)
-/ 5. Shadow Volumes
+/ 5. Shadow Volumes en.wikipedia.org/wiki/Shadow_volume
 / 6. Unified Particle Physics for Real-Time Applications with compute shader
 / 7. Indirect Illumination with Voxel Cone Tracing
 / 8. Heightmap generator for microstructure materials (e.g. textiles), render with normal mapping
@@ -25,11 +25,11 @@
 #include <stdexcept>
 
 #include "config.h"
+#include "ModelType.h"
 #include "Shader.h"
 #include "FragmentShader.h"
 #include "VertexShader.h"
-#include "ModelType.h"
-#include "Material.h"
+#include "Module.h"
 #include "Model.h"
 #include "Factory.h"
 #include "World.h"
@@ -37,55 +37,37 @@
 
 #include "Modules/Camera.h"
 #include "Modules/VolumetricLightScatteringMitchell.h"
+#include "Modules/ShadowMapping.h"
 
 static void error_callback(int error, const char* description) {
 	fputs(description, stderr);
 }
 
-GLFWwindow* setupContext(const char* title) {
-	// create the opengl context containing an opengl state machine
-	GLFWwindow* window;
+int main(void) {
 	glfwSetErrorCallback(error_callback);
-	if(!glfwInit()) throw std::runtime_error("Program exits because glfwInit failed.");
+	if(!glfwInit()) throw std::runtime_error("Program exits because GLFW init failed.");
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	window = glfwCreateWindow(config::viewport_width, config::viewport_height, title, NULL, NULL);
-	if(!window) {
-		glfwTerminate();
-		exit(EXIT_FAILURE);
-	}
-	glfwMakeContextCurrent(window);
-	// enabling platform-independent opengl 3 functions
+
+	// Camera creates GLFW window and thus OpenGL context
+	Camera camera(glm::vec3(2,3,15), glm::vec3(0,0,0), glm::vec3(0,1,0), 45, glm::vec2(800,600), 0.1f, 800.0f);
+
 	glewExperimental = GL_TRUE;
 	glewInit();
-	// show infos in console
+
 	printf("* Hello.\n* This is OpenGL %s.\n* The shading language is GLSL %s.\n* Your hardware is %s.\n",
 		glGetString(GL_VERSION),
 		glGetString(GL_SHADING_LANGUAGE_VERSION),
 		glGetString(GL_RENDERER));
-	return window;
-}
-
-
-int main(void) {
-	
-	GLFWwindow* window = setupContext("Hello World"); //TODO unify window and camera (Don't forget viewport configs etc.)
 
 	Light light({
-		 {{650.0f, 0.0f, 1.0f}, {0,2,20}}
+		 // {{650.0f, 0.0f, 1.0f}, {0,2,20}}
 	});
 
-	GLuint shader1 = Shader::link({
-		VertexShader("triangle.vert"),
-		FragmentShader("triangle.frag")
-	});
+	GLuint shader1 = Shader::link({VertexShader("triangle.vert"), FragmentShader("triangle.frag")});
 
-	GLuint shader2 = Shader::link({
-		VertexShader("point.vert"),
-		FragmentShader("point.frag")
-	});
+	GLuint shader2 = Shader::link({VertexShader("point.vert"), FragmentShader("point.frag")});
 
-	ModelType type1(1, GL_TRIANGLES, shader1, {
-		VertexAttribute("normal")}, {
+	ModelType type1(1, GL_TRIANGLES, shader1, {VertexAttribute("normal")}, {
 		Material(),
 		Light::Emitter()
 	});
@@ -96,22 +78,60 @@ int main(void) {
 	Model sun(2, &type2, {{{12, 20, -30}}}); // sun as point sprite
 	Model t(2, &type1, factory.cube());
 
-	World world({&t}, [](Model* m){}, {Uniform("modelID", [lightcube](Uniform* u, Model* m) {
-		u->update(m->id());
-	})});
+	cube.attr(1, Material( //TODO how to get rid of the index?
+		0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f
+	));
+	cube.units(1, 1, 1);
+	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-2);
+	ground->attr(1, Material(
+		0.0f, 0.0f, 0.0f,
+		570.0f, 0.5f, 0.8f, // gray
+		0.0f, 0.0f
+	));
+	// for(int x = 0; x < 80; x+=4) {
+	// 	for(int z = 0; z < 80; z+=4) {
+	// 		if(x==0 && z==0) continue;
+	// 		ModelInstance* skyscraper = cube.use()->translateX(x)->translateZ(z);
+	// 		skyscraper->attr(1, Material(
+	// 			0.0f, 0.0f, 0.0f,
+	// 			500.0f, 0.2f, 0.8f, // blue
+	// 			0.0f, 0.0f
+	// 		));
+	// 	}
+	// }
+	ModelInstance* lightcube = cube.use()->units(0.1f, 0.1f, 0.1f)->translate(2,2,-2);
+	lightcube->emit(2, light.l(0.0f, 0.0f, 1.0f)); //TODO light is calculated even if the model is not in the world
 
-	Camera camera(glm::vec3(0,0,10), glm::vec3(0,0,0), glm::vec3(0,1,0), 90);
+	// t.attr(1, Material(
+	// 	0.0f, 0.0f, 0.0f,
+	// 	500.0f, 1.0f, 1.0f, // white
+	// 	0.0f, 0.0f
+	// ));
+	// t.position(1,0,0);
+	// t.units(1,1,1);
+	// t.position(0,0,0);
+
+	World world({&cube}, [](Model* m){
+		// m->instance(0)->rotateY(0.001f);
+	}, {});
+
 	world.extend(&camera);
 
-	VolumetricLightScatteringMitchell lightscattering(&camera, lightcube->position_world_space());
-	// world.extend(&lightscattering);
+	VolumetricLightScatteringMitchell modLightScattering(camera.post_processor(), lightcube->position_world_space());
+
+	world.extend(&modLightScattering);
 
 	world.extend(&light);
 
+	// ShadowMapping modShadowMapping(&light);
+
+	// world.extend(&modShadowMapping);
+
 	User user(&world);
-	user.use(window);
 	((CameraInteraction*) user.use(&camera))->simple();
-	user.use(&lightscattering);
+	// user.use(&modLightScattering);
 
 	//+// Point primitives with shader-specified size
 	glEnable(GL_POINT_SPRITE);
@@ -134,50 +154,13 @@ int main(void) {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	cube.attr(1, Material( //TODO how to get rid of the index?
-		0.0f, 0.0f, 0.0f,
-		1000.0f, 0.0f, 1.0f,
-		0.0f, 0.0f
-	));
-	cube.units(1, 10, 1);
-	ModelInstance* ground = cube.use()->units(800, 2, 800)->translateY(-1);
-	ground->attr(1, Material(
-		0.0f, 0.0f, 0.0f,
-		570.0f, 0.5f, 0.8f, // gray
-		0.0f, 0.0f
-	));
-	for(int x = 0; x < 80; x+=4) {
-		for(int z = 0; z < 80; z+=4) {
-			if(x==0 && z==0) continue;
-			ModelInstance* skyscraper = cube.use()->translateX(x)->translateZ(z);
-			skyscraper->attr(1, Material(
-				0.0f, 0.0f, 0.0f,
-				500.0f, 0.2f, 0.8f, // blue
-				0.0f, 0.0f
-			));
-		}
-	}
-	ModelInstance* lightcube = cube.use()->units(1,1,1)->scale(20)->translateZ(-70)->translateY(50);
-	lightcube->emit(2, light.l(780.0f, 0.5f, 0.9f)); //TODO light is calculated even if the model is not in the world
-
-	t.attr(1, Material(
-		0.0f, 0.0f, 0.0f,
-		500.0f, 1.0f, 1.0f, // white
-		0.0f, 0.0f
-	));
-	t.position(0,0,0);
-	t.units(1,1,1);
-	// t.position(0,0,0);
-
 	// rendering loop
-	while(!glfwWindowShouldClose(window)) {
+	while(camera.is_on()) {
 		camera.shoot(&world);
-		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	// terminating properly when rendering loop exited
-	glfwDestroyWindow(window);
 	glfwTerminate();
 	exit(EXIT_SUCCESS);
 }

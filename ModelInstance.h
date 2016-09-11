@@ -5,7 +5,7 @@
 #include <gtx/transform.hpp>
 
 #include "config.h"
-#include "Material.h"
+#include "Modules/Light.h"
 
 class Model;
 

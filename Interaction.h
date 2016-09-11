@@ -19,6 +19,8 @@ struct Interaction {
 	Interaction() {}
 	virtual ~Interaction() {}
 
+	virtual bool escape_key() { return false; }
+
 	virtual bool keypress(char key) { return false; } //GLFW_PRESS
 	virtual bool keyrepeat(char key) { return false; } //GLFW_REPEAT
 	virtual bool keyrelease(char key) { return false; } //GLFW_RELEASE

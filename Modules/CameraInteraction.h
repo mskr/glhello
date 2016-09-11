@@ -7,6 +7,8 @@
 * This is the interaction type for the camera module.
 */
 struct CameraInteraction : public Interaction {
+	bool close_window = false;
+	bool escape_key() override { close_window = true; return true; }
 	int type = 0;
 	const int SIMPLE = 1;
 	const int ARCBALL = 2;

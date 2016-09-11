@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include "stdio.h"
 #include <functional>
+#include <vector>
+#include <map>
 
 /*
 * This is a model instance attribute.
@@ -34,6 +36,19 @@ protected:
 	// "NameX" is a variable name in shader.
 	std::string memory_layout_;
 
+	struct ParseResult {
+		// Mapping each name occuring in the memory layout to one or more locations.
+		// A name needs more than one location if its number of components is > 4.
+		std::map<std::string, std::vector<GLint>> locations;
+		// Mapping each location to parameters of glVertexAttribPointer
+		std::map<GLint, GLint> num_components; // location => number of components
+		std::map<GLint, GLenum> datatype; // location => datatype
+		std::map<GLint, GLvoid*> offset; // location => offset
+		bool is_valid = false;
+		bool is_parsed = false;
+	} parse_result;
+	void parse(GLint start_location);
+
 public:
 	// 1st constructor called only internally by modeltype to create the implicit model matrix instance attribute
 	InstanceAttribute();
@@ -43,13 +58,19 @@ public:
 	InstanceAttribute(GLsizei bytes, const GLvoid* pointer);
 	~InstanceAttribute();
 
-	void enable(GLuint gpu_program, GLsizei offset, GLsizei stride);
+	int bind_locations(GLuint gpu_program, GLint start_location);
+
+	void format(GLsizei offset, GLsizei stride);
 	
-	void was_updated(); // for runtime updates
+	// For runtime updates
+	void was_updated();
+
+	bool equals(InstanceAttribute* other);
 
 	GLsizei bytes() { return bytes_; };
 	const GLvoid* pointer() { return pointer_; };
 	bool has_changed() { return has_changed_; }
+	const char* memory_layout() { return memory_layout_.c_str(); }
 };
 
 #endif

@@ -4,7 +4,6 @@ std::vector<User*> User::instances = {};
 
 User::User(World* w) {
 	world_ = w;
-	window_ = 0;
 	modules_ = {};
 	interactions_ = {};
 	User::instances.push_back(this);
@@ -14,8 +13,7 @@ User::~User() {
 	for(Interaction* i : interactions_) delete i;
 }
 
-void User::use(GLFWwindow* window) {
-	window_ = window;
+void User::listen_to(GLFWwindow* window) {
 	glfwSetKeyCallback(window, User::InputEntryPoints::key);
 	glfwSetScrollCallback(window, User::InputEntryPoints::scroll);
 	glfwSetCursorPosCallback(window, User::InputEntryPoints::mousemove);
@@ -30,7 +28,6 @@ Interaction* User::use(Module* m) {
 
 void User::key(int key, int scancode, int action, int mods) {
 	switch(key) {
-		case GLFW_KEY_ESCAPE: glfwSetWindowShouldClose(window_, GL_TRUE); break;
 		case GLFW_KEY_SPACE: keyaction(action, ' ', mods); break;
 		case GLFW_KEY_0: keyaction(action, '0', mods); break;
 		case GLFW_KEY_1: keyaction(action, '1', mods); break;
@@ -67,18 +64,50 @@ void User::key(int key, int scancode, int action, int mods) {
 		case GLFW_KEY_W: keyaction(action, 'w', mods); break;
 		case GLFW_KEY_X: keyaction(action, 'x', mods); break;
 		case GLFW_KEY_Y: keyaction(action, 'y', mods); break;
-		case GLFW_KEY_Z: keyaction(action, 'z', mods);
+		case GLFW_KEY_Z: keyaction(action, 'z', mods); break;
+		default: keyaction(action, key, mods);
 		//TODO extend list (user should be able to distribute all key inputs)
 	}
 }
 
+void User::click(int button, int action, int mods) {
+	//TODO use the modifier keys too
+	switch(action) {
+		case GLFW_PRESS: mousepress( button ); break;
+		case GLFW_RELEASE: mouserelease( button );
+	}
+}
+
+void User::mousemove(double xpos, double ypos) {
+	for(unsigned int i = 0; i < interactions_.size(); i++)
+		if(interactions_[i]->mousemove(xpos, ypos)) modules_[i]->interact(interactions_[i]);
+}
+
+void User::scroll(double xoffset, double yoffset) {
+	for(unsigned int i = 0; i < interactions_.size(); i++)
+		if(interactions_[i]->scroll(xoffset, yoffset)) modules_[i]->interact(interactions_[i]);
+}
+
+
+
+
+// Private helper functions
+
 void User::keyaction(int action, char key, int mods) {
 	//TODO use the modifier keys too
 	switch(action) {
-		case GLFW_PRESS: keypress(key); break;
-		case GLFW_REPEAT: keyrepeat(key); break;
-		case GLFW_RELEASE: keyrelease(key);
+		case GLFW_PRESS: keypress( key ); break;
+		case GLFW_REPEAT: keyrepeat( key ); break;
+		case GLFW_RELEASE: keyrelease( key );
 	}
+}
+
+void User::keyaction(int action, int key, int mods) {
+	if(key == GLFW_KEY_ESCAPE) {
+		for(unsigned int i = 0; i < interactions_.size(); i++)
+			if(interactions_[i]->escape_key()) modules_[i]->interact(interactions_[i]);
+	}
+	//TODO more keys...
 }
 
 void User::keypress(char key) {
@@ -94,29 +123,6 @@ void User::keyrelease(char key) {
 void User::keyrepeat(char key) {
 	for(unsigned int i = 0; i < interactions_.size(); i++)
 		if(interactions_[i]->keyrepeat(key)) modules_[i]->interact(interactions_[i]);
-}
-
-
-
-void User::scroll(double xoffset, double yoffset) {
-	for(unsigned int i = 0; i < interactions_.size(); i++)
-		if(interactions_[i]->scroll(xoffset, yoffset)) modules_[i]->interact(interactions_[i]);
-}
-
-void User::mousemove(double xpos, double ypos) {
-	for(unsigned int i = 0; i < interactions_.size(); i++)
-		if(interactions_[i]->mousemove(xpos, ypos)) modules_[i]->interact(interactions_[i]);
-}
-
-
-
-
-void User::click(int button, int action, int mods) {
-	//TODO use the modifier keys too
-	switch(action) {
-		case GLFW_PRESS: mousepress(button); break;
-		case GLFW_RELEASE: mouserelease(button);
-	}
 }
 
 void User::mousepress(int button) {

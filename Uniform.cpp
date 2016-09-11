@@ -23,7 +23,7 @@ Uniform::Uniform(const GLchar* name, const GLvoid* dataptr, GLsizeiptr size, std
 	gpu_program_ = -1;
 	location_ = -1;
 	dataptr_ = dataptr;
-	ubo_ = new GPUBuffer();
+	ubo_ = new GPUBuffer(0);
 	ubo_->bind_to(GL_UNIFORM_BUFFER);
 	glBufferData(GL_UNIFORM_BUFFER, size, dataptr_, GL_STATIC_DRAW);
 	ubo_->grow(size);
@@ -38,7 +38,7 @@ Uniform::Uniform(const GLchar* name, const GLvoid* dataptr, std::function<void(U
 	location_ = -1;
 	dataptr_ = dataptr;
 	// use UBO as a shader storage buffer (some people call it a Shader Storage Buffer Object then)
-	ubo_ = new GPUBuffer();
+	ubo_ = new GPUBuffer(0);
 	ubo_->bind_to(GL_SHADER_STORAGE_BUFFER);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, 0, dataptr_, GL_STATIC_DRAW);
 	bindingpoint_ = GL_MAX_UNIFORM_BUFFER_BINDINGS;
@@ -58,7 +58,7 @@ void Uniform::gpu_program(GLuint gpu_program) {
 			// connect client-side ubo and shader-side uniform block via one binding point
 			GLuint index = glGetUniformBlockIndex(gpu_program_, name_);
 			if(index == GL_INVALID_INDEX) {
-				printf("WARNING: Uniform \"%s\" not found in one shader (not defined or never used).\n", name_);
+				printf("WARNING: Uniform \"%s\" not used in shader#%d.\n", name_, gpu_program);
 				return;
 			}
 			glUniformBlockBinding(gpu_program_, index, Uniform::next_bindingpoint_);
@@ -70,7 +70,7 @@ void Uniform::gpu_program(GLuint gpu_program) {
 			// connect shader-storage-buffer and shader-storage-block
 			GLuint index = glGetProgramResourceIndex(gpu_program_, GL_SHADER_STORAGE_BLOCK, name_);
 			if(index == GL_INVALID_INDEX) {
-				printf("WARNING: Uniform \"%s\" not found in one shader (not defined or never used).\n", name_);
+				printf("WARNING: Uniform \"%s\" not used in shader#%d.\n", name_, gpu_program);
 				return;
 			}
 			glShaderStorageBlockBinding(gpu_program_, index, Uniform::next_bindingpoint_);
@@ -80,7 +80,7 @@ void Uniform::gpu_program(GLuint gpu_program) {
 		}
 	} else { // This is for simple Uniform variables
 		location_ = glGetUniformLocation(gpu_program_, name_);
-		if(location_ == -1) printf("WARNING: Uniform \"%s\" not found in one shader (not defined or never used).\n", name_);
+		if(location_ == -1) printf("WARNING: Uniform \"%s\" not used in shader#%d.\n", name_, gpu_program);
 	}
 }
 
@@ -110,10 +110,12 @@ void Uniform::update_and_grow(const GLvoid* pointer, int bytes) {
 	// Only pushing new data if bytes is greater zero
 	// Updating the old data (starting at dataptr_) in both cases
 	if(bindingpoint_ == GL_MAX_UNIFORM_BUFFER_BINDINGS) return;
+	// Is there something to update?
 	if(ubo_->bytes() > 0) {
 		ubo_->bind_to(GL_SHADER_STORAGE_BUFFER);
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, ubo_->bytes(), dataptr_); // update whole OLD buffer data
 	}
+	// Is there something NEW to update?
 	if(bytes > 0) {
 		ubo_->push(bytes, pointer); // expensive operation (re-allocation of gpu memory)
 		ubo_->bind_to(GL_SHADER_STORAGE_BUFFER);
