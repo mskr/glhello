@@ -8,7 +8,9 @@
 #include <glm.hpp>
 
 #include "InstanceAttribute.h"
-#include "Modules/Light.h"
+
+//TODO Define material as a module offering an instance attribute
+#include "Modules/Light.h" // non-module classes should not depend on modules
 
 /*
 * This is material.
@@ -47,12 +49,14 @@ public:
 		float reflection_wavelength, float reflection_width, float reflection_strength, 
 		float transmission_strength, float shininess
 	);
+	Material(float r, float g, float b);
 	Material();
 	~Material();
 
 	// SETTER
 	void absorb(float absorption_wavelength, float absorption_width, float absorption_strength);
 	void reflect(float reflection_wavelength, float reflection_width, float reflection_strength);
+	void reflectRGB(float r, float g, float b);
 	void transmit(float transmission_strength);
 	void shine(float shininess);
 };

@@ -13,8 +13,8 @@ uniform sampler2D depthMap;
 // }
 
 void main() {
-	// float depthValue = texture(depthMap, pixel).r;
+	float depthValue = texture(depthMap, pixel).r;
 	// gl_FragColor = vec4(vec3(LinearizeDepth(depthValue) / far), 1.0); // perspective
-	// gl_FragColor = vec4(vec3(depthValue), 1.0);
-	gl_FragColor = texture(depthMap, pixel);
+	gl_FragColor = vec4(depthValue);
+	// gl_FragColor = texture(depthMap, pixel);
 }

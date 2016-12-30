@@ -26,6 +26,8 @@ Interaction* User::use(Module* m) {
 	return interactions_.back();
 }
 
+//TODO Key codes can be casted to chars because they are ASCII
+// http://www.glfw.org/docs/latest/group__keys.html
 void User::key(int key, int scancode, int action, int mods) {
 	switch(key) {
 		case GLFW_KEY_SPACE: keyaction(action, ' ', mods); break;

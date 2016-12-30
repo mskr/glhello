@@ -5,6 +5,8 @@
 #include <gtx/transform.hpp>
 
 #include "config.h"
+
+//TODO Remove dependence by letting light define a model superclass overriding use() to produce instances with emit() feature
 #include "Modules/Light.h"
 
 class Model;
@@ -41,16 +43,22 @@ class ModelInstance {
 	float units_y_;
 	float units_z_;
 
+	// Hold attributes, including their values
 	std::vector<InstanceAttribute> attribs_;
 
+	// Special attribute indicating if this instance emits light (dependence on module should be an exception)
 	Light::Emitter* emitter_;
 
+	// Holding pointers to child model instances for hierachic modelling
+	std::vector<ModelInstance*> sub_;
+
+	// Construction of instances exclusively in Model::use()
 	ModelInstance(int id, int instance_id, Model* instance_of);
 
 public:
 	~ModelInstance();
 
-	void attr(unsigned int index, InstanceAttribute attrib);
+	ModelInstance* attr(unsigned int index, InstanceAttribute attrib);
 	void emit(unsigned int index, Light::Emitter emitter);
 
 	// GETTER
@@ -59,6 +67,7 @@ public:
 	Model* instance_of() { return instance_of_; }
 	glm::mat4* model_matrix();
 	InstanceAttribute* attr(unsigned int index) { return &(attribs_[index]); };
+	glm::vec3 units() { return glm::vec3(units_x_, units_y_, units_z_); }
 	float unitsX() { return units_x_; }
 	float unitsY() { return units_y_; }
 	float unitsZ() { return units_z_; }
@@ -84,13 +93,14 @@ public:
 	ModelInstance* unitsY(float units); // preserves length ratios
 	ModelInstance* unitsZ(float units); // preserves length ratios
 	ModelInstance* units(float x_units, float y_units, float z_units); // does not preserve length ratios
+	ModelInstance* units(glm::vec3 units); // does not preserve length ratios
 
 	// Transform shorthand functions (return self for chaining)
-	ModelInstance* rotate(float angle, glm::vec3 axis);
-	ModelInstance* rotateX(float angle);
-	ModelInstance* rotateY(float angle);
-	ModelInstance* rotateZ(float angle);
-	//TODO add rotation with a *transform origin* (carefully update position_ afterwards!)
+	ModelInstance* rotate(float degrees, glm::vec3 axis);
+	ModelInstance* rotateX(float degrees);
+	ModelInstance* rotateY(float degrees);
+	ModelInstance* rotateZ(float degrees);
+	ModelInstance* rotate(float degrees, glm::vec3 axis, glm::vec3 transform_origin);
 	ModelInstance* translate(glm::vec3 distances_in_units);
 	ModelInstance* translate(float x, float y, float z);
 	ModelInstance* translateX(float distance_in_units);
@@ -100,6 +110,9 @@ public:
 	ModelInstance* scaleX(float factor); // does not preserve length ratios
 	ModelInstance* scaleY(float factor); // does not preserve length ratios
 	ModelInstance* scaleZ(float factor); // does not preserve length ratios
+
+	// Hierarchic modelling (return self)
+	ModelInstance* sub(std::initializer_list<ModelInstance*> children);
 
 	friend class Model; // allows models to see private members
 };

@@ -69,6 +69,7 @@ public:
 	// Each overload does an OpenGL call to the respective Uniform[type] function.
 	void update(glm::mat4 val);
 	void update(glm::vec3 val);
+	void update(glm::vec2 val);
 	void update(int val);
 	void update(unsigned int val);
 	void update(float val);

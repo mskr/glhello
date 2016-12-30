@@ -58,9 +58,9 @@ GPUBuffer::GPUBuffer(GLsizei w, GLsizei h, std::initializer_list<std::tuple<GLui
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 	} else if(num_depth_attachments == 0) {
-		//TODO
+		//TODO do something for color+stencil attachments
 	} else if(num_stencil_attachments == 0) {
-		//TODO
+		//TODO do something for color+depth attachments
 	}
 	// Check if framebuffer complete
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -136,6 +136,7 @@ GLuint GPUBuffer::new_texture2D(GLsizei w, GLsizei h, GLint format, GLenum type)
 	glBindTexture(GL_TEXTURE_2D, tex);
 	// Only accept writing to texture with the data formats
 	// GL_RED, GL_RG, GL_RGB, GL_RGBA, GL_STENCIL_INDEX, GL_DEPTH_COMPONENT and GL_DEPTH_STENCIL.
+	//TODO Better use sized formats like GL_R8, GL_RG8, GL_RGB8 etc.
 	GLenum write_format = GL_RGB;
 	// The format argument specifies the data that is stored at each texel
 	if(format == GL_STENCIL_INDEX || format == GL_DEPTH_COMPONENT || format == GL_DEPTH_STENCIL)

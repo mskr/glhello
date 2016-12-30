@@ -13,8 +13,7 @@
 
 class ShadowMapping : public Module {
 
-	// Light object contains information about all light sources
-	Light* light_;
+protected:
 	// View-projection-matrix for transforming points into light space
 	glm::mat4 light_space_matrix_; //TODO Matrix for EACH light source
 	// Texture where the depth from the light's point of view is stored
@@ -30,14 +29,14 @@ class ShadowMapping : public Module {
 	// GLuint debug_shader_;
 
 public:
-	ShadowMapping(Light* light);
+	ShadowMapping(glm::vec3 lightsource_worldspace, glm::vec3 lookAtTarget);
 	~ShadowMapping();
-	
+
 	std::vector<Uniform> uniforms() override;
 	int num_passes() override;
 	void on_pass(int pass) override;
 	GLuint rendertarget(int pass) override;
-	void debug_pass(int pass) override;
+	void after_pass(int pass) override;
 
 };
 

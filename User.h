@@ -64,7 +64,7 @@ public:
 	Interaction* use(Module* m);
 
 	//TODO add fast callbacks
-	// void on(char key, std::functions<void(void)> action);
+	// void on(char key, std::function<void(void)> action);
 	// void on(std::string keycombo, std::functions<void(void)> action);
 	
 };

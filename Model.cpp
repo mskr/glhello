@@ -109,6 +109,7 @@ ModelInstance* Model::use() {
 	inst->units_x_ = this->units_x_;
 	inst->units_y_ = this->units_y_;
 	inst->units_z_ = this->units_z_;
+	inst->position_ = this->position_;
 	instances_.push_back(inst);
 	matrices_.push_back(matrices_[0]); // copy matrix of parent model
 	inst->attribs_ = this->attribs_; // copy instance attribs

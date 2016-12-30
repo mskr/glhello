@@ -83,9 +83,6 @@ public:
 	// Draw this model independently from a world (own vao and vbo required)
 	// void draw_free();
 
-	// Add a submodel to this model in order to build a scene graph
-	// void sub(Model sub);
-
 	friend class ModelInstance; // allows model instances to see private members
 };
 

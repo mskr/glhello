@@ -96,6 +96,7 @@ void Uniform::callback() {
 
 void Uniform::update(glm::mat4 val) { glUniformMatrix4fv(location_, 1, GL_FALSE, reinterpret_cast<GLfloat*>(&val)); }
 void Uniform::update(glm::vec3 val) { glUniform3f(location_, val.x, val.y, val.z); }
+void Uniform::update(glm::vec2 val) { glUniform2f(location_, val.x, val.y); }
 void Uniform::update(int val) { glUniform1i(location_, val); }
 void Uniform::update(unsigned int val) { glUniform1ui(location_, val); }
 void Uniform::update(float val) { glUniform1f(location_, val); }

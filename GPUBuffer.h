@@ -37,6 +37,7 @@ public:
 	GPUBuffer(GLsizeiptr bytes, const GLvoid* pointer);
 	// Create framebuffer with one or more 2D textures
 	// Each tuple must contain: pointer to texture id, attachment point, texture storage format and datatype
+	//TODO Separate Framebuffer class with add(Texture) function etc.
 	GPUBuffer(GLsizei w, GLsizei h, std::initializer_list<std::tuple<GLuint*,GLenum,GLint,GLenum>> tex_attachments);
 	~GPUBuffer();
 

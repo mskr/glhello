@@ -3,18 +3,26 @@
 Camera::Camera(glm::vec3 position, glm::vec3 target, glm::vec3 up_vector, float fov, glm::vec2 viewport, float near, float far) {
 	is_on_ = true;
 	viewport_ = viewport;
+	if(!glfwInit()) throw std::runtime_error("Program exits because GLFW init failed.");
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	window_ = glfwCreateWindow(viewport_.x, viewport_.y, config::program_title.c_str(), NULL, NULL);
 	glfwMakeContextCurrent(window_);
 	User::listen_to(window_);
 	position_ = position;
 	target_ = target;
 	up_vector_ = up_vector;
+	near_ = near;
+	far_ = far;
 	view_projection_matrices_[0] = glm::lookAt(position_, target_, up_vector_);
 	view_projection_matrices_[1] = glm::perspective(glm::radians(fov), viewport_.x/viewport_.y, near, far);
+
+	glewExperimental = GL_TRUE;
+	glewInit();
 }
 
 Camera::~Camera() {
 	glfwDestroyWindow(window_);
+	glfwTerminate();
 }
 
 void Camera::shoot(World* world) {
@@ -42,6 +50,12 @@ std::vector<Uniform> Camera::uniforms() {
 	return std::vector<Uniform> {
 		Uniform("Camera", view_projection_matrices_, sizeof(view_projection_matrices_), [](Uniform* u) {
 			u->update();
+		}),
+		Uniform("viewport", [this](Uniform* u, Model* m) {
+			u->update(viewport_);
+		}),
+		Uniform("cameraPos", [this](Uniform* u, Model* m) {
+			u->update(position_);
 		})
 	};
 }
@@ -81,6 +95,7 @@ void Camera::simple(CameraInteraction::Simple* interaction) {
 	} else if(interaction->move == interaction->MOVE_BACKWARD) {
 		position_.z++;
 	}
+	printf("position(%f,%f,%f), target(%f,%f,%f)\n", position_.x,position_.y,position_.z, target_.x,target_.y,target_.z);
 }
 
 void Camera::arcball(CameraInteraction::Arcball* interaction) {
@@ -107,6 +122,7 @@ Camera::PostProcessor::PostProcessor() {
 	vao_ = 0;
 	samplers_ = {};
 	uniform_update_functions_ = {};
+	output_rendertarget_ = 0;
 }
 
 void Camera::PostProcessor::on(Camera* camera) {
@@ -144,15 +160,58 @@ Camera::PostProcessor::~PostProcessor() {
 	delete framebuffer_;
 }
 
+Camera::PostProcessor* Camera::PostProcessor::new_instance(GLint input_format, GLenum input_type, GLuint output_rendertarget, GLuint shader) {
+	Camera::PostProcessor* p = new Camera::PostProcessor(); // caller cleans this up
+	p->camera_ = this->camera_;
+	p->framebuffer_  = new GPUBuffer(camera_->viewport_.x, camera_->viewport_.y, {
+		std::make_tuple(&world_image_, GL_COLOR_ATTACHMENT0, input_format, input_type)
+	});
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Do this here because world_image is still bound
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO Better use glTextureParameteri(world_image_,...)
+	p->samplers_[0] = world_image_;
+	p->output_rendertarget_ = output_rendertarget;
+	p->shader_ = shader;
+	p->vao_ = this->vao_;
+	p->is_on_ = true;
+	return p;
+}
+
+Camera::PostProcessor* Camera::PostProcessor::new_instance(GLuint output_rendertarget, GLuint shader) {
+	Camera::PostProcessor* p = new Camera::PostProcessor(); // caller cleans this up
+	p->camera_ = this->camera_;
+	p->framebuffer_  = new GPUBuffer(camera_->viewport_.x, camera_->viewport_.y, {
+		std::make_tuple(&world_image_, GL_COLOR_ATTACHMENT0, GL_RGB, GL_UNSIGNED_BYTE)
+	});
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //Do this here because world_image is still bound
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //TODO Better use glTextureParameteri(world_image_,...)
+	p->samplers_[0] = world_image_;
+	p->output_rendertarget_ = output_rendertarget;
+	p->shader_ = shader;
+	p->vao_ = this->vao_;
+	p->is_on_ = true;
+	return p;
+}
+
+Camera::PostProcessor* Camera::PostProcessor::new_instance(GLuint input_texture, GLuint output_rendertarget, GLuint shader) {
+	Camera::PostProcessor* p = new Camera::PostProcessor(); // caller cleans this up
+	p->camera_ = this->camera_;
+	p->framebuffer_ = 0; //TODO dont need this but nulling is unsafe!
+	p->samplers_[0] = input_texture;
+	p->output_rendertarget_ = output_rendertarget;
+	p->shader_ = shader;
+	p->vao_ = this->vao_;
+	p->is_on_ = true;
+	return p;
+}
+
 GLuint Camera::PostProcessor::rendertarget() {
 	if(!is_on_) return 0;
-	glEnable(GL_DEPTH_TEST);
 	return framebuffer_->opengl_id();
 }
 
 void Camera::PostProcessor::post_pass() {
 	if(!is_on_) return;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, output_rendertarget_);
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(shader_);
@@ -165,6 +224,7 @@ void Camera::PostProcessor::post_pass() {
 		u.second(u.first);
 	glDrawArrays(GL_TRIANGLES, 0, 6); // invoke post process shader here!
 	glBindVertexArray(0);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Camera::PostProcessor::sampler(GLint binding, GLuint texture) {

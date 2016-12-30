@@ -9,9 +9,19 @@
 #include "VertexShader.h"
 #include "FragmentShader.h"
 
+//TODO
+// 1) Organize modules in folders and if a folder contains shader files, compile them automatically
+// 2a) Let modules expose models (the modeltype is assigned internally)
+// OR
+// 2b) Add getters for instance- and vertex-attributes so a modeltype can be created from multiple modules
+//    => Problem 1: How to construct models compatible with this type?
+//    => Solution 1: Create modeltypes from only 1 module ("Super"-modules can be made, maybe with multi-inheritance?)
+//    => Problem 2: Modeltype shader compatible with modules?
+
 /*
 * This is the base class for modules.
 * Any future feature of this graphics framework should extend Module.
+* In that sense, modules are users of all non-module classes.
 * Modules can provide uniforms to world's shaders.
 * Modules can provide an extra shader to the world.
 * The extra shader runs on the world's models.
@@ -22,7 +32,6 @@
 class Module {
 
 protected:
-
 	/*
 	* A modeltype-independet shader.
 	* Modules can use it to perform one or more pre-render-passes on the world's geometry.
@@ -59,6 +68,9 @@ protected:
 		void add_uniform(std::string type, std::string name) {
 			uniforms += "uniform " + type + " " + name + ";";
 		}
+		void add_uniform(std::string location, std::string type, std::string name) {
+			uniforms += "layout(location=" + location + ") uniform " + type + " " + name + ";";
+		}
 		void add_uniform_block(std::string name, std::vector<std::vector<std::string>> contents) {
 			uniforms += "layout(std140) uniform " + name + "{";
 			for(std::vector<std::string> type_and_name : contents)
@@ -85,7 +97,10 @@ protected:
 			matrices += name + "*";
 		}
 		void set_frag_color(std::string statement) {
-			frag_output = "gl_FragColor = " + statement + ";";
+			frag_output += "gl_FragColor = " + statement + ";";
+		}
+		void set_frag_depth(std::string statement) {
+			frag_output += "gl_FragDepth = " + statement + ";";
 		}
 		void compile_and_link() {
 			gpu_program = Shader::link({VertexShader({
@@ -136,7 +151,7 @@ public:
 	virtual GLuint rendertarget(int pass) { return 0; }
 
 	// Called after each pass
-	virtual void debug_pass(int pass) {}
+	virtual void after_pass(int pass) {}
 
 	// Called by world in order ot make all uniforms accessable to all modules
 	void add(Uniform u) {

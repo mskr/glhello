@@ -119,7 +119,6 @@ void World::draw(GLuint rendertarget) {
 			}
 		}
 	}
-
 }
 
 void World::draw_modules() {
@@ -145,7 +144,7 @@ void World::draw_modules() {
 					}
 				}
 			}
-			mod->debug_pass(i);
+			mod->after_pass(i);
 		}
 	}
 }

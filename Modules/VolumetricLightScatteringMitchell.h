@@ -20,7 +20,6 @@ class VolumetricLightScatteringMitchell : public Module {
 	int NUM_SAMPLES_;
 	float EXPOSURE_;
 	float DENSITY_;
-	float WEIGHT_;
 	float DECAY_;
 
 	GLuint debug_vao_;
@@ -36,7 +35,7 @@ public:
 	int num_passes() override;
 	GLuint rendertarget(int pass) override;
 	void on_pass(int pass) override;
-	void debug_pass(int pass) override;
+	void after_pass(int pass) override;
 };
 
 struct VolumetricLightScatteringMitchellInteraction : public Interaction {
@@ -45,7 +44,6 @@ struct VolumetricLightScatteringMitchellInteraction : public Interaction {
 	const int change_NUM_SAMPLES = 1;
 	const int change_EXPOSURE = 2;
 	const int change_DENSITY = 3;
-	const int change_WEIGHT = 4;
 	const int change_DECAY = 5;
 	bool keypress(char key) {
 		switch(key) {
@@ -55,8 +53,6 @@ struct VolumetricLightScatteringMitchellInteraction : public Interaction {
 			case '4': change_uniform = change_EXPOSURE; increase = true; return true;
 			case '5': change_uniform = change_DENSITY; increase = false; return true;
 			case '6': change_uniform = change_DENSITY; increase = true; return true;
-			case '7': change_uniform = change_WEIGHT; increase = false; return true;
-			case '8': change_uniform = change_WEIGHT; increase = true; return true;
 			case '9': change_uniform = change_DECAY; increase = false; return true;
 			case '0': change_uniform = change_DECAY; increase = true; return true;
 			default: return false;

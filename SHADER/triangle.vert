@@ -1,6 +1,11 @@
 #version 430
 
+//TODO Structure module features better
+
 uniform mat4 ShadowMappingMatrix; //TODO Matrix for each light
+
+uniform vec3 cameraPos; // in world space
+flat varying vec4 fragCameraPosLightSpace;
 
 // View-procjection matrices
 layout(std140) uniform Camera {
@@ -50,6 +55,8 @@ mat3 normal_matrix() {
 	return mat3(transpose(inverse(model)));
 }
 
+varying vec4 fragPosViewSpace;
+
 void next() {
 	fragEmitter = Emitter;
 	fragMaterialAbsorption = MaterialAbsorption;
@@ -57,8 +64,13 @@ void next() {
 	fragMaterialTransmission = MaterialTransmission;
 	fragMaterialShininess = MaterialShininess;
 	fragPosition = world_space(position);
-	fragNormal = mat3(model) * normal;
-	fragPosLightSpace = ShadowMappingMatrix * vec4(fragPosition, 1);
+	fragNormal = normal_matrix() * normal;
+
+	vec4 positionLightSpace = ShadowMappingMatrix * vec4(fragPosition, 1);
+	fragPosLightSpace = positionLightSpace;
+
+	fragPosViewSpace = view * vec4(fragPosition,1);
+	fragCameraPosLightSpace = ShadowMappingMatrix * vec4(cameraPos,1);
 }
 
 // Main function

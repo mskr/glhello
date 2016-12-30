@@ -26,6 +26,8 @@ class Camera : public Module {
 	glm::vec3 position_;
 	glm::vec3 target_;
 	glm::vec3 up_vector_;
+	GLfloat near_;
+	GLfloat far_;
 
 	glm::mat4 view_projection_matrices_[2];
 
@@ -45,6 +47,9 @@ public:
 
 	bool is_on() { return is_on_; }
 	glm::vec2 viewport() { return viewport_; }
+	glm::vec3 position() { return position_; }
+	GLfloat near() { return near_; }
+	GLfloat far() { return far_; }
 
 	void shoot(World* world);
 
@@ -65,7 +70,6 @@ public:
 	* Post processing has 2 shader passes:
 	* 1) Render world normally to texture.
 	* 2) Edit texture and render it on fullscreen quad.
-	* TODO Implement as module with camera as dependency.
 	*/
 	struct PostProcessor {
 		friend class Camera;
@@ -76,6 +80,7 @@ public:
 		GLuint world_image_; //Texture
 		GLuint shader_;
 		GLuint vao_; //Screen-filling quad
+		GLuint output_rendertarget_;
 		// Hold sampler bindingpoints and textures
 		std::map<GLint, GLuint> samplers_;
 		// Hold uniform locations and update functions
@@ -83,10 +88,13 @@ public:
 		PostProcessor();
 		// Switching on post processor creates framebuffer, shader and vao
 		void on(Camera* camera);
-		GLuint rendertarget();
-		void post_pass();
 	public:
 		~PostProcessor();
+		void post_pass(); // run post processing
+		GLuint rendertarget(); // get framebuffer whose contents are the input
+		Camera::PostProcessor* new_instance(GLint input_format, GLenum input_type, GLuint output_rendertarget, GLuint shader);
+		Camera::PostProcessor* new_instance(GLuint output_rendertarget, GLuint shader);
+		Camera::PostProcessor* new_instance(GLuint input_texture, GLuint output_rendertarget, GLuint shader);
 		Camera* camera() { return camera_; }
 		void sampler(GLint binding, GLuint texture);
 		void uniform(const char* name, std::function<void(GLint)> callback);
@@ -96,7 +104,6 @@ public:
 	Camera::PostProcessor* post_processor();
 
 private:
-	// One camera has one post-processor
 	Camera::PostProcessor post_processor_;
 
 };

@@ -408,6 +408,60 @@ Modules/Light.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/Light.cpp.s
 .PHONY : Modules/Light.cpp.s
 
+Modules/OBJLoader.obj: Modules/OBJLoader.cpp.obj
+
+.PHONY : Modules/OBJLoader.obj
+
+# target to build an object file
+Modules/OBJLoader.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/OBJLoader.cpp.obj
+.PHONY : Modules/OBJLoader.cpp.obj
+
+Modules/OBJLoader.i: Modules/OBJLoader.cpp.i
+
+.PHONY : Modules/OBJLoader.i
+
+# target to preprocess a source file
+Modules/OBJLoader.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/OBJLoader.cpp.i
+.PHONY : Modules/OBJLoader.cpp.i
+
+Modules/OBJLoader.s: Modules/OBJLoader.cpp.s
+
+.PHONY : Modules/OBJLoader.s
+
+# target to generate assembly for a file
+Modules/OBJLoader.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/OBJLoader.cpp.s
+.PHONY : Modules/OBJLoader.cpp.s
+
+Modules/ParticipatingMediaToth.obj: Modules/ParticipatingMediaToth.cpp.obj
+
+.PHONY : Modules/ParticipatingMediaToth.obj
+
+# target to build an object file
+Modules/ParticipatingMediaToth.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ParticipatingMediaToth.cpp.obj
+.PHONY : Modules/ParticipatingMediaToth.cpp.obj
+
+Modules/ParticipatingMediaToth.i: Modules/ParticipatingMediaToth.cpp.i
+
+.PHONY : Modules/ParticipatingMediaToth.i
+
+# target to preprocess a source file
+Modules/ParticipatingMediaToth.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ParticipatingMediaToth.cpp.i
+.PHONY : Modules/ParticipatingMediaToth.cpp.i
+
+Modules/ParticipatingMediaToth.s: Modules/ParticipatingMediaToth.cpp.s
+
+.PHONY : Modules/ParticipatingMediaToth.s
+
+# target to generate assembly for a file
+Modules/ParticipatingMediaToth.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ParticipatingMediaToth.cpp.s
+.PHONY : Modules/ParticipatingMediaToth.cpp.s
+
 Modules/ShadowMapping.obj: Modules/ShadowMapping.cpp.obj
 
 .PHONY : Modules/ShadowMapping.obj
@@ -434,6 +488,33 @@ Modules/ShadowMapping.s: Modules/ShadowMapping.cpp.s
 Modules/ShadowMapping.cpp.s:
 	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/ShadowMapping.cpp.s
 .PHONY : Modules/ShadowMapping.cpp.s
+
+Modules/SunShaftsSousa.obj: Modules/SunShaftsSousa.cpp.obj
+
+.PHONY : Modules/SunShaftsSousa.obj
+
+# target to build an object file
+Modules/SunShaftsSousa.cpp.obj:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/SunShaftsSousa.cpp.obj
+.PHONY : Modules/SunShaftsSousa.cpp.obj
+
+Modules/SunShaftsSousa.i: Modules/SunShaftsSousa.cpp.i
+
+.PHONY : Modules/SunShaftsSousa.i
+
+# target to preprocess a source file
+Modules/SunShaftsSousa.cpp.i:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/SunShaftsSousa.cpp.i
+.PHONY : Modules/SunShaftsSousa.cpp.i
+
+Modules/SunShaftsSousa.s: Modules/SunShaftsSousa.cpp.s
+
+.PHONY : Modules/SunShaftsSousa.s
+
+# target to generate assembly for a file
+Modules/SunShaftsSousa.cpp.s:
+	$(MAKE) -f CMakeFiles\glhello.dir\build.make CMakeFiles/glhello.dir/Modules/SunShaftsSousa.cpp.s
+.PHONY : Modules/SunShaftsSousa.cpp.s
 
 Modules/VolumetricLightScatteringMitchell.obj: Modules/VolumetricLightScatteringMitchell.cpp.obj
 
@@ -690,9 +771,18 @@ help:
 	@echo ... Modules/Light.obj
 	@echo ... Modules/Light.i
 	@echo ... Modules/Light.s
+	@echo ... Modules/OBJLoader.obj
+	@echo ... Modules/OBJLoader.i
+	@echo ... Modules/OBJLoader.s
+	@echo ... Modules/ParticipatingMediaToth.obj
+	@echo ... Modules/ParticipatingMediaToth.i
+	@echo ... Modules/ParticipatingMediaToth.s
 	@echo ... Modules/ShadowMapping.obj
 	@echo ... Modules/ShadowMapping.i
 	@echo ... Modules/ShadowMapping.s
+	@echo ... Modules/SunShaftsSousa.obj
+	@echo ... Modules/SunShaftsSousa.i
+	@echo ... Modules/SunShaftsSousa.s
 	@echo ... Modules/VolumetricLightScatteringMitchell.obj
 	@echo ... Modules/VolumetricLightScatteringMitchell.i
 	@echo ... Modules/VolumetricLightScatteringMitchell.s

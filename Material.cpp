@@ -17,13 +17,20 @@ Material::Material(
 	properties.shininess_ = shininess;
 }
 
+Material::Material(float r, float g, float b) : InstanceAttribute(sizeof(Material::Array), (GLvoid*) &properties) {
+	properties.reflection_rgb_[0] = r;
+	properties.reflection_rgb_[1] = g;
+	properties.reflection_rgb_[2] = b;
+}
+
 Material::Material() : InstanceAttribute(sizeof(Material::Array), (GLvoid*) &properties,
   "MaterialAbsorption:fff,MaterialReflection:fff,MaterialTransmission:f,MaterialShininess:f.") {
 	// Not touching properties (leaving everything default)
 }
 
-//TODO
-//Material(Texture texture); //Texture objects contain color, specular and diffuse parameters
+//TODO A texture can define different material properties at different points of an object
+// This can be extended to normalmapping, but maybe this sould be done in a subclass of Material
+//Material(Texture texture);
 
 Material::~Material() {
 }
@@ -37,6 +44,7 @@ glm::vec3 Material::get_RGB(float wavelength, float width, float strength) {
 }
 
 // SETTER
+//TODO None of the setters works (buffer update must be missing...)
 void Material::absorb(float absorption_wavelength, float absorption_width, float absorption_strength) {
 	glm::vec3 absorption_rgb = get_RGB(absorption_wavelength, absorption_width, absorption_strength);
 	properties.absorption_rgb_[0] = absorption_rgb.x;
@@ -52,6 +60,13 @@ void Material::reflect(float reflection_wavelength, float reflection_width, floa
 	properties.reflection_rgb_[1] = reflection_rgb.y;
 	properties.reflection_rgb_[2] = reflection_rgb.z;
 
+	InstanceAttribute::has_changed_ = true;
+}
+
+void Material::reflectRGB(float r, float g, float b) {
+	properties.reflection_rgb_[0] = r;
+	properties.reflection_rgb_[1] = g;
+	properties.reflection_rgb_[2] = b;
 	InstanceAttribute::has_changed_ = true;
 }
 
