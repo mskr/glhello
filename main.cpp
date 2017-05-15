@@ -43,6 +43,9 @@
 #include "Modules/OBJLoader.h"
 #include "ParticipatingMediaToth.h"
 
+
+/* Cube test scene */
+/*
 int main() {
 	Camera cam(glm::vec3(0,0,10),
 		glm::vec3(0,0,0),
@@ -92,9 +95,9 @@ int main() {
 
 	exit(EXIT_SUCCESS);
 }
+*/
 
-/*
-
+/* Test scenes used for bachelor thesis */
 int main(void) {
 
 	using namespace glm;
@@ -205,7 +208,7 @@ int main(void) {
 
 	Model skybox(7, &type1, factory.infacing_cube());
 	skybox.attr(1, Material(0.0695, 0.118, 0.244));
-	skybox.scaleX(200 18)->scaleY(100)->scaleZ(100);
+	skybox.scaleX(200)->scaleY(100)->scaleZ(100);
 
 	Model ground(5, &type1, factory.cube());
 	ground.scaleX(1000)->scaleY(1)->scaleZ(1000)->translateY(-16.4);
@@ -310,5 +313,3 @@ int main(void) {
 
 	exit(EXIT_SUCCESS);
 }
-
-*/
