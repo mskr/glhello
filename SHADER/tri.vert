@@ -1,10 +1,5 @@
 #version 430
 
-// VERTEX SHADER FOR A MODELTYPE
-
-//TODO Split into modules
-
-
 // View-procjection matrices
 layout(std140) uniform Camera {
 	mat4 view;
