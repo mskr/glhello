@@ -61,6 +61,8 @@ public:
 
 	static void listen_to(GLFWwindow* window); // called by camera
 
+	//TODO use method for single module is not needed when...
+	// ... the user fetches all modules from a world on construction
 	Interaction* use(Module* m);
 
 	//TODO add fast callbacks
