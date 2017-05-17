@@ -18,9 +18,15 @@ A user in the framework represents someone who interacts with the world. He send
 
 ### Camera module
 
-The camera module provides a view matrix and a projection matrix as uniform buffer. The view matrix and projection matrix encode frustum-shaped part of the world to be seen through the camera. The camera defines no additional renderpasses. On interaction with the WASD keys it translates the view. Currently the camera supports no more complex interactions than moving around stepwise. The camera can shoot a world. The resulting frame is either directly rendered to the camera's viewport or sent through the camera's post-processor. The post-processor edits the image of the world seen through the camera. For post-processing a special shader is used that reads from an input-image with the size of the viewport and writes to an output-image with the same size.
+The camera module provides a view matrix and a projection matrix as uniform buffer. The view matrix and projection matrix encode frustum-shaped part of the world to be seen through the camera. On interaction with the WASD keys it translates the view. Currently the camera supports no more complex interactions than moving around stepwise. The camera can shoot a world. The resulting frame is either directly rendered to the camera's viewport or sent through the camera's post-processor. The post-processor edits the image of the world seen through the camera. For post-processing a special shader is used that reads from an input-image with the size of the viewport and writes to an output-image with the same size.
 
 ### Light module
+
+The light module provides a list of light sources as shader storage block as well as the current number of light sources. The number and properties of light sources can change dynamically at runtime. Aside from its position, a single light source is made up of 3 properties: 1st, the dominant wavelength, which is the one color that is most intense; 2nd, monochromaticity, which is how dominant the given wavelength is; 3rd, amplitude, which is the overall intensity of the light source (full amplitude means white light). When a world is illuminated by light, the light interacts with the models in the world. Models have a material. The final color depends on light interacting with material.
+
+Materials in the framework are instance attributes. This means, individual model instances can have different material appearances. A material has the 4 properties absorption, reflection, transmission and shininess. They define which colors of light are how much absorped, reflected and transmitted. The shininess defines how sleek the material is.
+
+The light module furthermore provides emitters. An emitter is an instance attribute that can make an instance of a model emit light. It works by providing an index per instance in shaders, that points into the list of light sources. The emitting model instance appears in the color of the pointed light source and illuminates the world around it. The light source is positioned in the center of the model instance. Currently light sources covering an area are not supported.
 
 ### Shadow mapping module
 
