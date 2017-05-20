@@ -30,6 +30,10 @@ The light module furthermore provides emitters. An emitter is an instance attrib
 
 ### Shadow mapping module
 
+This module can render shadows to the world. Shadows are espescially difficult because they contain global information about the world. Far away models can cast shadows on other on many other models. However when rendering on graphics cards there is no global information. Shadow mapping determines if a point is in shadow, by looking at it from the light source's point of view. If the point isn't visible, the point is in shadow. The module provides a view matrix for a light source and a shadow map for looking up visibility. The shadow map is an image of the world from the light's point of view. The shadow mapping module defines one preceeding render pass where the shadow map is generated.
+
+The module currently implements a basic form of shadow mapping. There are several limiations. First, it generates a shadow map only for one light source. Second, the shadow map is captures only one frustum and therefore is not fully suited for omnidirectional light sources. Third, no techniques are applied to account for cases in which the resolution of the shadow map is not sufficient; espescially no cascaded shadow maps and no sophisticated filtering is currently implemented.
+
 ### Volumetric light scattering modules
 
 ## Screenshots
