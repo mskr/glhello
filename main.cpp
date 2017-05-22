@@ -52,9 +52,7 @@ int main() {
 		0.1f,
 		800.0f);
 
-	Light light({
-		{{650.0f, 0.0f, 1.0f}, {0,10,10}}
-	});
+	Light light({ });
 
 	GLuint triShader = Shader::link({
 		VertexShader("tri.vert"),
@@ -67,15 +65,24 @@ int main() {
 		Light::Emitter()
 	});
 
+	ModelType pointModel(1, GL_POINTS, Shader::link({
+		VertexShader("point.vert"), FragmentShader("point.frag")
+	}), { }, {
+		Light::Emitter()
+	});
+
 	Model cube(0, &triModel, factory.cube());
 
-	World world({&cube}, [](Model* m){}, {});
+	Model lightsource(1, &pointModel, {{{10,10,10}}});
+	lightsource.emit(1, light.l(700.0f, 1.0f, 1.0f));
+
+	World world({&cube, &lightsource}, [](Model* m){}, {});
 
 	world.extend(&cam);
 	world.extend(&light);
 
 	User user(&world);
-	user.use(&cam);
+	((CameraInteraction*)user.use(&cam))->simple();
 
 	glClearColor(0,0,0,1);
 	glClearDepth(1);
@@ -84,6 +91,8 @@ int main() {
 	glFrontFace(GL_CW);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_PROGRAM_POINT_SIZE);
 
 	while(cam.is_on()) {
 		cam.shoot(&world);

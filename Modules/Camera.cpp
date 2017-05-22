@@ -95,7 +95,7 @@ void Camera::simple(CameraInteraction::Simple* interaction) {
 	} else if(interaction->move == interaction->MOVE_BACKWARD) {
 		position_.z++;
 	}
-	printf("position(%f,%f,%f), target(%f,%f,%f)\n", position_.x,position_.y,position_.z, target_.x,target_.y,target_.z);
+	//printf("position(%f,%f,%f), target(%f,%f,%f)\n", position_.x,position_.y,position_.z, target_.x,target_.y,target_.z);
 }
 
 void Camera::arcball(CameraInteraction::Arcball* interaction) {
