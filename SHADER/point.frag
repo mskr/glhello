@@ -15,7 +15,7 @@ layout(std430) buffer light {
 	float lights[];
 };
 
-flat in uvec2 fragEmitter;
+flat in int fragEmitter;
 
 vec3 lightXYZ(uint index) {
 	return vec3(lights[6*index], lights[6*index+1], lights[6*index+2]);
@@ -26,11 +26,11 @@ vec3 lightRGB(uint index) {
 }
 
 bool testEmitter() {
-	return fragEmitter.x != 0;
+	return fragEmitter >= 0;
 }
 
 vec4 emitterColor() {
-	return vec4(lightRGB(fragEmitter.y), 1.0);
+	return vec4(lightRGB(fragEmitter), 1.0);
 }
 
 vec4 lambert(vec3 normal) {

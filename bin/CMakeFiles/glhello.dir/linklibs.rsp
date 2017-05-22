@@ -1,1 +1,0 @@
- -LC:/Users/mk/Desktop/git/glhello/.  -LC:/Users/mk/Desktop/git/glhello/Modules  ../glew/lib/Release/Win32/glew32s.lib glfw/src/libglfw3.a -lopengl32 -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

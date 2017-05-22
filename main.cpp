@@ -48,7 +48,7 @@ int main() {
 		glm::vec3(0,0,0),
 		glm::vec3(0,1,0),
 		45,
-		glm::vec2(800,450),
+		glm::vec2(1920,1080),
 		0.1f,
 		800.0f);
 
@@ -72,9 +72,15 @@ int main() {
 	});
 
 	Model cube(0, &triModel, factory.cube());
+	for(int x = 0; x < 50; x+=5) {
+		for(int y = 0; y < 50; y+=5) {
+			cube.use()->translate(x,y,0);
+		}
+	}
 
 	Model lightsource(1, &pointModel, {{{10,10,10}}});
 	lightsource.emit(1, light.l(700.0f, 1.0f, 1.0f));
+	lightsource.use()->translateX(10)->emit(1, light.l(400, 1, 1));
 
 	World world({&cube, &lightsource}, [](Model* m){}, {});
 

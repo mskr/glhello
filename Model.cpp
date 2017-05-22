@@ -164,6 +164,7 @@ const GLvoid* Model::pointer_instance_attr(unsigned int instance_index, unsigned
 	} else if(attr_index == 0) {
 		return matrix_at(instance_index);
 	} else {
-		return instances_[instance_index]->attr(attr_index)->pointer();
+		const GLvoid* p = instances_[instance_index]->attr(attr_index)->pointer();
+		return p;
 	}
 }

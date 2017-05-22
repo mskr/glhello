@@ -1,3 +1,0 @@
-C:/Users/mk/Desktop/git/glhello/bin/CMakeFiles/glhello.dir
-C:/Users/mk/Desktop/git/glhello/bin/glfw/CMakeFiles/uninstall.dir
-C:/Users/mk/Desktop/git/glhello/bin/glfw/src/CMakeFiles/glfw.dir

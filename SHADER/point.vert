@@ -14,8 +14,8 @@ layout(std140) uniform Camera {
 // world loads model matrix to this vertex attributes (update each instance)
 in mat4 model;
 
-in uvec2 Emitter;
-flat varying uvec2 fragEmitter;
+in int Emitter;
+flat varying int fragEmitter;
 
 attribute vec3 position;
 varying vec3 fragPosition;
