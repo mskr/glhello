@@ -44,3 +44,6 @@ The framework contains 3 techniques for rendering volumetric light scattering or
 
 ![Screenshot](../master/screens/1.png)
 2 differently colored light sources illuminate white cubes
+
+![Screenshot](../master/screens/2.png)
+Volumetric light scattering in a simple scene (technique by Mitchell)
