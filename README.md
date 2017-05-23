@@ -16,10 +16,6 @@ A module in the framework is an extension of the world. A module provides a set 
 
 A user in the framework represents someone who interacts with the world. He sends interactions made with input devices to modules. A module has its corresponding interaction type. The interaction type defines what some specific interaction (like a key press or mouse move) means to the module. When a module receives an interaction it updates the shader data provided by it.
 
-### Overview of the rendering process
-
-![Overview](../master/fw.png)
-
 ### Camera module
 
 The camera module provides a view matrix and a projection matrix as uniform buffer. The view matrix and projection matrix encode frustum-shaped part of the world to be seen through the camera. On interaction with the WASD keys it translates the view. Currently the camera supports no more complex interactions than moving around stepwise. The camera can shoot a world. The resulting frame is either directly rendered to the camera's viewport or sent through the camera's post-processor. The post-processor edits the image of the world seen through the camera. For post-processing a special shader is used that reads from an input-image with the size of the viewport and writes to an output-image with the same size.
@@ -42,6 +38,11 @@ The module currently implements a basic form of shadow mapping. There are severa
 
 The framework contains 3 techniques for rendering volumetric light scattering or god rays which were used in the [thesis](../master/thesis.pdf). The techniques were taken from [Mitchell](https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch13.html), [Sousa](http://www.gdcvault.com/play/247/CRYSIS-Next-Gen) and [Tóth and Umenhoffer](http://sirkan.iit.bme.hu/~szirmay/lightshaft_link.htm) and implemented as modules of the framework.
 
+
+
+## Overview of the rendering process
+
+![Overview](../master/fw.png)
 
 
 ## Screenshots
