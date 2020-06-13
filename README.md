@@ -36,7 +36,7 @@ The module currently implements a basic form of shadow mapping. There are severa
 
 ### Volumetric light scattering modules
 
-The framework contains 3 techniques for rendering volumetric light scattering or god rays which were used in the [thesis](../master/thesis.pdf). The techniques were taken from [Mitchell](https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch13.html), [Sousa](http://www.gdcvault.com/play/247/CRYSIS-Next-Gen) and [Tóth and Umenhoffer](http://sirkan.iit.bme.hu/~szirmay/lightshaft_link.htm) and implemented as modules of the framework.
+The framework contains 3 techniques for rendering volumetric light scattering or god rays which were used in the [thesis](../master/thesis.pdf). The techniques were taken from [Mitchell](https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch13.html), [Sousa](http://www.gdcvault.com/play/247/CRYSIS-Next-Gen) and [Tóth and Umenhoffer](http://cg.iit.bme.hu/~szirmay/lightshaft.pdf) and implemented as modules of the framework.
 
 
 
